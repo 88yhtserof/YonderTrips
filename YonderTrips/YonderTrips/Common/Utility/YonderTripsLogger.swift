@@ -8,25 +8,39 @@
 import Foundation
 import os.log
 
-class YonderTripsLogger: Logging {
+//
+//  YonderTripsLogger.swift
+//  YonderTrips-Practice
+//
+//  Created by 임윤휘 on 5/13/25.
+//
+
+import Foundation
+import os.log
+
+class YonderTripsLogger {
     
     static let shared = YonderTripsLogger(category: "default")
     
     private let logger: Logger
     
-    private init(subsystem: String = "com.example.YonderTrips-Practice",
+    private init(subsystem: String = "com.tistory.88yhtserof.YonderTrips",
          category: String) {
         self.logger = Logger(subsystem: subsystem, category: category)
     }
     
-    func log(_ message: String,
-             type: OSLogType,
-             file: String = #file,
-             line: Int = #line) {
+    func notice(_ message: String,
+               file: String = #file,
+               line: Int = #line) {
         
-        let level = LogLevel(rawValue: type)
-        let log = logMessage(message, level: level)
-        logger.log(level: type, "\(log)")
+        log(message, type: .default, file: file, line: line)
+    }
+    
+    func fault(_ message: String,
+               file: String = #file,
+               line: Int = #line) {
+        
+        log(message, type: .fault, file: file, line: line)
     }
     
     func error(_ error: LocalizedError,
@@ -36,6 +50,22 @@ class YonderTripsLogger: Logging {
         let level = LogLevel(rawValue: .error)
         let log = logMessage(error, level: level)
         logger.log(level: .error, "\(log)")
+    }
+    
+    func debug(_ message: String,
+               file: String = #file,
+               line: Int = #line) {
+#if Debug
+        log(message, type: .debug, file: file, line: line)
+#endif
+    }
+    
+    func info(_ message: String,
+               file: String = #file,
+               line: Int = #line) {
+#if Debug
+        log(message, type: .info, file: file, line: line)
+#endif
     }
 }
 
@@ -58,6 +88,16 @@ private extension YonderTripsLogger {
         var title: String {
             self.rawValue.uppercased()
         }
+    }
+    
+    func log(_ message: String,
+             type: OSLogType,
+             file: String = #file,
+             line: Int = #line) {
+        
+        let level = LogLevel(rawValue: type)
+        let log = logMessage(message, level: level)
+        logger.log(level: type, "\(log)")
     }
     
     func logMessage(_ message: String,
