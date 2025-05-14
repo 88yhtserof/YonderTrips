@@ -18,7 +18,7 @@ import os.log
 import Foundation
 import os.log
 
-class YonderTripsLogger {
+final class YonderTripsLogger {
     
     static let shared = YonderTripsLogger(category: "default")
     
