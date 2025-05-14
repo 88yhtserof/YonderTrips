@@ -10,9 +10,22 @@
 		14B707A32DD1D9B000689F7C /* YonderTrips.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YonderTrips.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		145510752DD348D100E7A917 /* Exceptions for "YonderTrips" folder in "YonderTrips" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 14B707A22DD1D9B000689F7C /* YonderTrips */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		14B707A52DD1D9B000689F7C /* YonderTrips */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				145510752DD348D100E7A917 /* Exceptions for "YonderTrips" folder in "YonderTrips" target */,
+			);
 			path = YonderTrips;
 			sourceTree = "<group>";
 		};
@@ -255,6 +268,7 @@
 				DEVELOPMENT_TEAM = ZQV4ZDQNW5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YonderTrips/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YonderTrips;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -289,6 +303,7 @@
 				DEVELOPMENT_TEAM = ZQV4ZDQNW5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = YonderTrips/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = YonderTrips;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
