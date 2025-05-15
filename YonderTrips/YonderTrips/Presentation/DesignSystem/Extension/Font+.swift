@@ -9,7 +9,7 @@ import SwiftUI
 
 extension Font {
     
-    static func yonderTrips(_ type: YonderTripsFont) -> Font {
+    static func yt(_ type: YonderTripsFont) -> Font {
         
         switch type {
         case .paperlogy(let style):
