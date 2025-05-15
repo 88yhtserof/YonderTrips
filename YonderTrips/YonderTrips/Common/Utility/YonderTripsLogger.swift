@@ -8,16 +8,6 @@
 import Foundation
 import os.log
 
-//
-//  YonderTripsLogger.swift
-//  YonderTrips-Practice
-//
-//  Created by 임윤휘 on 5/13/25.
-//
-
-import Foundation
-import os.log
-
 final class YonderTripsLogger {
     
     static let shared = YonderTripsLogger(category: "default")
