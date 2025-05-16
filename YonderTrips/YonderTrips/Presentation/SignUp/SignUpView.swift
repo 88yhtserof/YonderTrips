@@ -9,9 +9,8 @@ import SwiftUI
 
 struct SignUpView: View {
     
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var nick: String = ""
+    @StateObject var viewModel: SignUpViewModel
+    
     @State private var phoneNumber: String = ""
     @State private var instruction: String = ""
     
@@ -20,15 +19,45 @@ struct SignUpView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 35) {
                     
-                    inputView(type: .email, text: $email)
-                    inputView(type: .password, text: $password)
-                    inputView(type: .nick, text: $nick)
+                    VStack(alignment: .leading) {
+                        validationTextField(type: .email,
+                                            text: $viewModel.state.email,
+                                            message: viewModel.state.emailValidationMessage,
+                                            state: viewModel.state.emailValidationState)
+                        
+                        Button {
+                            viewModel.action(.validateEmail)
+                        } label: {
+                            Text("확인")
+                                .frame(width: 100, height: 30)
+                                .foregroundStyle(.gray0)
+                                .font(.yt(.pretendard(.body3)))
+                        }
+                        .background(.blackSeafoam)
+                        .clipShape(RoundedRectangle(cornerRadius: 3.6))
+                    }
                     
-                    inputView(type: .phoneNumber, text: $phoneNumber)
-                    inputView(type: .instruction, text: $instruction)
+                    validationTextField(type: .password,
+                                        text: $viewModel.state.password,
+                                        message: viewModel.state.passwordValidationMessage,
+                                        state: viewModel.state.passwordValidationState)
+                        .onChange(of: viewModel.state.password) { newValue in
+                            viewModel.action(.validatePassword(newValue))
+                        }
+                    
+                    validationTextField(type: .nick,
+                                        text: $viewModel.state.nickname,
+                                        message: viewModel.state.nicknameValidationMessage,
+                                        state: viewModel.state.nicknameValidationState)
+                        .onChange(of: viewModel.state.nickname) { newValue in
+                            viewModel.action(.validateNickname(newValue))
+                        }
+                    
+                    textField(type: .phoneNumber, text: $phoneNumber)
+                    textField(type: .instruction, text: $instruction)
                     
                 }
-                .padding(10)
+                .padding(16)
             }
             .frame(maxWidth: .infinity)
             .background(Color.gray15)
@@ -49,7 +78,10 @@ struct SignUpView: View {
         }
     }
     
-    func inputView(type: InputType, text: Binding<String>) -> some View {
+    func validationTextField(type: InputType,
+                             text: Binding<String>,
+                             message: String?,
+                             state: ValidationTextField.ValidationState) -> some View {
         
         VStack(alignment: .leading, spacing: 8) {
             Text("\(type.title)을 입력해주세요")
@@ -57,26 +89,30 @@ struct SignUpView: View {
             
             HStack(alignment: .bottom) {
                 VStack(alignment: .leading) {
-                    Text(type.title)
+                    Text(type.title + (type.isOptional ? " (선택)": " *"))
                         .font(.yt(.pretendard(.caption1)))
                     
                     ValidationTextField(text: text,
-                                        placeholder: type.placeholder)
+                                        placeholder: type.placeholder,
+                                        validationMassage: message,
+                                        validationState: state)
                 }
+            }
+        }
+    }
+    
+    func textField(type: InputType, text: Binding<String>) -> some View {
+        
+        VStack(alignment: .leading, spacing: 8) {
+            Text("\(type.title)을 입력해주세요")
+                .font(.yt(.pretendard(.title1)))
+            
+            VStack(alignment: .leading) {
+                Text(type.title + (type.isOptional ? " (선택)": " *"))
+                    .font(.yt(.pretendard(.caption1)))
                 
-                if type.isNeededButton {
-                    Button {
-                        print("유효성 검사")
-                    } label: {
-                        Text("확인")
-                            .padding(10)
-                            .foregroundStyle(.gray0)
-                            .font(.yt(.pretendard(.body3)))
-                    }
-                    .background(.blackSeafoam)
-                    .clipShape(RoundedRectangle(cornerRadius: 3.6))
-                }
-                
+                SignUpTextField(text: text,
+                                placeholder: type.placeholder)
             }
         }
     }
@@ -121,19 +157,13 @@ extension SignUpView {
             }
         }
         
-        var isNeededButton: Bool {
+        var isOptional: Bool {
             switch self {
-            case .email:
-                return true
-            default:
+            case .email, .password, .nick:
                 return false
+            default:
+                return true
             }
         }
     }
 }
-
-#Preview {
-    SignUpView()
-}
-
-
