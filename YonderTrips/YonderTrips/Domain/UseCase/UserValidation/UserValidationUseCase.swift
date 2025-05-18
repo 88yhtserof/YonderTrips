@@ -58,7 +58,7 @@ private extension UserValidationUseCase {
     
     func validateNick(_ nick: String) -> Bool {
         let forbiddenCharacters = CharacterSet(charactersIn: ".,?*-@")
-        return nick.rangeOfCharacter(from: forbiddenCharacters) == nil
+        return nick.rangeOfCharacter(from: forbiddenCharacters) == nil && nick.count > 1
     }
     
     func validatePassword(_ password: String) -> Bool {

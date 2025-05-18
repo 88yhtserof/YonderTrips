@@ -70,9 +70,9 @@ struct SignUpView: View {
                         print("완료 버튼 눌림")
                     }) {
                         Text("완료")
-                            .font(.yt(.pretendard(.body1)))
-                            .foregroundStyle(.gray100)
                     }
+                    .buttonStyle(DisabledButtonStyle(isEnabled: viewModel.state.isEnabledDoneButton))
+                    .disabled(!viewModel.state.isEnabledDoneButton)
                 }
             }
         }

@@ -6,16 +6,18 @@
 //
 
 import Foundation
-
+import Combine
 
 final class SignUpViewModel: ObservableObject {
     
     @Published var state = State()
     
     private let userInfoValidationUseCase: UserValidationUseCase
+    private var cancellables = Set<AnyCancellable>()
     
     init(userInfoValidationUseCase: UserValidationUseCase) {
         self.userInfoValidationUseCase = userInfoValidationUseCase
+        binding()
     }
     
     struct State {
@@ -31,6 +33,36 @@ final class SignUpViewModel: ObservableObject {
         var passwordValidationState: ValidationTextField.ValidationState = .none
         var nicknameValidationState: ValidationTextField.ValidationState = .none
         
+        var isEnabledDoneButton: Bool = false
+    }
+    
+    private func binding() {
+        
+        // isEnabledDoneButton
+        let emailStatePublisher: AnyPublisher<ValidationTextField.ValidationState, Never> = $state
+            .map { $0.emailValidationState }
+            .eraseToAnyPublisher()
+            
+        let passwordStatePublisher: AnyPublisher<ValidationTextField.ValidationState, Never> = $state
+            .map { $0.passwordValidationState }
+            .eraseToAnyPublisher()
+            
+        let nicknameStatePublisher: AnyPublisher<ValidationTextField.ValidationState, Never> = $state
+            .map { $0.nicknameValidationState }
+            .eraseToAnyPublisher()
+        
+        Publishers
+            .CombineLatest3(emailStatePublisher, passwordStatePublisher, nicknameStatePublisher)
+            .map { (emailState, passwordState, nicknameState) in
+                let signInInfo: Bool = emailState == .valid && passwordState == .valid
+                return signInInfo && nicknameState == .valid
+            }
+            .removeDuplicates()
+            .throttle(for: 0.5, scheduler: RunLoop.main, latest: true)
+            .sink { [weak self] (isEnabled: Bool) in
+                self?.state.isEnabledDoneButton = isEnabled
+            }
+            .store(in: &cancellables)
     }
     
     enum Action {
