@@ -11,9 +11,6 @@ struct SignUpView: View {
     
     @StateObject var viewModel: SignUpViewModel
     
-    @State private var phoneNumber: String = ""
-    @State private var instruction: String = ""
-    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -53,8 +50,8 @@ struct SignUpView: View {
                             viewModel.action(.validateNickname(newValue))
                         }
                     
-                    textField(type: .phoneNumber, text: $phoneNumber)
-                    textField(type: .instruction, text: $instruction)
+                    textField(type: .phoneNumber, text: $viewModel.state.phoneNumber)
+                    textField(type: .instruction, text: $viewModel.state.instruction)
                     
                 }
                 .padding(16)
@@ -66,8 +63,7 @@ struct SignUpView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
-                        // 버튼 눌렀을 때 동작
-                        print("완료 버튼 눌림")
+                        viewModel.action(.didDoneButtonTapped)
                     }) {
                         Text("완료")
                     }

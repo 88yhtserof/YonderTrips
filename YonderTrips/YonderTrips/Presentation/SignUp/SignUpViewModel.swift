@@ -13,10 +13,13 @@ final class SignUpViewModel: ObservableObject {
     @Published var state = State()
     
     private let userInfoValidationUseCase: UserValidationUseCase
+    private let signUpUseCase: SignUpUseCase
     private var cancellables = Set<AnyCancellable>()
     
-    init(userInfoValidationUseCase: UserValidationUseCase) {
+    init(userInfoValidationUseCase: UserValidationUseCase, signUpUseCase: SignUpUseCase) {
         self.userInfoValidationUseCase = userInfoValidationUseCase
+        self.signUpUseCase = signUpUseCase
+        
         binding()
     }
     
@@ -24,6 +27,8 @@ final class SignUpViewModel: ObservableObject {
         var email: String = ""
         var password: String = ""
         var nickname: String = ""
+        var phoneNumber: String = ""
+        var instruction: String = ""
         
         var emailValidationMessage: String? = nil
         var passwordValidationMessage: String? = nil
@@ -69,6 +74,8 @@ final class SignUpViewModel: ObservableObject {
         case validateEmail
         case validatePassword(String)
         case validateNickname(String)
+        
+        case didDoneButtonTapped
     }
     
     func action(_ action: Action) {
@@ -105,6 +112,22 @@ final class SignUpViewModel: ObservableObject {
             } catch {
                 state.nicknameValidationMessage = error.localizedDescription
                 state.nicknameValidationState = .invalid
+            }
+            
+        case .didDoneButtonTapped:
+            
+            // 회원가입 네트워크 통신 로직
+            
+            Task {
+                do {
+                    let response = try await signUpUseCase
+                        .requestSignUp(email: state.email, password: state.password, nick: state.nickname, phoneNum: state.phoneNumber, introduction: state.instruction)
+                    // 로그인 화면으로 switch
+                    print("성공")
+                } catch {
+                    // error alert 내보내기
+                    print("실패")
+                }
             }
         }
     }

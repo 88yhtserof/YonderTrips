@@ -11,7 +11,10 @@ import SwiftUI
 struct YonderTripsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let userInfoValidationUseCase = UserValidationUseCase()
+            let signUpUseCase = SignUpUseCase(networkService: NetworkService(logger: YonderTripsLogger.shared))
+            let viewModel = SignUpViewModel(userInfoValidationUseCase: userInfoValidationUseCase, signUpUseCase: signUpUseCase)
+            SignUpView(viewModel: viewModel)
         }
     }
 }
