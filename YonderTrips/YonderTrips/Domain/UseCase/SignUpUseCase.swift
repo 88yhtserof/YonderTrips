@@ -10,9 +10,11 @@ import Foundation
 struct SignUpUseCase {
     
     private let networkService: NetworkService
+    private let tokenSecureStorage: TokenSecureStorage
     
-    init(networkService: NetworkService) {
+    init(networkService: NetworkService, tokenSecureStorage: TokenSecureStorage) {
         self.networkService = networkService
+        self.tokenSecureStorage = tokenSecureStorage
     }
     
     func requestSignUp(email: String,
@@ -29,6 +31,16 @@ struct SignUpUseCase {
                                      deviceToken: "") // TODO: - 디바이스토큰 fetch 로직 추가
         
         let response: JoinResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.join(request))
+        
+        do {
+            try tokenSecureStorage.save(.accessToken, token: response.accessToken)
+            try tokenSecureStorage.save(.refreshToken, token: response.refreshToken)
+            
+        } catch {
+            tokenSecureStorage.rollback()
+            throw KeyChainError.failedToCreate(TokenSecureStorage.service)
+        }
+        
         return response
     }
 }

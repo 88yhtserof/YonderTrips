@@ -123,7 +123,8 @@ final class SignUpViewModel: ObservableObject {
                     let response = try await signUpUseCase
                         .requestSignUp(email: state.email, password: state.password, nick: state.nickname, phoneNum: state.phoneNumber, introduction: state.instruction)
                     // 로그인 화면으로 switch
-                    print("성공")
+                    print("성공", response)
+                    
                 } catch {
                     // error alert 내보내기
                     print("실패")
