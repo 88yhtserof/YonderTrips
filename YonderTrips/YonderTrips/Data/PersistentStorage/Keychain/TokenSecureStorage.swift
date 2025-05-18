@@ -55,4 +55,11 @@ struct TokenSecureStorage {
         
         try storage.delete(forKey: type.key, service: TokenSecureStorage.service, itemClass: .key)
     }
+    
+    /// Delete the saved access token and refresh token if an error occurs.
+    func rollback() {
+        
+        try? delete(.accessToken)
+        try? delete(.refreshToken)
+    }
 }
