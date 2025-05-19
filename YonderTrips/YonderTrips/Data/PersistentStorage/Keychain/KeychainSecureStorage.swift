@@ -53,12 +53,12 @@ struct KeychainSecureStorage {
             YonderTripsLogger.shared.debug("Success: item saved to keychain")
             
         case errSecDuplicateItem:
-            let error = KeyChainError.alreadyExists
+            let error = KeyChainError.alreadyExists(service)
             YonderTripsLogger.shared.error(error)
             throw error
             
         default:
-            let error = KeyChainError.failedToCreate
+            let error = KeyChainError.failedToCreate(service)
             YonderTripsLogger.shared.error(error)
             throw error
         }
@@ -80,7 +80,7 @@ struct KeychainSecureStorage {
         let status = SecItemCopyMatching(query as CFDictionary, &result)
         
         guard status != errSecItemNotFound else {
-            let error = KeyChainError.notFound
+            let error = KeyChainError.notFound(service)
             YonderTripsLogger.shared.error(error)
             throw error
         }
