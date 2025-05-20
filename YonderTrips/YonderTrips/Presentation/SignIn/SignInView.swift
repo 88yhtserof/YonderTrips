@@ -6,8 +6,12 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct SignInView: View {
+    
+    @Environment(\.networkService) private var networkService
+    
     var body: some View {
         VStack(alignment: .leading) {
             
@@ -39,6 +43,15 @@ struct SignInView: View {
             
             Spacer()
             
+            SignInWithAppleButton(.signIn) { request in
+                request.requestedScopes = [.fullName, .email]
+            } onCompletion: { result in
+                appleLoginButtonAction(result)
+            }
+            .frame(height: 45)
+            .padding(15)
+            .signInWithAppleButtonStyle(.black)
+            
         }
         .background {
             ZStack {
@@ -53,6 +66,35 @@ struct SignInView: View {
                 
             }
             .frame(maxWidth: .infinity)
+        }
+    }
+    
+    func appleLoginButtonAction(_ result: Result<ASAuthorization, Error>) {
+        
+        switch result {
+        case .success(let authResults):
+            print("Success: \(authResults)")
+            
+            if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
+                
+                guard let identityToken = appleIDCredential.identityToken,
+                      let idToken = String(data: identityToken, encoding: .utf8) else {
+                    return
+                }
+                
+                
+                let name = appleIDCredential.fullName?.familyName ?? "\(Int.random(in: 1...1000))"
+                
+                Task {
+                    let request = AppleLoginRequestDTO(idToken: idToken, deviceToken: "", nick: name)
+                    let response: LoginResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.appleLogin(request))
+                    
+                    print("AppleLoginResponse: \(response)")
+                }
+            }
+            
+        case .failure(let failure):
+            print("Failure: \(failure)")
         }
     }
 }
