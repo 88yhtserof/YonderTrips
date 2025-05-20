@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import SwiftUI // ViewModel에 SwiftUI?
 import Combine
 
 final class SignUpViewModel: ObservableObject {
@@ -40,6 +39,9 @@ final class SignUpViewModel: ObservableObject {
         var nicknameValidationState: ValidationTextField.ValidationState = .none
         
         var isEnabledDoneButton: Bool = false
+        
+        var isShownErrorAlert: Bool = false
+        var alertMessage: String = ""
     }
     
     private func binding() {
@@ -77,6 +79,8 @@ final class SignUpViewModel: ObservableObject {
         case validateNickname(String)
         
         case didDoneButtonTapped(RootFlowRouter)
+        case didPopupOverlayTapped
+        case didPopupOKButtonTapped
     }
     
     @MainActor
@@ -141,10 +145,14 @@ final class SignUpViewModel: ObservableObject {
                     router.rootFlow = .signIn
                     
                 } catch {
-                    // TODO: - Present an Error Alert
-                    print("Failed")
+                    state.alertMessage = error.localizedDescription
+                    state.isShownErrorAlert = true
                 }
             }
+        case .didPopupOverlayTapped:
+            state.isShownErrorAlert = false
+        case .didPopupOKButtonTapped:
+            state.isShownErrorAlert = false
         }
     }
 }
