@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI // ViewModel에 SwiftUI?
 import Combine
 
 final class SignUpViewModel: ObservableObject {
@@ -75,9 +76,10 @@ final class SignUpViewModel: ObservableObject {
         case validatePassword(String)
         case validateNickname(String)
         
-        case didDoneButtonTapped
+        case didDoneButtonTapped(RootFlowRouter)
     }
     
+    @MainActor
     func action(_ action: Action) {
         
         switch action {
@@ -114,16 +116,14 @@ final class SignUpViewModel: ObservableObject {
                 state.nicknameValidationState = .invalid
             }
             
-        case .didDoneButtonTapped:
-            
-            // 회원가입 네트워크 통신 로직
+        case .didDoneButtonTapped(let router):
             
             Task {
                 do {
                     let response = try await signUpUseCase
                         .requestSignUp(email: state.email, password: state.password, nick: state.nickname, phoneNum: state.phoneNumber, introduction: state.instruction)
-                    // 로그인 화면으로 switch
-                    print("성공", response)
+                    
+                    router.rootFlow = .signIn
                     
                 } catch {
                     // error alert 내보내기

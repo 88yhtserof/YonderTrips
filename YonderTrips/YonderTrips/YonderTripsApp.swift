@@ -9,12 +9,13 @@ import SwiftUI
 
 @main
 struct YonderTripsApp: App {
+    @StateObject private var rootViewRouter = RootFlowRouter()
+    
     var body: some Scene {
         WindowGroup {
-            let userInfoValidationUseCase = UserValidationUseCase()
-            let signUpUseCase = SignUpUseCase(networkService: NetworkService(logger: YonderTripsLogger.shared))
-            let viewModel = SignUpViewModel(userInfoValidationUseCase: userInfoValidationUseCase, signUpUseCase: signUpUseCase)
-            SignUpView(viewModel: viewModel)
+            
+            ContentView()
+                .environmentObject(rootViewRouter)
         }
     }
 }
