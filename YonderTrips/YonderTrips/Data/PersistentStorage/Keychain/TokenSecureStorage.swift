@@ -30,12 +30,12 @@ struct TokenSecureStorage {
         
         let tokenData = token.data(using: .utf8)!
         
-        try storage.create(tokenData, forKey: type.key, service: TokenSecureStorage.service, itemClass: .key)
+        try storage.create(tokenData, forKey: type.key, service: TokenSecureStorage.service, itemClass: .genericPassword)
     }
     
     func fetch(_ type: TokenType) throws -> String {
         
-        let tokenData = try storage.read(forKey: type.key, service: TokenSecureStorage.service, itemClass: .key)
+        let tokenData = try storage.read(forKey: type.key, service: TokenSecureStorage.service, itemClass: .genericPassword)
         
         guard let token = String(data: tokenData, encoding: .utf8) else {
             throw KeyChainError.invalidData
@@ -48,11 +48,18 @@ struct TokenSecureStorage {
         
         let tokenData = token.data(using: .utf8)!
         
-        try storage.update(forKey: type.key, value: tokenData)
+        try storage.update(forKey: type.key, value: tokenData, itemClass: .genericPassword)
     }
     
     func delete(_ type: TokenType) throws {
         
-        try storage.delete(forKey: type.key, service: TokenSecureStorage.service, itemClass: .key)
+        try storage.delete(forKey: type.key, service: TokenSecureStorage.service, itemClass: .genericPassword)
+    }
+    
+    /// Delete the saved access token and refresh token if an error occurs.
+    func rollback() {
+        
+        try? delete(.accessToken)
+        try? delete(.refreshToken)
     }
 }

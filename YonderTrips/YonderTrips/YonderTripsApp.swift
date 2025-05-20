@@ -9,9 +9,13 @@ import SwiftUI
 
 @main
 struct YonderTripsApp: App {
+    @StateObject private var rootViewRouter = RootFlowRouter()
+    
     var body: some Scene {
         WindowGroup {
+            
             ContentView()
+                .environmentObject(rootViewRouter)
         }
     }
 }
