@@ -39,7 +39,7 @@ struct KeychainSecureStorage {
               itemClass: KeychainItemClass) throws
     {
         let query: [String: Any] = [
-            kSecClass as String           : itemClass,
+            kSecClass as String           : itemClass.secValue,
             kSecAttrAccount as String     : key,
             kSecAttrService as String     : service,
             kSecValueData as String       : data
@@ -47,17 +47,21 @@ struct KeychainSecureStorage {
         
         SecItemDelete(query as CFDictionary)
         let status = SecItemAdd(query as CFDictionary, nil)
+        print(status, query)
         
         switch status {
         case errSecSuccess:
+            print("aaaaaaa")
             YonderTripsLogger.shared.debug("Success: item saved to keychain")
             
         case errSecDuplicateItem:
+            print("bbbbb")
             let error = KeyChainError.alreadyExists(service)
             YonderTripsLogger.shared.error(error)
             throw error
             
         default:
+            print("cccc")
             let error = KeyChainError.failedToCreate(service)
             YonderTripsLogger.shared.error(error)
             throw error
@@ -69,7 +73,7 @@ struct KeychainSecureStorage {
               itemClass: KeychainItemClass) throws -> Data
     {
         let query: [String: Any] = [
-            kSecClass as String           : itemClass,
+            kSecClass as String           : itemClass.secValue,
             kSecAttrAccount as String     : key,
             kSecAttrService as String     : service,
             kSecReturnData as String      : kCFBooleanTrue!,
@@ -101,11 +105,13 @@ struct KeychainSecureStorage {
         return data
     }
     
-    func update(forKey key: String, value: Data) throws {
+    func update(forKey key: String,
+                value: Data,
+                itemClass: KeychainItemClass) throws {
         
-        let existingQuery: [CFString: Any] = [
-            kSecClass: kSecClassKey,
-            kSecAttrAccount: key
+        let existingQuery: [String: Any] = [
+            kSecClass as String           : itemClass.secValue,
+            kSecAttrAccount as String     : key
         ]
         
         let updateQuery: [CFString: Any] = [
@@ -129,7 +135,7 @@ struct KeychainSecureStorage {
                 itemClass: KeychainItemClass) throws
     {
         let query: [String: Any] = [
-            kSecClass as String           : itemClass,
+            kSecClass as String           : itemClass.secValue,
             kSecAttrAccount as String     : key,
             kSecAttrService as String     : service
         ]
