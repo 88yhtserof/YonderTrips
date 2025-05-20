@@ -45,7 +45,7 @@ final class YonderTripsLogger {
     func debug(_ message: String,
                file: String = #file,
                line: Int = #line) {
-#if Debug
+#if DEBUG
         log(message, type: .debug, file: file, line: line)
 #endif
     }
@@ -53,7 +53,7 @@ final class YonderTripsLogger {
     func info(_ message: String,
                file: String = #file,
                line: Int = #line) {
-#if Debug
+#if DEBUG
         log(message, type: .info, file: file, line: line)
 #endif
     }
