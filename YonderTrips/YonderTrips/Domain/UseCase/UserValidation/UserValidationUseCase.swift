@@ -26,6 +26,7 @@ struct UserValidationUseCase {
         }
     }
     
+    @discardableResult
     func validateUserInfo(_ type: ValidationType) throws -> String {
         
         switch type {

@@ -85,9 +85,20 @@ final class SignUpViewModel: ObservableObject {
         switch action {
         case .validateEmail:
             do {
-                let message = try userInfoValidationUseCase.validateUserInfo(.email(state.email))
-                state.emailValidationMessage = message
-                state.emailValidationState = .valid
+                try userInfoValidationUseCase.validateUserInfo(.email(state.email))
+                
+                Task {
+                    do {
+                        let message = try await signUpUseCase.requestEmailValidation(email: state.email)
+                        
+                        state.emailValidationMessage = message.message
+                        state.emailValidationState = .valid
+                        
+                    } catch {
+                        state.emailValidationMessage = error.localizedDescription
+                        state.emailValidationState = .invalid
+                    }
+                }
                 
             } catch {
                 state.emailValidationMessage = error.localizedDescription
@@ -120,14 +131,18 @@ final class SignUpViewModel: ObservableObject {
             
             Task {
                 do {
-                    let response = try await signUpUseCase
-                        .requestSignUp(email: state.email, password: state.password, nick: state.nickname, phoneNum: state.phoneNumber, introduction: state.instruction)
+                    try await signUpUseCase
+                        .requestSignUp(email: state.email,
+                                       password: state.password,
+                                       nick: state.nickname,
+                                       phoneNum: state.phoneNumber,
+                                       introduction: state.instruction)
                     
                     router.rootFlow = .signIn
                     
                 } catch {
-                    // error alert 내보내기
-                    print("실패")
+                    // TODO: - Present an Error Alert
+                    print("Failed")
                 }
             }
         }

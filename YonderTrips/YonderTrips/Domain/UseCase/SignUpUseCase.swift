@@ -17,6 +17,7 @@ struct SignUpUseCase {
         self.tokenSecureStorage = tokenSecureStorage
     }
     
+    @discardableResult
     func requestSignUp(email: String,
                        password: String,
                        nick: String,
@@ -42,5 +43,14 @@ struct SignUpUseCase {
         }
         
         return response
+    }
+    
+    func requestEmailValidation(email: String) async throws -> EmailValidationResponseDTO {
+        
+        let request = EmailValidationRequestDTO(email: email)
+        
+        let reponse: EmailValidationResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.emailValidation(request))
+        
+        return reponse
     }
 }
