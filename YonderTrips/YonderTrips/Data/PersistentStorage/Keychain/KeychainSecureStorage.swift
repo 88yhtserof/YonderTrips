@@ -47,21 +47,17 @@ struct KeychainSecureStorage {
         
         SecItemDelete(query as CFDictionary)
         let status = SecItemAdd(query as CFDictionary, nil)
-        print(status, query)
         
         switch status {
         case errSecSuccess:
-            print("aaaaaaa")
             YonderTripsLogger.shared.debug("Success: item saved to keychain")
             
         case errSecDuplicateItem:
-            print("bbbbb")
             let error = KeyChainError.alreadyExists(service)
             YonderTripsLogger.shared.error(error)
             throw error
             
         default:
-            print("cccc")
             let error = KeyChainError.failedToCreate(service)
             YonderTripsLogger.shared.error(error)
             throw error
