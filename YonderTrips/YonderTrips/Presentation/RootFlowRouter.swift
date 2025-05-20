@@ -10,7 +10,7 @@ import SwiftUI
 @MainActor
 final class RootFlowRouter: ObservableObject {
     
-    @Published var rootFlow: RootFlow = .signUp
+    @Published var rootFlow: RootFlow = .signIn
     
     enum RootFlow: Hashable {
         case signIn
