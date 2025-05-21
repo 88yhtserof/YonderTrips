@@ -105,6 +105,7 @@ struct SignInView: View {
                 switch flow {
                 case .emailSignIn:
                     EmailSignInView()
+                        .environmentObject(signInRouter)
                 case .signUp:
                     SignUpView(viewModel: container.makeSignUpViewModel())
                 }

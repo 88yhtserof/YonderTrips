@@ -37,9 +37,7 @@ struct EmailSignInView: View {
                     .foregroundStyle(.gray75)
                     .font(.yt(.pretendard(.body2)))
                 
-                Button(action: {
-                    print("!")
-                }) {
+                Button(action: siginUpWithEmailButtonAction) {
                     VStack(alignment: .leading) {
                         Text("이메일로 회원가입 하기")
                             .foregroundStyle(.gray75)
@@ -67,6 +65,14 @@ struct EmailSignInView: View {
             SignUpTextField(text: text, placeholder: placeholder)
         }
         .padding(.horizontal, 16)
+    }
+}
+
+//MARK: - Action
+extension EmailSignInView {
+    
+    func siginUpWithEmailButtonAction() {
+        signInRouter.path.append(SignInFlowRouter.SignInFlow.signUp)
     }
 }
 
