@@ -27,7 +27,7 @@ extension ContentView {
         
         switch rootRouter.rootFlow {
         case .signIn:
-            SignInView()
+            SignInView(viewModel: container.makeSignInViewModel())
         case .signUp:
             SignUpView(viewModel: container.makeSignUpViewModel())
         case .home:

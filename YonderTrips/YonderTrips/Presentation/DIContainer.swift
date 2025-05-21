@@ -38,6 +38,12 @@ extension DIContainer {
         return SignUpViewModel(userInfoValidationUseCase: userInfoValidationUseCase, signUpUseCase: signUpUseCase)
     }
     
+    func makeSignInViewModel() -> SignInViewModel {
+        
+        let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage)
+        return SignInViewModel(signInUseCase: signInUseCase, logger: logger)
+    }
+    
     func makeEmailSignInViewModel() -> EmailSignInViewModel {
         
         let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage)

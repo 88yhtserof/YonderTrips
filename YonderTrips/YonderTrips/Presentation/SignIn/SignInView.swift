@@ -8,15 +8,13 @@
 import SwiftUI
 import AuthenticationServices
 
-import KakaoSDKCommon
-import KakaoSDKAuth
-import KakaoSDKUser
-
 struct SignInView: View {
     
     @Environment(\.container) private var container
     @Environment(\.networkService) private var networkService
     @StateObject private var signInRouter = SignInFlowRouter()
+    @EnvironmentObject private var rootRouter: RootFlowRouter
+    @StateObject var viewModel: SignInViewModel
     
     var body: some View {
         NavigationStack(path: $signInRouter.path) {
@@ -138,12 +136,7 @@ extension SignInView {
                 
                 let name = appleIDCredential.fullName?.familyName ?? "\(Int.random(in: 1...1000))"
                 
-                Task {
-                    let request = AppleLoginRequestDTO(idToken: idToken, deviceToken: "", nick: name)
-                    let response: LoginResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.appleLogin(request))
-                    
-                    print("AppleLoginResponse: \(response)")
-                }
+                // request
             }
             
         case .failure(let failure):
@@ -152,51 +145,6 @@ extension SignInView {
     }
     
     func kakaoLoginButtonAction() {
-        if (UserApi.isKakaoTalkLoginAvailable()) {
-            
-            UserApi.shared.loginWithKakaoTalk {(oauthToken, error) in
-                if let error = error {
-                    print(error)
-                }
-                else {
-                    print("loginWithKakaoTalk() success.")
-
-                    // 성공 시 동작 구현
-                    guard let token = oauthToken?.accessToken else { return }
-                    print(token)
-                    requestKakaoLogin(token)
-                }
-            }
-        } else {
-            
-            UserApi.shared.loginWithKakaoAccount {(oauthToken, error) in
-                
-                    if let error {
-                        print("Error", error)
-                    }
-                    else {
-                        print("loginWithKakaoAccount() success.")
-
-                        // 성공 시 동작 구현
-                        guard let token = oauthToken?.accessToken else { return }
-                        requestKakaoLogin(token)
-                    }
-                }
-        }
-        
-        func requestKakaoLogin(_ oauthToken: String) {
-            print(#function)
-            
-            Task {
-                let request = KakaoLoginRequestDTO(oauthToken: oauthToken, deviceToken: "")
-                let response: LoginResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.kakaoLogin(request))
-                
-                print("KakaoLoginResponse: \(response)")
-            }
-        }
+        viewModel.action(.didKakaoSignInButtonTapped(rootRouter))
     }
-}
-
-#Preview {
-    SignInView()
 }

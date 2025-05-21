@@ -35,4 +35,40 @@ struct SignInUseCase {
         
         return response
     }
+    
+    @discardableResult
+    func requestSignInWithKakao(oauthToken: String) async throws -> LoginResponseDTO {
+        
+        let request = KakaoLoginRequestDTO(oauthToken: oauthToken, deviceToken: "")
+        let response: LoginResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.kakaoLogin(request))
+        
+        do {
+            try tokenSecureStorage.save(.accessToken, token: response.accessToken)
+            try tokenSecureStorage.save(.refreshToken, token: response.refreshToken)
+            
+        } catch {
+            tokenSecureStorage.rollback()
+            throw KeyChainError.failedToCreate(TokenSecureStorage.service)
+        }
+        
+        return response
+    }
+    
+    @discardableResult
+    func requestSignInWithApple(idToken: String, nick: String) async throws -> LoginResponseDTO {
+        
+        let request = AppleLoginRequestDTO(idToken: idToken, deviceToken: "", nick: nick)
+        let response: LoginResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.appleLogin(request))
+        
+        do {
+            try tokenSecureStorage.save(.accessToken, token: response.accessToken)
+            try tokenSecureStorage.save(.refreshToken, token: response.refreshToken)
+            
+        } catch {
+            tokenSecureStorage.rollback()
+            throw KeyChainError.failedToCreate(TokenSecureStorage.service)
+        }
+        
+        return response
+    }
 }
