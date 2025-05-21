@@ -11,7 +11,6 @@ import AuthenticationServices
 struct SignInView: View {
     
     @Environment(\.container) private var container
-    @Environment(\.networkService) private var networkService
     @StateObject private var signInRouter = SignInFlowRouter()
     @EnvironmentObject private var rootRouter: RootFlowRouter
     @StateObject var viewModel: SignInViewModel
@@ -98,6 +97,13 @@ struct SignInView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
+            .overlay {
+                if viewModel.state.isShownErrorAlert {
+                    PopupView(title: viewModel.state.alertMessage,
+                              isPresented: $viewModel.state.isShownErrorAlert)
+                }
+            }
+            .animation(.easeInOut(duration: 0.2), value: viewModel.state.isShownErrorAlert)
             .navigationDestination(for: SignInFlowRouter.SignInFlow.self) { flow in
                 
                 switch flow {
@@ -121,27 +127,7 @@ extension SignInView {
     }
     
     func appleLoginButtonAction(_ result: Result<ASAuthorization, Error>) {
-        
-        switch result {
-        case .success(let authResults):
-            print("Success: \(authResults)")
-            
-            if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
-                
-                guard let identityToken = appleIDCredential.identityToken,
-                      let idToken = String(data: identityToken, encoding: .utf8) else {
-                    return
-                }
-                
-                
-                let name = appleIDCredential.fullName?.familyName ?? "\(Int.random(in: 1...1000))"
-                
-                // request
-            }
-            
-        case .failure(let failure):
-            print("Failure: \(failure)")
-        }
+        viewModel.action(.didAppleSignInButtonTapped(result, rootRouter))
     }
     
     func kakaoLoginButtonAction() {
