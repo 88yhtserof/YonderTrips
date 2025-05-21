@@ -9,6 +9,7 @@ import Foundation
 
 enum AuthorizationProvider: String {
     case yonderTrips = "YONDERTRIPS"
+    case kakao = "KAKAO"
     
     var apiKey: String? {
         return Bundle.main.infoDictionary?["\(self.rawValue)_API_KEY"] as? String
