@@ -10,7 +10,7 @@ import Combine
 
 final class SignUpViewModel: ViewModelType {
     
-    @Published private(set) var state = State()
+    @Published var state = State()
     
     private let userInfoValidationUseCase: UserValidationUseCase
     private let signUpUseCase: SignUpUseCase
@@ -142,7 +142,7 @@ final class SignUpViewModel: ViewModelType {
                                        phoneNum: state.phoneNumber,
                                        introduction: state.instruction)
                     
-                    router.rootFlow = .signIn
+                    router.rootFlow = .home
                     
                 } catch {
                     state.alertMessage = error.localizedDescription
