@@ -8,9 +8,9 @@
 import Foundation
 import Combine
 
-final class SignUpViewModel: ObservableObject {
+final class SignUpViewModel: ViewModelType {
     
-    @Published var state = State()
+    @Published private(set) var state = State()
     
     private let userInfoValidationUseCase: UserValidationUseCase
     private let signUpUseCase: SignUpUseCase
@@ -44,7 +44,7 @@ final class SignUpViewModel: ObservableObject {
         var alertMessage: String = ""
     }
     
-    private func binding() {
+    func binding() {
         
         // isEnabledDoneButton
         let emailStatePublisher: AnyPublisher<ValidationTextField.ValidationState, Never> = $state
