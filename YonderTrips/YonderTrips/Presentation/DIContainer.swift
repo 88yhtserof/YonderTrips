@@ -5,7 +5,7 @@
 //  Created by 임윤휘 on 5/19/25.
 //
 
-import Foundation
+import SwiftUI
 
 struct DIContainer {
     
@@ -36,5 +36,21 @@ extension DIContainer {
         
         let signUpUseCase = SignUpUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage)
         return SignUpViewModel(userInfoValidationUseCase: userInfoValidationUseCase, signUpUseCase: signUpUseCase)
+    }
+}
+
+// Environment
+extension DIContainer: EnvironmentKey {
+    
+    static let defaultValue: DIContainer = {
+        return DIContainer()
+    }()
+}
+
+extension EnvironmentValues {
+    
+    var container: DIContainer {
+        get { self[DIContainer.self] }
+        set { self[DIContainer.self] = newValue }
     }
 }
