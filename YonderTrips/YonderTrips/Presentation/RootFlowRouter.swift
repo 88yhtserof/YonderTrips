@@ -15,5 +15,6 @@ final class RootFlowRouter: ObservableObject {
     enum RootFlow: Hashable {
         case signIn
         case signUp
+        case home
     }
 }

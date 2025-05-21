@@ -30,6 +30,8 @@ extension ContentView {
             SignInView()
         case .signUp:
             SignUpView(viewModel: container.makeSignUpViewModel())
+        case .home:
+            HomeView()
         }
     }
 }
