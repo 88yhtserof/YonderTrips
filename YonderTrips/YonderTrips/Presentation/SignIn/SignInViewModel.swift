@@ -5,7 +5,7 @@
 //  Created by 임윤휘 on 5/21/25.
 //
 
-import Foundation
+import SwiftUICore
 import AuthenticationServices
 
 import KakaoSDKCommon
@@ -16,11 +16,9 @@ final class SignInViewModel: ViewModelType {
     
     @Published var state = State()
     private let signInUseCase: SignInUseCase
-    private let logger: YonderTripsLogger
     
-    init(signInUseCase: SignInUseCase, logger: YonderTripsLogger) {
+    init(signInUseCase: SignInUseCase) {
         self.signInUseCase = signInUseCase
-        self.logger = logger
     }
     
     struct State {
@@ -74,7 +72,7 @@ extension SignInViewModel {
                     self?.state.isShownErrorAlert = true
                 }
                 else {
-                    self?.logger.debug("Success: SignIn with Kakao by KakaoTalk")
+                    YonderTripsLogger.shared.debug("Success: SignIn with Kakao by KakaoTalk")
                     
                     guard let token = oauthToken?.accessToken else { return }
                     
@@ -99,7 +97,7 @@ extension SignInViewModel {
                     self?.state.isShownErrorAlert = true
                 }
                 else {
-                    self?.logger.debug("Success: SignIn with Kakao by Account")
+                    YonderTripsLogger.shared.debug("Success: SignIn with Kakao by Account")
                     guard let token = oauthToken?.accessToken else { return }
                     
                     Task {
@@ -120,7 +118,7 @@ extension SignInViewModel {
         
         switch result {
         case .success(let authResults):
-            logger.debug("Success: SignIn with Apple")
+            YonderTripsLogger.shared.debug("Success: SignIn with Apple")
             
             if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
                 

@@ -12,11 +12,11 @@ final class SignUpViewModel: ViewModelType {
     
     @Published var state = State()
     
-    private let userInfoValidationUseCase: UserValidationUseCase
-    private let signUpUseCase: SignUpUseCase
+    private let userInfoValidationUseCase: UserValidationUseCaseType
+    private let signUpUseCase: SignUpUseCaseType
     private var cancellables = Set<AnyCancellable>()
     
-    init(userInfoValidationUseCase: UserValidationUseCase, signUpUseCase: SignUpUseCase) {
+    init(userInfoValidationUseCase: UserValidationUseCaseType, signUpUseCase: SignUpUseCaseType) {
         self.userInfoValidationUseCase = userInfoValidationUseCase
         self.signUpUseCase = signUpUseCase
         

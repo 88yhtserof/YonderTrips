@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserValidationUseCase {
+struct UserValidationUseCase: UserValidationUseCaseType {
     
     enum ValidationType {
         case email(String)

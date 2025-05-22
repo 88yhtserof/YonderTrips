@@ -9,11 +9,9 @@ import SwiftUI
 
 struct NetworkService {
     
-    private let logger: YonderTripsLogger
     private let session: URLSession
     
-    init(logger: YonderTripsLogger, session: URLSession = .shared) {
-        self.logger = logger
+    init(session: URLSession = .shared) {
         self.session = session
     }
     
@@ -56,7 +54,7 @@ struct NetworkService {
             YonderTripsLogger.shared.error(error)
             throw error
         }
-        logger.debug("Success: request \(api)")
+        YonderTripsLogger.shared.debug("Success: request \(api)")
         
         do {
             let decoded = try JSONDecoder().decode(T.self, from: data)
@@ -73,7 +71,7 @@ struct NetworkService {
 extension NetworkService: EnvironmentKey {
     
     static let defaultValue: NetworkService = {
-        return NetworkService(logger: YonderTripsLogger.shared)
+        return NetworkService()
     }()
 }
 
