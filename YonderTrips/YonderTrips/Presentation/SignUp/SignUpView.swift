@@ -13,71 +13,69 @@ struct SignUpView: View {
     @StateObject var viewModel: SignUpViewModel
     
     var body: some View {
-        NavigationStack {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 35) {
-                        
-                        VStack(alignment: .leading) {
-                            validationTextField(type: .email,
-                                                text: $viewModel.state.email,
-                                                message: viewModel.state.emailValidationMessage,
-                                                state: viewModel.state.emailValidationState)
-                            
-                            Button {
-                                viewModel.action(.validateEmail)
-                            } label: {
-                                Text("확인")
-                                    .foregroundStyle(.gray0)
-                                    .font(.yt(.pretendard(.body3)))
-                            }
-                            .buttonStyle(YTButtonStyle())
-                            
-                        }
-                        
-                        validationTextField(type: .password,
-                                            text: $viewModel.state.password,
-                                            message: viewModel.state.passwordValidationMessage,
-                                            state: viewModel.state.passwordValidationState)
-                            .onChange(of: viewModel.state.password) { newValue in
-                                viewModel.action(.validatePassword(newValue))
-                            }
-                        
-                        validationTextField(type: .nick,
-                                            text: $viewModel.state.nickname,
-                                            message: viewModel.state.nicknameValidationMessage,
-                                            state: viewModel.state.nicknameValidationState)
-                            .onChange(of: viewModel.state.nickname) { newValue in
-                                viewModel.action(.validateNickname(newValue))
-                            }
-                        
-                        textField(type: .phoneNumber, text: $viewModel.state.phoneNumber)
-                        textField(type: .instruction, text: $viewModel.state.instruction)
-                        
+        ScrollView {
+            VStack(alignment: .leading, spacing: 35) {
+                
+                VStack(alignment: .leading) {
+                    validationTextField(type: .email,
+                                        text: $viewModel.state.email,
+                                        message: viewModel.state.emailValidationMessage,
+                                        state: viewModel.state.emailValidationState)
+                    
+                    Button {
+                        viewModel.action(.validateEmail)
+                    } label: {
+                        Text("확인")
+                            .foregroundStyle(.gray0)
+                            .font(.yt(.pretendard(.body3)))
                     }
-                    .padding(16)
+                    .buttonStyle(YTButtonStyle())
+                    
                 }
-                .frame(maxWidth: .infinity)
-                .background(Color.gray15)
-                .navigationTitle("회원가입")
-                .navigationBarTitleDisplayMode(.automatic)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
-                            viewModel.action(.didDoneButtonTapped(router))
-                        }) {
-                            Text("완료")
-                        }
-                        .buttonStyle(DisabledButtonStyle(isEnabled: viewModel.state.isEnabledDoneButton))
-                        .disabled(!viewModel.state.isEnabledDoneButton)
-                    }
+                
+                validationTextField(type: .password,
+                                    text: $viewModel.state.password,
+                                    message: viewModel.state.passwordValidationMessage,
+                                    state: viewModel.state.passwordValidationState)
+                .onChange(of: viewModel.state.password) { newValue in
+                    viewModel.action(.validatePassword(newValue))
                 }
-                .overlay {
-                    if viewModel.state.isShownErrorAlert {
-                        PopupView(title: viewModel.state.alertMessage, isPresented: $viewModel.state.isShownErrorAlert)
-                    }
+                
+                validationTextField(type: .nick,
+                                    text: $viewModel.state.nickname,
+                                    message: viewModel.state.nicknameValidationMessage,
+                                    state: viewModel.state.nicknameValidationState)
+                .onChange(of: viewModel.state.nickname) { newValue in
+                    viewModel.action(.validateNickname(newValue))
                 }
-                .animation(.easeInOut(duration: 0.2), value: viewModel.state.isShownErrorAlert)
+                
+                textField(type: .phoneNumber, text: $viewModel.state.phoneNumber)
+                textField(type: .instruction, text: $viewModel.state.instruction)
+                
             }
+            .padding(16)
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color.gray15)
+        .navigationTitle("회원가입")
+        .navigationBarTitleDisplayMode(.automatic)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    viewModel.action(.didDoneButtonTapped(router))
+                }) {
+                    Text("완료")
+                }
+                .buttonStyle(DisabledButtonStyle(isEnabled: viewModel.state.isEnabledDoneButton))
+                .disabled(!viewModel.state.isEnabledDoneButton)
+            }
+        }
+        .overlay {
+            if viewModel.state.isShownErrorAlert {
+                PopupView(title: viewModel.state.alertMessage, isPresented: $viewModel.state.isShownErrorAlert)
+            }
+        }
+        .animation(.easeInOut(duration: 0.2), value: viewModel.state.isShownErrorAlert)
     }
     
     func validationTextField(type: InputType,

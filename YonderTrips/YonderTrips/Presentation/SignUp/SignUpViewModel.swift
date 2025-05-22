@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class SignUpViewModel: ObservableObject {
+final class SignUpViewModel: ViewModelType {
     
     @Published var state = State()
     
@@ -44,7 +44,7 @@ final class SignUpViewModel: ObservableObject {
         var alertMessage: String = ""
     }
     
-    private func binding() {
+    func binding() {
         
         // isEnabledDoneButton
         let emailStatePublisher: AnyPublisher<ValidationTextField.ValidationState, Never> = $state
@@ -142,7 +142,7 @@ final class SignUpViewModel: ObservableObject {
                                        phoneNum: state.phoneNumber,
                                        introduction: state.instruction)
                     
-                    router.rootFlow = .signIn
+                    router.rootFlow = .home
                     
                 } catch {
                     state.alertMessage = error.localizedDescription

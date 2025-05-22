@@ -52,18 +52,27 @@ extension YonderTripsFont {
     }
     
     enum Paperlogy {
+        case slogan1
+        case slogan2
         case title1
         case body1
         case caption1
+        case caption2
         
         var font: Font {
             switch self {
+            case .slogan1:
+                return .custom("Paperlogy-9Black", size: 32)
+            case .slogan2:
+                return .custom("Paperlogy-3Light", size: 16)
             case .title1:
                 return .custom("Paperlogy-9Black", size: 26)
             case .body1:
                 return .custom("Paperlogy-9Black", size: 22)
             case .caption1:
                 return .custom("Paperlogy-9Black", size: 14)
+            case .caption2:
+                return .custom("Paperlogy-8ExtraBold", size: 12)
             }
         }
     }
