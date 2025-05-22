@@ -5,7 +5,7 @@
 //  Created by 임윤휘 on 5/13/25.
 //
 
-import Foundation
+import SwiftUICore
 import os.log
 
 final class YonderTripsLogger {

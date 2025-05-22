@@ -9,7 +9,6 @@ import SwiftUI
 
 struct DIContainer {
     
-    private let logger: YonderTripsLogger
     private let networkService: NetworkService
     
     private let keychainSecureStorage: KeychainSecureStorage
@@ -18,9 +17,7 @@ struct DIContainer {
     private let userInfoValidationUseCase: UserValidationUseCase
     
     init() {
-        
-        self.logger = YonderTripsLogger.shared
-        self.networkService = NetworkService(logger: logger)
+        self.networkService = NetworkService()
         
         self.keychainSecureStorage = KeychainSecureStorage()
         self.tokenSecureStorage = TokenSecureStorage(storage: keychainSecureStorage)
@@ -41,7 +38,7 @@ extension DIContainer {
     func makeSignInViewModel() -> SignInViewModel {
         
         let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage)
-        return SignInViewModel(signInUseCase: signInUseCase, logger: logger)
+        return SignInViewModel(signInUseCase: signInUseCase)
     }
     
     func makeEmailSignInViewModel() -> EmailSignInViewModel {
