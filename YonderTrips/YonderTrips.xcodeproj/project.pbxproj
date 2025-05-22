@@ -12,8 +12,19 @@
 		144D7E262DDD4E790009A5F7 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 144D7E252DDD4E790009A5F7 /* KakaoSDKUser */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		14FC629F2DDF404600C66320 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 14B7079B2DD1D9B000689F7C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14B707A22DD1D9B000689F7C;
+			remoteInfo = YonderTrips;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		14B707A32DD1D9B000689F7C /* YonderTrips.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YonderTrips.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		14FC629B2DDF404600C66320 /* YonderTripsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YonderTripsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -24,6 +35,15 @@
 			);
 			target = 14B707A22DD1D9B000689F7C /* YonderTrips */;
 		};
+		14FC62A52DDF412C00C66320 /* Exceptions for "YonderTrips" folder in "YonderTripsTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Domain/UseCase/Protocol/UserValidationUseCaseType.swift,
+				Domain/UseCase/UserValidation/UserValidationError.swift,
+				Domain/UseCase/UserValidation/UserValidationUseCase.swift,
+			);
+			target = 14FC629A2DDF404600C66320 /* YonderTripsTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -31,8 +51,14 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				145510752DD348D100E7A917 /* Exceptions for "YonderTrips" folder in "YonderTrips" target */,
+				14FC62A52DDF412C00C66320 /* Exceptions for "YonderTrips" folder in "YonderTripsTests" target */,
 			);
 			path = YonderTrips;
+			sourceTree = "<group>";
+		};
+		14FC629C2DDF404600C66320 /* YonderTripsTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = YonderTripsTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -48,6 +74,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		14FC62982DDF404600C66320 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -55,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				14B707A52DD1D9B000689F7C /* YonderTrips */,
+				14FC629C2DDF404600C66320 /* YonderTripsTests */,
 				14B707A42DD1D9B000689F7C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				14B707A32DD1D9B000689F7C /* YonderTrips.app */,
+				14FC629B2DDF404600C66320 /* YonderTripsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +130,29 @@
 			productReference = 14B707A32DD1D9B000689F7C /* YonderTrips.app */;
 			productType = "com.apple.product-type.application";
 		};
+		14FC629A2DDF404600C66320 /* YonderTripsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14FC62A32DDF404600C66320 /* Build configuration list for PBXNativeTarget "YonderTripsTests" */;
+			buildPhases = (
+				14FC62972DDF404600C66320 /* Sources */,
+				14FC62982DDF404600C66320 /* Frameworks */,
+				14FC62992DDF404600C66320 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				14FC62A02DDF404600C66320 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				14FC629C2DDF404600C66320 /* YonderTripsTests */,
+			);
+			name = YonderTripsTests;
+			packageProductDependencies = (
+			);
+			productName = YonderTripsTests;
+			productReference = 14FC629B2DDF404600C66320 /* YonderTripsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -107,6 +165,10 @@
 				TargetAttributes = {
 					14B707A22DD1D9B000689F7C = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					14FC629A2DDF404600C66320 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 14B707A22DD1D9B000689F7C;
 					};
 				};
 			};
@@ -128,12 +190,20 @@
 			projectRoot = "";
 			targets = (
 				14B707A22DD1D9B000689F7C /* YonderTrips */,
+				14FC629A2DDF404600C66320 /* YonderTripsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		14B707A12DD1D9B000689F7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		14FC62992DDF404600C66320 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -150,7 +220,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		14FC62972DDF404600C66320 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		14FC62A02DDF404600C66320 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14B707A22DD1D9B000689F7C /* YonderTrips */;
+			targetProxy = 14FC629F2DDF404600C66320 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		14B707AF2DD1D9B100689F7C /* Debug */ = {
@@ -350,6 +435,54 @@
 			};
 			name = Release;
 		};
+		14FC62A12DDF404600C66320 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZQV4ZDQNW5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tistory.88yhtserof.YonderTripsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YonderTrips.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YonderTrips";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		14FC62A22DDF404600C66320 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZQV4ZDQNW5;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tistory.88yhtserof.YonderTripsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/YonderTrips.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/YonderTrips";
+				XROS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -367,6 +500,15 @@
 			buildConfigurations = (
 				14B707B22DD1D9B100689F7C /* Debug */,
 				14B707B32DD1D9B100689F7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		14FC62A32DDF404600C66320 /* Build configuration list for PBXNativeTarget "YonderTripsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				14FC62A12DDF404600C66320 /* Debug */,
+				14FC62A22DDF404600C66320 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
