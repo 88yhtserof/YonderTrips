@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SignUpUseCase {
+struct SignUpUseCase: SignUpUseCaseType {
     
     private let networkService: NetworkService
     private let tokenSecureStorage: TokenSecureStorage
