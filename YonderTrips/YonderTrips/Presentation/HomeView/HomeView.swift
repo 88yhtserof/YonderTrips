@@ -40,12 +40,8 @@ struct HomeView: View {
                 
                 HeaderView(title: "액티비티 포스트", action: handleActivityPostSort) {
                     HStack {
-                        Text("최신순")
+                        Text("View All")
                             .font(Font.yt(.pretendard(.caption1)))
-                        
-                        Image(.sort)
-                            .resizable()
-                            .frame(width: 13, height: 13)
                     }
                     .foregroundStyle(.deepSeafoam)
                 }
