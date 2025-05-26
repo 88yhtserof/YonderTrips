@@ -21,7 +21,7 @@ struct HomeView: View {
             sample()
             NewActivityView(list: Array(repeating: "TripsPoster", count: 5))
                 .frame(maxWidth: .infinity)
-                .frame(height: 300)
+                .frame(height: 380)
             
             Divider()
                 .padding(.horizontal, 16)

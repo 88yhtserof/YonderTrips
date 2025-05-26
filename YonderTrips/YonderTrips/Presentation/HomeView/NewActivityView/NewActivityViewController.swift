@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 final class NewActivityViewController: UIViewController {
     
@@ -123,9 +124,11 @@ private extension NewActivityViewController {
         collectionView.dataSource = dataSource
     }
     
-    func cellResitrationHandler(cell: NewActivityCollectionViewCell, indexPath: IndexPath, item: String) {
+    func cellResitrationHandler(cell: UICollectionViewCell, indexPath: IndexPath, item: String) {
         
-        cell.configure(with: item)
+        cell.contentConfiguration = UIHostingConfiguration {
+            NewActivityCellView(item: item)
+        }
     }
     
     func updateSnapshot() {
