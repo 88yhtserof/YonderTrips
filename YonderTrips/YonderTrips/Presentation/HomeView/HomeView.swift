@@ -43,7 +43,7 @@ struct HomeView: View {
                         Text("최신순")
                             .font(Font.yt(.pretendard(.caption1)))
                         
-                        Image("Sort")
+                        Image(.sort)
                             .resizable()
                             .frame(width: 13, height: 13)
                     }

@@ -34,14 +34,14 @@ struct ActivityPostCellView: View {
                     Image("TripsPoster")
                         .resizable()
                         .scaledToFill()
-                        .frame(height: 200)
+                        .frame(height: 205)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                     
                     FavoriteButtonView {
                         print("FavoriteButtonView")
                     }
                     
-                    Image("PlayButton")
+                    Image(.playButton)
                         .resizable()
                         .frame(width: 40, height: 40)
                         .foregroundColor(.white.opacity(0.8))
@@ -49,7 +49,7 @@ struct ActivityPostCellView: View {
                 }
                 
                 VStack(spacing: 5) {
-                    Image("TripsPoster")
+                    Image(.tripsPoster)
                         .resizable()
                         .scaledToFill()
                         .frame(width: 100, height: 100)
@@ -80,7 +80,7 @@ struct ActivityPostCellView: View {
                 Button(action: {}) {
                     
                     HStack {
-                        Image("Location")
+                        Image(.location)
                             .resizable()
                             .frame(width: 13, height: 13)
                         
@@ -122,6 +122,12 @@ struct ActivityPostCellView: View {
         .padding(8)
         .background(.gray0)
     }
+}
+
+//MARK: - View
+private extension ActivityPostCellView {
+    
+//    func file
 }
 
 //MARK: - Action

@@ -14,7 +14,7 @@ struct FavoriteButtonView: View {
     
     var body: some View {
         Button(action: handleFavorite) {
-            Image(isFavorite ? "Like_Fill" : "Like_Empty")
+            Image(isFavorite ? .likeFill : .likeEmpty)
                 .resizable()
                 .frame(width: 30, height: 30)
                 .foregroundColor(.white)

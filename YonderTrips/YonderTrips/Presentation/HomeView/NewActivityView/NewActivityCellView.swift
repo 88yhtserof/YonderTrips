@@ -26,7 +26,7 @@ struct NewActivityCellView: View {
                         // 상단 태그
                         
                         HStack {
-                            Image("Location")
+                            Image(.location)
                                 .resizable()
                                 .frame(width: 13, height: 13)
                             
