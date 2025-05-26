@@ -24,13 +24,20 @@ struct NewActivityCellView: View {
 
                     VStack(alignment: .leading, spacing: 8) {
                         // 상단 태그
-                        Text("✈️ 스위스 융프라우")
-                            .font(.yt(.pretendard(.caption2)))
-                            .foregroundColor(.gray0)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(Color.white.opacity(0.3))
-                            .clipShape(Capsule())
+                        
+                        HStack {
+                            Image("Location")
+                                .resizable()
+                                .frame(width: 13, height: 13)
+                            
+                            Text("스위스 융프라우")
+                                .font(.yt(.pretendard(.caption2)))
+                        }
+                        .foregroundColor(.gray0)
+                        .padding(.vertical, 3)
+                        .padding(.horizontal, 10)
+                        .background(.gray0.opacity(0.3))
+                        .cornerRadius(15)
 
                         Spacer()
 
