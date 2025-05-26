@@ -83,7 +83,7 @@ private extension NewActivityViewController {
                 let distanceFromCenter = abs(centerX - itemCenterX)
                 let maxDistance = containerWidth / 2
                 
-                let scale = max(0.8, 1.0 - (distanceFromCenter / maxDistance) * 0.4)
+                let scale = max(0.8, 1.0 - (distanceFromCenter / maxDistance) * 0.1)
                 
                 item.transform = CGAffineTransform(scaleX: scale, y: scale)
             }
