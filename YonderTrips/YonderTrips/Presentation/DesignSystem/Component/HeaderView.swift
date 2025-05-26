@@ -24,6 +24,7 @@ struct HeaderView<Label>: View where Label: View {
             
             Button(action: action, label: label)
         }
+        .padding(16)
     }
 }
 //

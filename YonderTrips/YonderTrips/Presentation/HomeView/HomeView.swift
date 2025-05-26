@@ -16,51 +16,51 @@ struct HomeView: View {
     
     var body: some View {
         
-        VStack {
-            
-            HeaderView(title: "NEW 액티비티", action: handleNewActivityViewAll) {
-                Text("View All")
-                    .font(Font.yt(.pretendard(.caption1)))
-                    .foregroundStyle(.deepSeafoam)
-            }
-            .padding(.horizontal, 16)
-            
-            NewActivityView(list: Array(repeating: "TripsPoster", count: 5))
-                .frame(maxWidth: .infinity)
-                .frame(height: 380)
-            
-            divider()
-            
-            CategoryView()
-            
-            divider()
-            
-            HeaderView(title: "액티비티 포스트", action: handleActivityPostSort) {
-                HStack {
-                    Text("최신순")
+        ScrollView {
+            VStack(spacing: 0) {
+                
+                HeaderView(title: "NEW 액티비티", action: handleNewActivityViewAll) {
+                    Text("View All")
                         .font(Font.yt(.pretendard(.caption1)))
-                    
-                    Image(systemName: "text.alignleft")
+                        .foregroundStyle(.deepSeafoam)
                 }
-                .foregroundStyle(.deepSeafoam)
+                
+                NewActivityView(list: Array(repeating: "TripsPoster", count: 5))
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 380)
+                
+                VerticalDivider()
+                
+                CategoryView()
+                
+                Color.lightSeafoam
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 1)
+                    .padding(.top, 8)
+                
+                HeaderView(title: "액티비티 포스트", action: handleActivityPostSort) {
+                    HStack {
+                        Text("최신순")
+                            .font(Font.yt(.pretendard(.caption1)))
+                        
+                        Image("Sort")
+                            .resizable()
+                            .frame(width: 13, height: 13)
+                    }
+                    .foregroundStyle(.deepSeafoam)
+                }
+                .background(.gray0)
+                
+                
+                ActivityPostView()
             }
-            .padding(.horizontal, 16)
-            
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(.gray15)
     }
 }
 
 //MARK: - Action
 private extension HomeView {
-    
-    func divider() -> some View {
-        
-        Divider()
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
-    }
     
     func handleNewActivityViewAll() {
         print(#function)
