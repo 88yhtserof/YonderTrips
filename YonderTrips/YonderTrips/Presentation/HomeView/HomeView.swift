@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-struct Category {
-    let title: String
-    let image: String
-}
-
 struct HomeView: View {
     
     var body: some View {
