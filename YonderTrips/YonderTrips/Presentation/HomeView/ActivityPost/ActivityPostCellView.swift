@@ -123,15 +123,3 @@ struct ActivityPostCellView: View {
         .background(.gray0)
     }
 }
-
-//MARK: - View
-private extension ActivityPostCellView {
-    
-//    func file
-}
-
-//MARK: - Action
-private extension ActivityPostCellView {
-    
-    
-}
