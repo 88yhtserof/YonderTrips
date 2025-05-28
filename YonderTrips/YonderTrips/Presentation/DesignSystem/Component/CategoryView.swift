@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CategoryView: View {
     
-    private let categories = CategoryType.allCases
+    private let categories = ActivityCategory.allCases
     
     var body: some View {
         
@@ -28,7 +28,7 @@ struct CategoryView: View {
 //MARK: - View
 extension CategoryView {
     
-    func categoryButtonStyle(_ category: CategoryType) -> some View {
+    func categoryButtonStyle(_ category: ActivityCategory) -> some View {
         VStack {
             Image(category.image)
                 .frame(width: 60, height: 60)
@@ -38,40 +38,6 @@ extension CategoryView {
             Text(category.title)
                 .font(Font.yt(.pretendard(.body2)))
                 .foregroundStyle(.gray90)
-        }
-    }
-}
-
-//MARK: - Type
-extension CategoryView {
-    
-    enum CategoryType: String, CaseIterable {
-        case tourism
-        case tour
-        case package
-        case exciting
-        case experience
-        case random
-        
-        var title: String {
-            switch self {
-            case .tourism:
-                "관광"
-            case .tour:
-                "투어"
-            case .package:
-                "패키지"
-            case .exciting:
-                "익사이팅"
-            case .experience:
-                "체험"
-            case .random:
-                "랜덤"
-            }
-        }
-        
-        var image: String {
-            return self.rawValue
         }
     }
 }
