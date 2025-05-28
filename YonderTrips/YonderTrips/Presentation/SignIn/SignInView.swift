@@ -65,7 +65,7 @@ struct SignInView: View {
                     
                     // kakao signIn
                     Button(action: kakaoLoginButtonAction) {
-                        Image("kakao_login_large_wide")
+                        Image(.kakaoLoginLargeWide)
                             .resizable()
                             .frame(width: 300, height: 45)
                     }
