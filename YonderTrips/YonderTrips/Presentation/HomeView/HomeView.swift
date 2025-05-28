@@ -27,7 +27,8 @@ struct HomeView: View {
                     
                     NewActivityView(list: Array(repeating: "TripsPoster", count: 5))
                         .frame(maxWidth: .infinity)
-                        .frame(height: 380)
+                        .frame(height: 360)
+                        .padding(.bottom, 8)
                     
                     VerticalDivider()
                     

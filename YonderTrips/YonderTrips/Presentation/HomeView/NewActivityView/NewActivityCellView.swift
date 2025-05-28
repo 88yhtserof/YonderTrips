@@ -64,8 +64,7 @@ struct NewActivityCellView: View {
                 .frame(width: 300, height: 350)
                 .background(Color.black)
                 .cornerRadius(25)
-                .shadow(radius: 6)
-                .padding(8)
+                .shadow(radius: 3)
     }
 }
 
