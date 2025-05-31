@@ -25,7 +25,7 @@ struct HomeView: View {
                             .foregroundStyle(.deepSeafoam)
                     }
                     
-                    NewActivityView(list: Array(repeating: "TripsPoster", count: 5))
+                    NewActivityView()
                         .frame(maxWidth: .infinity)
                         .frame(height: 360)
                         .padding(.bottom, 8)
@@ -67,20 +67,15 @@ struct HomeView: View {
         .navigationDestination(for: HomeFlowRouter.HomeFlow.self) { flow in
             switch flow {
             case .newActivityList:
-                print(".newActivityList")
-                return Text("")
+                Text("")
             case .newActivityDetail:
-                print(".newActivityDetail")
-                return Text("")
+                Text("")
             case .activityPostList:
-                print(".activityPostList")
-                return Text("")
+                Text("")
             case .activityPostDetail:
-                print(".activityPostDetail")
-                return Text("")
+                Text("")
             case .category:
-                print(".category")
-                return Text("")
+                Text("")
             }
         }
     }

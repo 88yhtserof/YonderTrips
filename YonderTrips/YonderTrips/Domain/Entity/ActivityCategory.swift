@@ -8,6 +8,7 @@
 import Foundation
 
 enum ActivityCategory: String, CaseIterable {
+    case none
     case tourism
     case tour
     case package
@@ -17,6 +18,8 @@ enum ActivityCategory: String, CaseIterable {
     
     var title: String {
         switch self {
+        case .none:
+            ""
         case .tourism:
             "관광"
         case .tour:

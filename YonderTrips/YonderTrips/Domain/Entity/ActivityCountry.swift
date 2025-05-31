@@ -8,6 +8,7 @@
 import Foundation
 
 enum ActivityCountry {
+    case none
     case korea
     case thailand
     case philippines
@@ -16,6 +17,8 @@ enum ActivityCountry {
     
     var title: String {
         switch self {
+        case .none:
+            return ""
         case .korea:
             return "대한민국"
         case .thailand:

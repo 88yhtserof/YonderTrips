@@ -22,6 +22,18 @@ struct TokenSecureStorage {
         }
     }
     
+    func saveAuthToken(with tokens: RefreshTokenResponseDTO) throws {
+        
+        do {
+            try save(.accessToken, token: tokens.accessToken)
+            try save(.refreshToken, token: tokens.refreshToken)
+            
+        } catch {
+            rollback()
+            throw KeyChainError.failedToCreate(TokenSecureStorage.service)
+        }
+    }
+    
     func save(_ type: TokenType, token: String) throws {
         
         let tokenData = token.data(using: .utf8)!
