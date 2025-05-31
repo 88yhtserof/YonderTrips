@@ -19,6 +19,8 @@ actor TokenRefresher {
     private var waitingContinuations: [CheckedContinuation<Void, Error>] = []
     
     func refreshIfNeeded() async throws {
+        YonderTripsLogger.shared.debug("\(self) -> start refreshing token")
+        
         if isRefreshing {
             return try await withCheckedThrowingContinuation { continuation in
                 waitingContinuations.append(continuation)
