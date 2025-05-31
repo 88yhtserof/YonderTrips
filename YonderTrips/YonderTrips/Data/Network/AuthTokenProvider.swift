@@ -11,7 +11,7 @@ enum AuthTokenProvider {
     case access
     case refresh
     
-    private static let tokenStorage = TokenSecureStorage(storage: KeychainSecureStorage())
+    private static let tokenStorage = TokenSecureStorage()
     
     var token: String? {
         do {

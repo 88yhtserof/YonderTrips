@@ -9,11 +9,7 @@ import Foundation
 
 struct TokenSecureStorage {
     
-    private let storage: KeychainSecureStorage
-    
-    init(storage: KeychainSecureStorage) {
-        self.storage = storage
-    }
+    private let storage = KeychainSecureStorage.shared
     
     static let service = "YonderTrips.auth"
     
