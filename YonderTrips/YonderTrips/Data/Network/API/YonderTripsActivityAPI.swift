@@ -33,9 +33,8 @@ enum YonderTripsActivityAPI: APIConfiguration, APIErrorConvertible {
     }
     
     var headers: [String : String]? {
-        var headers = ["accept": "application/json",
-                       "Authorization": AuthTokenProvider.access.token ?? "",
-                       "SeSACKey": YonderTripsAPIProvider.apiKey]
+        var headers = HTTPHeadersProvider.auth
+        
         switch self {
         case .detail(let id):
             headers["activity_id"] = id

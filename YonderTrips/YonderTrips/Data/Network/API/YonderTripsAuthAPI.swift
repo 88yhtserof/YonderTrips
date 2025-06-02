@@ -29,14 +29,14 @@ enum YonderTripsAuthAPI: APIConfiguration, APIErrorConvertible {
     }
     
     var headers: [String : String]? {
+        var headers = HTTPHeadersProvider.refresh
+        
         switch self {
-        case .refresh:
-            // TODO: - 공통 header 분리해 재사용 및 유지보수 가능하도록 개선하기
-            return ["accept": "application/json",
-                    "RefreshToken": AuthTokenProvider.refresh.token ?? "",
-                    "Authorization": AuthTokenProvider.access.token ?? "",
-                    "SeSACKey": YonderTripsAPIProvider.apiKey]
+        default:
+            break
         }
+        
+        return headers
     }
     
     var body: Data? {

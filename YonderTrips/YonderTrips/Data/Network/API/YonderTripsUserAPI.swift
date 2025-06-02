@@ -36,17 +36,16 @@ enum YonderTripsUserAPI: APIConfiguration, APIErrorConvertible {
     }
     
     var headers: [String : String]? {
-        var values = ["accept": "application/json",
-                      "SeSACKey": YonderTripsAPIProvider.apiKey]
+        var headers = HTTPHeadersProvider.apiKey
         
         switch self {
         case .profileFetch:
-            values["Authorization"] = AuthTokenProvider.access.token
+            return HTTPHeadersProvider.auth
         default:
-            values["Content-Type"] = "application/json"
+            headers["Content-Type"] = "application/json"
         }
         
-        return values
+        return headers
     }
     
     var body: Data? {
