@@ -20,8 +20,8 @@ struct ActivityResponseDTO: Decodable {
     let endDate: String
     let price: ActivityPriceDTO
     let tags: [String]
-    let pointReward: Double
-    let restrictions: ActivityRestrictionsDTO?
+    let pointReward: Int //Number
+    let restrictions: ActivityRestrictionsDTO
     let description: String
     let isAdvertisement: Bool
     let isKeep: Bool
@@ -29,7 +29,7 @@ struct ActivityResponseDTO: Decodable {
     let totalOrderCount: Int
     let schedule: [ActivityScheduleItemDTO]
     let reservationList: [ActivityReservationItemDTO]
-    let creator: UserInfoResponseDTO?
+    let creator: UserInfoResponseDTO
     let createdAt: String
     let updatedAt: String
     
@@ -70,8 +70,8 @@ struct ActivityResponseDTO: Decodable {
         self.endDate = try container.decodeIfPresent(String.self, forKey: .endDate) ?? ""
         self.price = try container.decodeIfPresent(ActivityPriceDTO.self, forKey: .price) ?? ActivityPriceDTO(original: 0, final: 0)
         self.tags = try container.decodeIfPresent([String].self, forKey: .tags) ?? []
-        self.pointReward = try container.decodeIfPresent(Double.self, forKey: .pointReward) ?? 0.0
-        self.restrictions = try container.decodeIfPresent(ActivityRestrictionsDTO.self, forKey: .restrictions)
+        self.pointReward = try container.decodeIfPresent(Int.self, forKey: .pointReward) ?? 0
+        self.restrictions = try container.decodeIfPresent(ActivityRestrictionsDTO.self, forKey: .restrictions) ?? ActivityRestrictionsDTO(from: decoder)
         self.description = try container.decodeIfPresent(String.self, forKey: .description) ?? ""
         self.isAdvertisement = try container.decodeIfPresent(Bool.self, forKey: .isAdvertisement) ?? false
         self.isKeep = try container.decodeIfPresent(Bool.self, forKey: .isKeep) ?? false
@@ -79,7 +79,7 @@ struct ActivityResponseDTO: Decodable {
         self.totalOrderCount = try container.decodeIfPresent(Int.self, forKey: .totalOrderCount) ?? 0
         self.schedule = try container.decodeIfPresent([ActivityScheduleItemDTO].self, forKey: .schedule) ?? []
         self.reservationList = try container.decodeIfPresent([ActivityReservationItemDTO].self, forKey: .reservationList) ?? []
-        self.creator = try container.decodeIfPresent(UserInfoResponseDTO.self, forKey: .creator)
+        self.creator = try container.decodeIfPresent(UserInfoResponseDTO.self, forKey: .creator) ?? UserInfoResponseDTO(from: decoder)
         self.createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt) ?? ""
         self.updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt) ?? ""
     }
@@ -100,7 +100,7 @@ extension ActivityResponseDTO {
               price: price.toEntity(),
               tags: tags,
               pointReward: pointReward,
-              restrictions: restrictions?.toEntity(),
+              restrictions: restrictions.toEntity(),
               description: description,
               isAdvertisement: isAdvertisement,
               isKeep: isKeep,
@@ -108,7 +108,7 @@ extension ActivityResponseDTO {
               totalOrderCount: totalOrderCount,
               schedule: schedule.map { $0.toEntity() },
               reservationList: reservationList.map { $0.toEntity() },
-              creator: creator?.toEntity(),
+              creator: creator.toEntity(),
               createdAt: createdAt,
               updatedAt: updatedAt
           )

@@ -8,7 +8,6 @@
 import Foundation
 
 struct ActivityRestrictions: Hashable {
-    let description: String
     let minHeight: Int
     let minAge: Int
     let maxParticipants: Int

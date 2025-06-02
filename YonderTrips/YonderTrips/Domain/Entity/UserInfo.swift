@@ -10,9 +10,7 @@ import Foundation
 struct UserInfo: Hashable {
     
     let userId: String
-    let email: String
     let nick: String
-    let profileImage: String?
-    let phoneNum: String
+    let profileImage: String
     let introduction: String
 }

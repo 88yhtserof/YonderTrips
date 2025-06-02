@@ -18,7 +18,7 @@ struct Activity: Hashable {
     let endDate: String
     let price: ActivityPrice
     let tags: [String]
-    let pointReward: Double
+    let pointReward: Int
     let restrictions: ActivityRestrictions?
     let description: String
     let isAdvertisement: Bool
