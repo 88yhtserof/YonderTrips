@@ -10,13 +10,13 @@ import SwiftUI
 
 final class NewActivityViewController: UIViewController {
     
-    private let list: [String]
+    private var list: [Activity]
     
     private var dataSource: DataSource!
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
     
-    init(list: [String]) {
+    init(list: [Activity]) {
         self.list = list
         
         super.init(nibName: nil, bundle: nil)
@@ -33,6 +33,12 @@ final class NewActivityViewController: UIViewController {
         configureConstraints()
         configureView()
         configureCollectionViewDataSource()
+    }
+    
+    func updateList(with list: [Activity]) {
+        
+        self.list = list
+        updateSnapshot()
     }
 }
 
@@ -105,7 +111,7 @@ extension NewActivityViewController {
     
     struct Item: Hashable, Identifiable {
         let id = UUID()
-        let item: String
+        let item: Activity
     }
 }
 
@@ -124,7 +130,7 @@ private extension NewActivityViewController {
         collectionView.dataSource = dataSource
     }
     
-    func cellResitrationHandler(cell: UICollectionViewCell, indexPath: IndexPath, item: String) {
+    func cellResitrationHandler(cell: UICollectionViewCell, indexPath: IndexPath, item: Activity) {
         
         cell.contentConfiguration = UIHostingConfiguration {
             NewActivityCellView(item: item)

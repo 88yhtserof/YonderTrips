@@ -18,9 +18,9 @@ struct NewActivityUseCase {
 
     }
     
-    func requestNewActivityDetail(id: String) async throws -> Activity
+    func requestNewActivityDetail(with activityId: String) async throws -> Activity
     {
-        let response: ActivityResponseDTO = try await NetworkService.requestWithAuth(apiConfiguration: YonderTripsActivityAPI.detail(id))
+        let response: ActivityResponseDTO = try await NetworkService.requestWithAuth(apiConfiguration: YonderTripsActivityAPI.detail(activityId))
         return response.toEntity()
     }
 }

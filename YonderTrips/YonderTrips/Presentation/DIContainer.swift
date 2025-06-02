@@ -44,6 +44,12 @@ extension DIContainer {
         let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage)
         return EmailSignInViewModel(signInUseCase: signInUseCase)
     }
+    
+    func makeNewActivityViewModel() -> NewActivityViewModel {
+        
+        let newActivityUseCase = NewActivityUseCase()
+        return NewActivityViewModel(newActivityUseCase: newActivityUseCase)
+    }
 }
 
 // Environment

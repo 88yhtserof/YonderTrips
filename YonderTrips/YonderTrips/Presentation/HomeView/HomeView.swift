@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @Environment(\.container) var container
     @StateObject private var homeRouter = HomeFlowRouter()
     
     var body: some View {
@@ -25,7 +26,7 @@ struct HomeView: View {
                             .foregroundStyle(.deepSeafoam)
                     }
                     
-                    NewActivityView()
+                    NewActivityView(viewModel: container.makeNewActivityViewModel())
                         .frame(maxWidth: .infinity)
                         .frame(height: 360)
                         .padding(.bottom, 8)
