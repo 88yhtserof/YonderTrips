@@ -14,36 +14,12 @@ struct NewActivityCellView: View {
     var body: some View {
         ZStack(alignment: .topLeading) {
             
-            // TODO: - request image with headers
-            AsyncImage(url: URL(string: item.thumbnails.first ?? "")) { phase in
-                switch phase {
-                case .empty:
-                    Color.gray45
-                        .frame(height: 350)
-                        .clipped()
-                case .success(let image):
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 350)
-                        .clipped()
-                        .overlay {
-                            Color.gray100.opacity(0.25)
-                        }
-                case .failure:
-                    Color.gray45
-                        .frame(height: 350)
-                        .clipped()
-                        .overlay(
-                            Image(systemName: "photo")
-                                .foregroundColor(.white)
-                        )
-                @unknown default:
-                    Color.gray45
-                        .frame(height: 350)
-                        .clipped()
+            DataImageView(urlString: item.imageThumbnail)
+                .frame(width: 300, height: 350)
+                .clipped()
+                .overlay {
+                    Color.gray100.opacity(0.28)
                 }
-            }
             
             VStack(alignment: .leading, spacing: 8) {
                 

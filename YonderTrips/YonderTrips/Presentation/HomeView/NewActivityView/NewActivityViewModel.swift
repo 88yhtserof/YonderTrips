@@ -51,6 +51,7 @@ extension NewActivityViewModel {
                                 guard let self else { return nil }
                                 
                                 do {
+                                    // TODO: - 액세스 토큰 갱신 이후에도 토큰이 만료되었다고 에러 발생
                                     return try await self.newActivityUseCase.requestNewActivityDetail(with: summary.activityId)
                                 } catch {
                                     YonderTripsLogger.shared.debug("Failed to fetch activity detail")

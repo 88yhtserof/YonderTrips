@@ -31,3 +31,10 @@ struct Activity: Hashable {
     let createdAt: String
     let updatedAt: String
 }
+
+extension Activity {
+    
+    var imageThumbnail: String? {
+        return thumbnails.first
+    }
+}

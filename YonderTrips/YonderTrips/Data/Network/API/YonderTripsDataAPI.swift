@@ -20,7 +20,7 @@ private extension YonderTripsDataAPI {
     var endPoint: String {
         switch self {
         case .data(let path):
-            return "/v1/" + path
+            return "/v1" + path
         }
     }
 }

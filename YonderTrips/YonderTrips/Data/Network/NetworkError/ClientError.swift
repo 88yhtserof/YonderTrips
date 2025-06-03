@@ -13,7 +13,6 @@ enum ClientError: LocalizedError {
     case requestCreationFailed(Error?)
     case failedDecoding(Error?)
     case failedEncoding(Error?)
-    case failedLoadingImage(Error?)
     case unknown(Error?)
 
     var errorDescription: String? {
@@ -28,8 +27,6 @@ enum ClientError: LocalizedError {
             return "데이터 디코딩에 실패했습니다. \(error?.localizedDescription ?? "자세한 원인 알 수 없음")"
         case .failedEncoding(let error):
             return "데이터 인코딩에 실패했습니다. \(error?.localizedDescription ?? "자세한 원인 알 수 없음")"
-        case .failedLoadingImage(let error):
-            return "이미지 로딩에 실패했습니다. \(error?.localizedDescription ?? "자세한 원인 알 수 없음")"
         case .unknown(let error):
             return "알 수 없는 오류가 발생했습니다. \(error?.localizedDescription ?? "자세한 원인 알 수 없음")"
         }
@@ -56,8 +53,6 @@ enum ClientError: LocalizedError {
             return "요청 구성을 확인하거나 나중에 다시 시도하세요."
         case .failedDecoding, .failedEncoding:
             return "데이터 형식이 예상과 일치하는지 확인하세요."
-        case .failedLoadingImage:
-            return "이미지 로딩에 실패했습니다. 나중에 다시 시도하세요."
         case .unknown:
             return "문제가 지속되면 지원팀에 문의하세요."
         }
