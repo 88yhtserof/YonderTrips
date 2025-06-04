@@ -16,21 +16,24 @@ struct NetworkService {
     
     private let session = URLSession.shared
     
-    static func requestWithAuth<T, Config>(apiConfiguration api: Config) async throws -> T where T : Decodable, Config : APIConfiguration & APIErrorConvertible {
+    static func requestWithAuth<T>(apiProvider provider: YonderTripsAPIProvider) async throws -> T where T : Decodable {
+        
         do {
-            return try await request(apiConfiguration: api)
+            return try await request(apiProvider: provider)
             
         } catch let error as YonderTripsNetworkError where error.statusCode == 419 {
             
             try await TokenRefresher.shared.refreshIfNeeded()
-            return try await request(apiConfiguration: api)
+            return try await request(apiProvider: provider)
             
         } catch {
             throw error
         }
     }
     
-    static func request<T, Config>(apiConfiguration api: Config) async throws -> T where T : Decodable, Config : APIConfiguration & APIErrorConvertible {
+    static func request<T>(apiProvider provider: YonderTripsAPIProvider) async throws -> T where T : Decodable {
+        
+        let api = provider.api
         
         guard let url = api.url else {
             

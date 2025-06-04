@@ -13,14 +13,14 @@ struct NewActivityUseCase {
                                 catergory: ActivityCategory = .none) async throws -> [ActivitySummary]
     {
         
-        let response: ListResponseDTO<ActivitySummaryResponseDTO> = try await NetworkService.requestWithAuth(apiConfiguration: YonderTripsActivityAPI.new(.none, .none))
+        let response: ListResponseDTO<ActivitySummaryResponseDTO> = try await NetworkService.requestWithAuth(apiProvider: .activity(.new(.none, .none)))
         return response.data.map { $0.toEntity() }
 
     }
     
     func requestNewActivityDetail(with activityId: String) async throws -> Activity
     {
-        let response: ActivityResponseDTO = try await NetworkService.requestWithAuth(apiConfiguration: YonderTripsActivityAPI.detail(activityId))
+        let response: ActivityResponseDTO = try await NetworkService.requestWithAuth(apiProvider: .activity(.detail(activityId)))
         return response.toEntity()
     }
 }

@@ -54,7 +54,7 @@ actor TokenRefresher {
     private func requestRefresh() async throws -> RefreshTokenResponseDTO {
         
         do {
-            let response: RefreshTokenResponseDTO = try await NetworkService.request(apiConfiguration: YonderTripsAuthAPI.refresh)
+            let response: RefreshTokenResponseDTO = try await NetworkService.request(apiProvider: .auth(.refresh))
             return response
         } catch let error as YonderTripsNetworkError where error.statusCode == 418 {
             throw AuthNetworkError.refreshTokenExpired
