@@ -100,8 +100,15 @@ private extension DataImageView {
         guard let url else { return }
         
         do {
-            let image = try await generateThumbnail(for: url)
-            self.image = image
+            
+            if let image = ImageCacheService.fetch(for: url) {
+                self.image = image
+                
+            } else {
+                let image = try await generateThumbnail(for: url)
+                ImageCacheService.store(for: url, with: image)
+                self.image = image
+            }
             
         } catch {
             YonderTripsLogger.shared.error(ImageError.failedGeneratingImageFromVideo(error))
@@ -110,6 +117,7 @@ private extension DataImageView {
   
     func generateThumbnail(for url: URL) async throws -> UIImage {
         
+        // TODO: - 동영상 관리 객체 생성
         let asset = AVURLAsset(url: url, options: ["AVURLAssetHTTPHeaderFieldsKey": HTTPHeadersProvider.auth])
         let generator = AVAssetImageGenerator(asset: asset)
         
