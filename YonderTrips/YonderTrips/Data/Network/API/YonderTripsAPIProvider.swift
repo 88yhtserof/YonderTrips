@@ -11,6 +11,7 @@ enum YonderTripsAPIProvider {
     case auth(YonderTripsAuthAPI)
     case user(YonderTripsUserAPI)
     case activity(YonderTripsActivityAPI)
+    case activityPost(YonderTripsActivityPostAPI)
     
     var api: APIConfiguration & APIErrorConvertible {
         switch self {
@@ -19,6 +20,8 @@ enum YonderTripsAPIProvider {
         case .user(let api):
             return api
         case .activity(let api):
+            return api
+        case .activityPost(let api):
             return api
         }
     }
