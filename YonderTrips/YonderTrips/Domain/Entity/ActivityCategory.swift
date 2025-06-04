@@ -38,4 +38,8 @@ enum ActivityCategory: String, CaseIterable {
     var image: String {
         return self.rawValue
     }
+    
+    static var allCases: [ActivityCategory] {
+        return [.tourism, .tour, .package, .exciting, .experience, .random]
+    }
 }
