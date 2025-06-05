@@ -50,6 +50,12 @@ extension DIContainer {
         let newActivityUseCase = NewActivityUseCase()
         return NewActivityViewModel(newActivityUseCase: newActivityUseCase)
     }
+    
+    func makeActivityPostViewModel() -> ActivityPostViewModel {
+        
+        let activityPostUseCase = ActivityPostUseCase()
+        return ActivityPostViewModel(activityPostUseCase: activityPostUseCase)
+    }
 }
 
 // Environment

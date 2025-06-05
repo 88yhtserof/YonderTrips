@@ -45,9 +45,21 @@ struct DataImageView: View {
             placeholderView()
             
         } else if let image = image {
-            Image(uiImage: image)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
+            
+            ZStack(alignment: .topLeading) {
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                
+                if type == .video {
+                    
+                    Image(.playButton)
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                        .foregroundColor(.white.opacity(0.8))
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
+            }
             
         } else {
             ProgressView()

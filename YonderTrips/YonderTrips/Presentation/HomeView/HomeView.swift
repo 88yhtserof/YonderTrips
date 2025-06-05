@@ -37,7 +37,7 @@ struct HomeView: View {
                     
                     VerticalShadowDivider()
                     
-                    HeaderView(title: "액티비티 포스트", action: handleActivityPostSort) {
+                    HeaderView(title: "HOT 액티비티 포스트", action: handleActivityPostSort) {
                         HStack {
                             Text("View All")
                                 .font(Font.yt(.pretendard(.caption1)))
@@ -47,7 +47,7 @@ struct HomeView: View {
                     .background(.gray0)
                     
                     
-                    ActivityPostView()
+                    ActivityPostView(viewModel: container.makeActivityPostViewModel())
                 }
             }
             .background(.gray15)
