@@ -25,7 +25,7 @@ struct UserInfoResponseDTO: Decodable {
         self.userId = try container.decode(String.self, forKey: .userId)
         self.nick = try container.decode(String.self, forKey: .nick)
         self.profileImage = try container.decodeIfPresent(String.self, forKey: .profileImage) ?? ""
-        self.introduction = try container.decode(String.self, forKey: .introduction)
+        self.introduction = try container.decodeIfPresent(String.self, forKey: .introduction) ?? ""
     }
 }
 
