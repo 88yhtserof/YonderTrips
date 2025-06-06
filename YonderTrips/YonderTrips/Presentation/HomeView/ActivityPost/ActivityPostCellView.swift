@@ -89,8 +89,14 @@ struct ActivityPostCellView: View {
                 }
                 
                 // TODO: - Favorite 데이터 상태 반영
-                FavoriteButtonView {
-                    print("FavoriteButtonView")
+                HStack(spacing: 2) {
+                    FavoriteButtonView {
+                        print("FavoriteButtonView")
+                    }
+                    
+                    Text("\(postSummary.likeCount)")
+                        .font(.yt(.paperlogy(.caption2)))
+                        .foregroundStyle(.gray60)
                 }
             }
             .padding(.horizontal)
