@@ -38,7 +38,7 @@ final class YonderTripsLogger {
                line: Int = #line) {
         
         let level = LogLevel(rawValue: .error)
-        let log = logMessage(error, level: level)
+        let log = logMessage(error, level: level, file: file, line: line)
         logger.log(level: .error, "\(log)")
     }
     
@@ -82,25 +82,25 @@ private extension YonderTripsLogger {
     
     func log(_ message: String,
              type: OSLogType,
-             file: String = #file,
-             line: Int = #line) {
+             file: String,
+             line: Int) {
         
         let level = LogLevel(rawValue: type)
-        let log = logMessage(message, level: level)
+        let log = logMessage(message, level: level, file: file, line: line)
         logger.log(level: type, "\(log)")
     }
     
     func logMessage(_ message: String,
                     level: LogLevel,
-                    file: String = #file,
-                    line: Int = #line) -> String {
+                    file: String,
+                    line: Int) -> String {
         return "[\(level.title)] \(message)\n\(file):\(line)"
     }
     
     func logMessage(_ error: LocalizedError,
                     level: LogLevel,
-                    file: String = #file,
-                    line: Int = #line) -> String {
+                    file: String,
+                    line: Int) -> String {
         
         var message = "[\(level.title)] \(error.localizedDescription)\n\(file):\(line)"
         
