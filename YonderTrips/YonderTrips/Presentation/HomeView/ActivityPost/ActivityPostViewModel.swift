@@ -39,7 +39,8 @@ extension ActivityPostViewModel {
         case .onAppear:
             Task {
                 do {
-                    let pagination: PostSummaryPagination = try await activityPostUseCase.requestActivityPost(country: nil, category: nil, longitude: nil, latitude: nil, maxDistance: nil)
+                    let pagination: PostSummaryPagination = try await activityPostUseCase
+                        .requestActivityPost(order_by: .likes)
                     
                     state.postSummaryList = pagination.data
                 } catch {

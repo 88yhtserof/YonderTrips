@@ -9,11 +9,11 @@ import Foundation
 
 struct ActivityPostUseCase {
     
-    func requestActivityPost(country: String?,
-                             category: String?,
-                             longitude: Double?,
-                             latitude: Double?,
-                             maxDistance: Double?,
+    func requestActivityPost(country: String? = nil,
+                             category: String? = nil,
+                             longitude: Double? = nil,
+                             latitude: Double? = nil,
+                             maxDistance: Double? = nil,
                              next: String = "",
                              order_by: YonderTripsActivityPostAPI.OrderBy = .createdAt)
     async throws -> PostSummaryPagination
