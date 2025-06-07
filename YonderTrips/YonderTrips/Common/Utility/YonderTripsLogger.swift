@@ -94,7 +94,7 @@ private extension YonderTripsLogger {
                     level: LogLevel,
                     file: String,
                     line: Int) -> String {
-        return "[\(level.title)] \(message)\n\(file):\(line)"
+        return "[\(level.title)] \(message)\n\(file):\(line) (\(Date()))"
     }
     
     func logMessage(_ error: LocalizedError,
@@ -102,7 +102,7 @@ private extension YonderTripsLogger {
                     file: String,
                     line: Int) -> String {
         
-        var message = "[\(level.title)] \(error.localizedDescription)\n\(file):\(line)"
+        var message = "[\(level.title)] \(error.localizedDescription)\n\(file):\(line) (\(Date()))"
         
         if let reason = error.failureReason {
             message += "\nReason: \(reason)"
