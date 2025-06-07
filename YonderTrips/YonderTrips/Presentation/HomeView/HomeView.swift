@@ -33,7 +33,7 @@ struct HomeView: View {
                     
                     VerticalDivider()
                     
-                    CategoryView()
+                    CategoryListView()
                     
                     VerticalShadowDivider()
                     
