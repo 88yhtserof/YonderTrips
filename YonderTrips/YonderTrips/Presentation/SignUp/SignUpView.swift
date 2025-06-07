@@ -66,7 +66,7 @@ struct SignUpView: View {
                 }) {
                     Text("완료")
                 }
-                .buttonStyle(DisabledButtonStyle(isEnabled: viewModel.state.isEnabledDoneButton))
+                .buttonStyle(DisabledButtonStyle())
                 .disabled(!viewModel.state.isEnabledDoneButton)
             }
         }

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct DisabledButtonStyle: ButtonStyle {
-    
-    var isEnabled: Bool = false
+    @Environment(\.isEnabled)
+    var isEnabled
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
