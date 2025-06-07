@@ -25,8 +25,8 @@ enum YonderTripsActivityAPI: APIConfiguration, APIErrorConvertible {
     var parameters: [URLQueryItem]? {
         switch self {
         case let .new(country, category):
-            return [URLQueryItem(name: "country", value: country.title),
-                    URLQueryItem(name: "category", value: category.title)]
+            return [URLQueryItem(name: "country", value: country.query),
+                    URLQueryItem(name: "category", value: category.query)]
         default:
             return nil
         }
