@@ -31,7 +31,7 @@ struct SignUpUseCase: SignUpUseCaseType {
                                      introduction: introduction,
                                      deviceToken: "") // TODO: - 디바이스토큰 fetch 로직 추가
         
-        let response: JoinResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.join(request))
+        let response: JoinResponseDTO = try await NetworkService.request(apiProvider: .user(.join(request)))
         
         do {
             try tokenSecureStorage.save(.accessToken, token: response.accessToken)
@@ -49,7 +49,7 @@ struct SignUpUseCase: SignUpUseCaseType {
         
         let request = EmailValidationRequestDTO(email: email)
         
-        let reponse: EmailValidationResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.emailValidation(request))
+        let reponse: EmailValidationResponseDTO = try await NetworkService.request(apiProvider: .user(.emailValidation(request)))
         
         return reponse
     }

@@ -7,15 +7,33 @@
 
 import SwiftUI
 
+enum AuthNetworkError: Error {
+    case accessTokenExpired
+    case refreshTokenExpired
+}
+
 struct NetworkService {
     
-    private let session: URLSession
+    private let session = URLSession.shared
     
-    init(session: URLSession = .shared) {
-        self.session = session
+    static func requestWithAuth<T>(apiProvider provider: YonderTripsAPIProvider) async throws -> T where T : Decodable {
+        
+        do {
+            return try await request(apiProvider: provider)
+            
+        } catch let error as YonderTripsNetworkError where error.statusCode == 419 {
+            
+            try await TokenRefresher.shared.refreshIfNeeded()
+            return try await request(apiProvider: provider)
+            
+        } catch {
+            throw error
+        }
     }
     
-    func request<T, Config>(apiConfiguration api: Config) async throws -> T where T : Decodable, Config : APIConfiguration & APIErrorConvertible {
+    static func request<T>(apiProvider provider: YonderTripsAPIProvider) async throws -> T where T : Decodable {
+        
+        let api = provider.api
         
         guard let url = api.url else {
             

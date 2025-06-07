@@ -11,7 +11,6 @@ struct DIContainer {
     
     private let networkService: NetworkService
     
-    private let keychainSecureStorage: KeychainSecureStorage
     private let tokenSecureStorage: TokenSecureStorage
     
     private let userInfoValidationUseCase: UserValidationUseCase
@@ -19,8 +18,7 @@ struct DIContainer {
     init() {
         self.networkService = NetworkService()
         
-        self.keychainSecureStorage = KeychainSecureStorage()
-        self.tokenSecureStorage = TokenSecureStorage(storage: keychainSecureStorage)
+        self.tokenSecureStorage = TokenSecureStorage()
         
         self.userInfoValidationUseCase = UserValidationUseCase()
     }
@@ -45,6 +43,18 @@ extension DIContainer {
         
         let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage)
         return EmailSignInViewModel(signInUseCase: signInUseCase)
+    }
+    
+    func makeNewActivityViewModel() -> NewActivityViewModel {
+        
+        let newActivityUseCase = NewActivityUseCase()
+        return NewActivityViewModel(newActivityUseCase: newActivityUseCase)
+    }
+    
+    func makeActivityPostViewModel() -> ActivityPostViewModel {
+        
+        let activityPostUseCase = ActivityPostUseCase()
+        return ActivityPostViewModel(activityPostUseCase: activityPostUseCase)
     }
 }
 

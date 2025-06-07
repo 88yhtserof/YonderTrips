@@ -22,7 +22,7 @@ struct SignInUseCase {
                                 password: String) async throws -> LoginResponseDTO
     {
         let request = EmailLoginRequestDTO(email: email, password: password, deviceToken: "")
-        let response: LoginResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.emailLogin(request))
+        let response: LoginResponseDTO = try await NetworkService.request(apiProvider: .user(.emailLogin(request)))
         
         do {
             try tokenSecureStorage.save(.accessToken, token: response.accessToken)
@@ -40,7 +40,7 @@ struct SignInUseCase {
     func requestSignInWithKakao(oauthToken: String) async throws -> LoginResponseDTO {
         
         let request = KakaoLoginRequestDTO(oauthToken: oauthToken, deviceToken: "")
-        let response: LoginResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.kakaoLogin(request))
+        let response: LoginResponseDTO = try await NetworkService.request(apiProvider: .user(.kakaoLogin(request)))
         
         do {
             try tokenSecureStorage.save(.accessToken, token: response.accessToken)
@@ -58,7 +58,7 @@ struct SignInUseCase {
     func requestSignInWithApple(idToken: String, nick: String) async throws -> LoginResponseDTO {
         
         let request = AppleLoginRequestDTO(idToken: idToken, deviceToken: "", nick: nick)
-        let response: LoginResponseDTO = try await networkService.request(apiConfiguration: YonderTripsUserAPI.appleLogin(request))
+        let response: LoginResponseDTO = try await NetworkService.request(apiProvider: .user(.appleLogin(request)))
         
         do {
             try tokenSecureStorage.save(.accessToken, token: response.accessToken)

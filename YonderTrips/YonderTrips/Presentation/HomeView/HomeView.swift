@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     
+    @Environment(\.container) var container
     @StateObject private var homeRouter = HomeFlowRouter()
     
     var body: some View {
@@ -25,7 +26,7 @@ struct HomeView: View {
                             .foregroundStyle(.deepSeafoam)
                     }
                     
-                    NewActivityView(list: Array(repeating: "TripsPoster", count: 5))
+                    NewActivityView(viewModel: container.makeNewActivityViewModel())
                         .frame(maxWidth: .infinity)
                         .frame(height: 360)
                         .padding(.bottom, 8)
@@ -36,7 +37,7 @@ struct HomeView: View {
                     
                     VerticalShadowDivider()
                     
-                    HeaderView(title: "액티비티 포스트", action: handleActivityPostSort) {
+                    HeaderView(title: "HOT 액티비티 포스트", action: handleActivityPostSort) {
                         HStack {
                             Text("View All")
                                 .font(Font.yt(.pretendard(.caption1)))
@@ -46,7 +47,7 @@ struct HomeView: View {
                     .background(.gray0)
                     
                     
-                    ActivityPostView()
+                    ActivityPostView(viewModel: container.makeActivityPostViewModel())
                 }
             }
             .background(.gray15)
@@ -67,20 +68,15 @@ struct HomeView: View {
         .navigationDestination(for: HomeFlowRouter.HomeFlow.self) { flow in
             switch flow {
             case .newActivityList:
-                print(".newActivityList")
-                return Text("")
+                Text("")
             case .newActivityDetail:
-                print(".newActivityDetail")
-                return Text("")
+                Text("")
             case .activityPostList:
-                print(".activityPostList")
-                return Text("")
+                Text("")
             case .activityPostDetail:
-                print(".activityPostDetail")
-                return Text("")
+                Text("")
             case .category:
-                print(".category")
-                return Text("")
+                Text("")
             }
         }
     }

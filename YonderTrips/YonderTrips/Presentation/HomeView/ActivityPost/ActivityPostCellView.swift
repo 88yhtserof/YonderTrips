@@ -8,18 +8,25 @@
 import SwiftUI
 
 struct ActivityPostCellView: View {
+    
+    private let postSummary: PostSummary
+    
+    init(postSummary: PostSummary) {
+        self.postSummary = postSummary
+    }
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             
             HStack {
-                Image("TripsPoster")
-                    .resizable()
+                DataImageView(urlString: postSummary.creator.profileImage)
                     .frame(width: 40, height: 40)
                     .foregroundColor(.gray)
                     .clipShape(.circle)
                 
+                // TODO: - 게시글 업로드 시간 계산 및 적용
                 VStack(alignment: .leading) {
-                    Text("씩씩한 새싹이")
+                    Text(postSummary.creator.nick)
                         .font(.yt(.pretendard(.caption1)))
                     Text("1시간 34분 전")
                         .font(.yt(.pretendard(.caption2)))
@@ -29,49 +36,14 @@ struct ActivityPostCellView: View {
             }
             .padding(.horizontal)
             
-            HStack(spacing: 5) {
-                ZStack(alignment: .topLeading) {
-                    Image("TripsPoster")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(height: 205)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    
-                    FavoriteButtonView {
-                        print("FavoriteButtonView")
-                    }
-                    
-                    Image(.playButton)
-                        .resizable()
-                        .frame(width: 40, height: 40)
-                        .foregroundColor(.white.opacity(0.8))
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                
-                VStack(spacing: 5) {
-                    Image(.tripsPoster)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 100, height: 100)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                    
-                    Image("TripsPoster")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 100, height: 100)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
-            }
-            .frame(height: 200)
-            .frame(maxWidth: .infinity)
-            .padding(10)
+            thumbnailImage(with: postSummary.files)
             
-            Text("타이페이 스노쿨링 여행")
+            Text(postSummary.title)
                 .font(.yt(.pretendard(.body3)))
                 .fontWeight(.bold)
                 .padding(.horizontal)
             
-            Text("끝없이 펼쳐진 바다를 바라보며, 모든 고민이 잠시 멀어지는 느낌이였다. 천천한 파도 소리에 마음까지 편안해졌던 시간.")
+            Text(postSummary.content)
                 .font(.yt(.pretendard(.caption1)))
                 .foregroundColor(.gray)
                 .padding(.horizontal)
@@ -84,7 +56,7 @@ struct ActivityPostCellView: View {
                             .resizable()
                             .frame(width: 13, height: 13)
                         
-                        Text("대만 타이페이")
+                        Text(postSummary.country)
                             .font(.yt(.pretendard(.caption1)))
                     }
                     .foregroundColor(.deepSeafoam)
@@ -102,7 +74,7 @@ struct ActivityPostCellView: View {
                 Button(action: {}) {
                     
                     HStack {
-                        Text("타이페이 스노쿨링 초보자 스쿨 2기")
+                        Text(postSummary.activity?.title ?? "")
                             .font(.yt(.pretendard(.caption1)))
                     }
                     .foregroundColor(.deepSeafoam)
@@ -116,10 +88,71 @@ struct ActivityPostCellView: View {
                     }
                 }
                 
+                // TODO: - Favorite 데이터 상태 반영
+                HStack(spacing: 2) {
+                    FavoriteButtonView {
+                        print("FavoriteButtonView")
+                    }
+                    
+                    Text("\(postSummary.likeCount)")
+                        .font(.yt(.paperlogy(.caption2)))
+                        .foregroundStyle(.gray60)
+                }
             }
             .padding(.horizontal)
         }
         .padding(8)
         .background(.gray0)
+    }
+}
+
+//MARK: - View
+private extension ActivityPostCellView {
+    
+    
+    @ViewBuilder
+    func thumbnailImage(with files: [String]) -> some View {
+        
+        switch files.count {
+        case 0:
+            EmptyView()
+        case 1:
+            DataImageView(urlString: files[0])
+                .frame(height: 205)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+                .padding(10)
+        case 2:
+            HStack(spacing: 5) {
+                DataImageView(urlString: files[0])
+                    .frame(height: 205)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                
+                DataImageView(urlString: files[1])
+                    .frame(height: 205)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+            .padding(10)
+        case 3...:
+            HStack(spacing: 5) {
+                DataImageView(urlString: files[0])
+                    .frame(height: 205)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                
+                VStack(spacing: 5) {
+                    DataImageView(urlString: files[1])
+                        .frame(width: 100, height: 100)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                    
+                    DataImageView(urlString: files[2])
+                        .frame(width: 100, height: 100)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+            }
+            .frame(height: 200)
+            .frame(maxWidth: .infinity)
+            .padding(10)
+        default:
+            EmptyView()
+        }
     }
 }

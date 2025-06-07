@@ -8,8 +8,12 @@
 import Foundation
 import Security
 
-struct KeychainSecureStorage {
-
+final class KeychainSecureStorage {
+    
+    static let shared = KeychainSecureStorage()
+    
+    private init(){ }
+    
     enum KeychainItemClass {
         case genericPassword
         case internetPassword
@@ -91,8 +95,7 @@ struct KeychainSecureStorage {
             throw error
         }
         
-        guard let resultItem = result as? [String: Any],
-              let data = resultItem[kSecValueData as String] as? Data else {
+        guard let data = result as? Data else {
             let error = KeyChainError.invalidData
             YonderTripsLogger.shared.error(error)
             throw error

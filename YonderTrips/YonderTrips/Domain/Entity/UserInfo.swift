@@ -7,12 +7,10 @@
 
 import Foundation
 
-struct UserInfo {
+struct UserInfo: Hashable {
     
-    let email: String
-    let password: String
+    let userId: String
     let nick: String
-    let profileImage: String?
-    let phoneNum: String
+    let profileImage: String
     let introduction: String
 }

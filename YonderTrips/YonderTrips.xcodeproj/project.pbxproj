@@ -10,6 +10,7 @@
 		144D7E222DDD4E790009A5F7 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 144D7E212DDD4E790009A5F7 /* KakaoSDKAuth */; };
 		144D7E242DDD4E790009A5F7 /* KakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 144D7E232DDD4E790009A5F7 /* KakaoSDKCommon */; };
 		144D7E262DDD4E790009A5F7 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 144D7E252DDD4E790009A5F7 /* KakaoSDKUser */; };
+		1480F6BD2DED7EA900D0DD64 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 1480F6BC2DED7EA900D0DD64 /* Nuke */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 				144D7E242DDD4E790009A5F7 /* KakaoSDKCommon in Frameworks */,
 				144D7E222DDD4E790009A5F7 /* KakaoSDKAuth in Frameworks */,
 				144D7E262DDD4E790009A5F7 /* KakaoSDKUser in Frameworks */,
+				1480F6BD2DED7EA900D0DD64 /* Nuke in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +127,7 @@
 				144D7E212DDD4E790009A5F7 /* KakaoSDKAuth */,
 				144D7E232DDD4E790009A5F7 /* KakaoSDKCommon */,
 				144D7E252DDD4E790009A5F7 /* KakaoSDKUser */,
+				1480F6BC2DED7EA900D0DD64 /* Nuke */,
 			);
 			productName = YonderTrips;
 			productReference = 14B707A32DD1D9B000689F7C /* YonderTrips.app */;
@@ -183,6 +186,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				144D7E202DDD4E790009A5F7 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				1480F6BB2DED7EA900D0DD64 /* XCRemoteSwiftPackageReference "Nuke" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 14B707A42DD1D9B000689F7C /* Products */;
@@ -524,6 +528,14 @@
 				minimumVersion = 2.24.2;
 			};
 		};
+		1480F6BB2DED7EA900D0DD64 /* XCRemoteSwiftPackageReference "Nuke" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kean/Nuke.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.8.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -541,6 +553,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 144D7E202DDD4E790009A5F7 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
+		};
+		1480F6BC2DED7EA900D0DD64 /* Nuke */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1480F6BB2DED7EA900D0DD64 /* XCRemoteSwiftPackageReference "Nuke" */;
+			productName = Nuke;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

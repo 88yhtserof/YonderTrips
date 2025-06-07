@@ -7,14 +7,28 @@
 
 import SwiftUI
 
-struct NewActivityView: UIViewControllerRepresentable {
-    let list: [String]
+/// A SwiftUI wrapper that bridges a NewActivityViewController (UIKit) into a SwiftUI view using the UIViewControllerRepresentable protocol.
+struct NewActivityContentView: UIViewControllerRepresentable {
+    
+    let activityList: [Activity]
     
     func makeUIViewController(context: Context) -> NewActivityViewController {
-        return NewActivityViewController(list: list)
-        }
-        
-        func updateUIViewController(_ uiViewController: NewActivityViewController, context: Context) {
-            
-        }
+        return NewActivityViewController(list: activityList)
+    }
+    
+    func updateUIViewController(_ uiViewController: NewActivityViewController, context: Context) {
+        uiViewController.updateList(with: activityList)
+    }
+}
+
+struct NewActivityView: View {
+    @StateObject var viewModel: NewActivityViewModel
+    
+    var body: some View {
+        NewActivityContentView(activityList: viewModel.state.activityList)
+            .environmentObject(viewModel)
+            .onAppear {
+                viewModel.action(.onAppear)
+            }
+    }
 }

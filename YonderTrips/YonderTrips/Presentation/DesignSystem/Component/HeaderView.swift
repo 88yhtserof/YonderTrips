@@ -13,6 +13,25 @@ struct HeaderView<Label>: View where Label: View {
     let action: () -> Void
     @ViewBuilder let label: () -> Label
     
+    init(title: String, action: @escaping () -> Void, label: @escaping () -> Label) {
+        self.title = title
+        self.action = action
+        self.label = label
+    }
+    
+    init(title: String, label: @escaping () -> Label) {
+        self.init(title: title, action: { }, label: label)
+    }
+    
+    init(title: String) {
+        self.init(title: title) {
+            
+        } label: {
+            EmptyView() as! Label
+        }
+
+    }
+    
     var body: some View {
         
         HStack {

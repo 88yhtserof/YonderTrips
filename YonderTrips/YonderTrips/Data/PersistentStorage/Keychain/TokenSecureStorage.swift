@@ -9,11 +9,7 @@ import Foundation
 
 struct TokenSecureStorage {
     
-    private let storage: KeychainSecureStorage
-    
-    init(storage: KeychainSecureStorage) {
-        self.storage = storage
-    }
+    private let storage = KeychainSecureStorage.shared
     
     static let service = "YonderTrips.auth"
     
@@ -23,6 +19,18 @@ struct TokenSecureStorage {
         
         var key: String {
             return self.rawValue
+        }
+    }
+    
+    func saveAuthToken(with tokens: RefreshTokenResponseDTO) throws {
+        
+        do {
+            try save(.accessToken, token: tokens.accessToken)
+            try save(.refreshToken, token: tokens.refreshToken)
+            
+        } catch {
+            rollback()
+            throw KeyChainError.failedToCreate(TokenSecureStorage.service)
         }
     }
     

@@ -8,18 +8,20 @@
 import SwiftUI
 
 struct ActivityPostView: View {
+    
+    @StateObject var viewModel: ActivityPostViewModel
+    
     var body: some View {
         VStack {
-            ForEach(0..<5, id: \.self) { _ in
-                ActivityPostCellView()
+            ForEach(viewModel.state.postSummaryList, id: \.postId) { item in
+                ActivityPostCellView(postSummary: item)
                 
                 VerticalDivider()
             }
         }
         .background(.gray0)
+        .onAppear {
+            viewModel.action(.onAppear)
+        }
     }
-}
-
-#Preview {
-    ActivityPostView()
 }
