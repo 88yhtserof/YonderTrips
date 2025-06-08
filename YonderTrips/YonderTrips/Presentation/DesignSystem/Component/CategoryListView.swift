@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CategoryListView: View {
     
-    private var categories: [ActivityCategory] = ActivityCategory.allCategories
+    private var categories: [ActivityCategory] = ActivityCategory.allCases
     
     var body: some View {
         ScrollView(.horizontal) {
