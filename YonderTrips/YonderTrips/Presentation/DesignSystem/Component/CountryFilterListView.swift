@@ -1,5 +1,5 @@
 //
-//  CountryListView.swift
+//  CountryFilterListView.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 6/7/25.
@@ -7,25 +7,15 @@
 
 import SwiftUI
 
-struct CountryListView: View {
+struct CountryFilterListView: View {
     
-    enum ListType {
-        case search
-        case filter
+    private var countries: [ActivityCountry] = ActivityCountry.allCases
+    
+    @Binding var selectedCountry: ActivityCountry
+    
+    init(selectedCountry: Binding<ActivityCountry>) {
+        self._selectedCountry = selectedCountry
     }
-    
-    let type: ListType
-    
-    private var countries: [ActivityCountry] {
-        switch type {
-        case .search:
-            ActivityCountry.allCuntries
-        case .filter:
-            ActivityCountry.allCases
-        }
-    }
-    
-    @State private var selectedCountry: ActivityCountry?
     
     private let colums: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 8), count: 4)
     
@@ -47,9 +37,4 @@ struct CountryListView: View {
 
     }
 }
-
-#Preview {
-    CountryListView(type: .filter)
-}
-
 

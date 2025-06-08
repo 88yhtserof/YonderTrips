@@ -13,10 +13,14 @@ struct CategoryFilterListView: View {
     
     private let colums: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 8), count: 4)
     
-    @State private var selectedCategory: ActivityCategory?
+    @Binding var selectedCategory: ActivityCategory
+    
+    init(selectedCategory: Binding<ActivityCategory>) {
+        self._selectedCategory = selectedCategory
+    }
     
     var body: some View {
-        LazyVGrid(columns: colums) { 
+        LazyVGrid(columns: colums) {
             ForEach(categories, id: \.self) { category in
                 CategoryButtonView(
                     image: category.image,
@@ -29,8 +33,4 @@ struct CategoryFilterListView: View {
             }
         }
     }
-}
-
-#Preview {
-    CategoryFilterListView()
 }
