@@ -104,8 +104,7 @@ struct SignInView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.2), value: viewModel.state.isShownErrorAlert)
-            .navigationDestination(for: SignInFlowRouter.SignInFlow.self) { flow in
-                
+            .ytNavigationDestination(for: SignInFlowRouter.SignInFlow.self) { flow in
                 switch flow {
                 case .emailSignIn:
                     EmailSignInView(viewModel: container.makeEmailSignInViewModel())

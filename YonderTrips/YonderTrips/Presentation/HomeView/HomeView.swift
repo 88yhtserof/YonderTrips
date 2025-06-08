@@ -66,7 +66,7 @@ struct HomeView: View {
                     }
                 }
             }
-            .navigationDestination(for: HomeFlowRouter.HomeFlow.self) { flow in
+            .ytNavigationDestination(for: HomeFlowRouter.HomeFlow.self) { flow in
                 
                 switch flow {
                 case .newActivityList:
