@@ -33,7 +33,9 @@ struct HomeView: View {
                     
                     VerticalDivider()
                     
-                    CategoryListView()
+                    CategoryListView(){ selectedCategory in
+                        handleCategory(with: selectedCategory)
+                    }
                     
                     VerticalShadowDivider()
                     
@@ -94,6 +96,10 @@ private extension HomeView {
     
     func handleActivityPostViewAll() {
         homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(.none, .none))
+    }
+    
+    func handleCategory(with category: ActivityCategory) {
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(category, .none))
     }
     
     func handleNotiToolbarButton() {

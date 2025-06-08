@@ -9,28 +9,29 @@ import SwiftUI
 
 struct CategoryListView: View {
     
+    let action: (ActivityCategory) -> Void
+    
     private var categories: [ActivityCategory] = ActivityCategory.allCases
+    
+    init(action: @escaping (ActivityCategory) -> Void) {
+        self.action = action
+    }
     
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
                 ForEach(categories, id: \.self) { category in
                     CategoryButtonView(
-                        image: category.image,
-                        title: category.title,
+                        category: category,
                         isSelected: Binding (
                             get: { false },
                             set: { _ in }
                         )
-                    )
+                    ) { action(category) }
                 }
             }
             .padding(8)
         }
         .scrollIndicators(.hidden)
     }
-}
-
-#Preview {
-    CategoryListView()
 }

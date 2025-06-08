@@ -9,20 +9,26 @@ import SwiftUI
 
 struct CategoryButtonView: View {
     
-    var image: String
-    var title: String
+    let category: ActivityCategory
     @Binding var isSelected: Bool
+    let action: (() -> Void)?
+    
+    init(category: ActivityCategory, isSelected: Binding<Bool>, action: (() -> Void)? = nil) {
+        self.category = category
+        self._isSelected = isSelected
+        self.action = action
+    }
     
     var body: some View {
         Button(action: didCategorySelected) {
             
             VStack {
-                Image(image)
+                Image(category.image)
                     .frame(width: 60, height: 60)
                     .background(.gray0)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
                 
-                Text(title)
+                Text(category.title)
                     .font(Font.yt(.pretendard(.body2)))
                     .foregroundStyle(.gray90)
             }
@@ -32,5 +38,6 @@ struct CategoryButtonView: View {
     
     func didCategorySelected() {
         isSelected = true
+        action?()
     }
 }

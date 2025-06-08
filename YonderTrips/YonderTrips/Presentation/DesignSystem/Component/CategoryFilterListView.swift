@@ -23,8 +23,7 @@ struct CategoryFilterListView: View {
         LazyVGrid(columns: colums) {
             ForEach(categories, id: \.self) { category in
                 CategoryButtonView(
-                    image: category.image,
-                    title: category.title,
+                    category: category,
                     isSelected: Binding(
                         get: { selectedCategory == category },
                         set: { _ in selectedCategory = category }
