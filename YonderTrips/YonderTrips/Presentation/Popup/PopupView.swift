@@ -11,6 +11,13 @@ struct PopupView: View {
     
     let title: String
     @Binding var isPresented: Bool
+    let action: (() -> Void)?
+    
+    init(title: String, isPresented: Binding<Bool>, action: (() -> Void)? = nil) {
+        self.title = title
+        self._isPresented = isPresented
+        self.action = action
+    }
     
     var body: some View {
         
@@ -28,6 +35,7 @@ struct PopupView: View {
                 
                 Button {
                     isPresented = false
+                    action?()
                 } label: {
                     Text("확인")
                         .foregroundStyle(.gray0)

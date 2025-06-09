@@ -12,9 +12,11 @@ final class NewActivityViewModel: ViewModelType {
     @Published var state = State()
     
     private let newActivityUseCase: NewActivityUseCase
+    private var onError: ((String) -> Void)?
     
-    init(newActivityUseCase: NewActivityUseCase) {
+    init(newActivityUseCase: NewActivityUseCase, onError: ((String) -> Void)? = nil) {
         self.newActivityUseCase = newActivityUseCase
+        self.onError = onError
         
         binding()
     }
@@ -74,7 +76,7 @@ extension NewActivityViewModel {
                     state.activityList = activityList
                     
                 } catch let error as AuthNetworkError where error == .refreshTokenExpired {
-                    print("회원 인증 시간 만료 alert 띄우기")
+                    onError?("사용자 인증이 만료되었습니다.\n다시 로그인 해주세요.")
                 }
             }
         }

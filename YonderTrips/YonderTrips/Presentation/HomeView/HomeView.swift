@@ -10,7 +10,11 @@ import SwiftUI
 struct HomeView: View {
     
     @Environment(\.container) var container
+    @EnvironmentObject private var router: RootFlowRouter
     @StateObject private var homeRouter = HomeFlowRouter()
+    
+    @State private var showErrorPopup = false
+    @State private var errorMessage: String = ""
     
     var body: some View {
         
@@ -26,7 +30,7 @@ struct HomeView: View {
                             .foregroundStyle(.deepSeafoam)
                     }
                     
-                    NewActivityView(viewModel: container.makeNewActivityViewModel())
+                    NewActivityView(viewModel: container.makeNewActivityViewModel(onError: handleRefreshError))
                         .frame(maxWidth: .infinity)
                         .frame(height: 360)
                         .padding(.bottom, 8)
@@ -48,7 +52,7 @@ struct HomeView: View {
                     }
                     .background(.gray0)
                     
-                    ActivityPostView(viewModel: container.makeActivityPostViewModel())
+                    ActivityPostView(viewModel: container.makeActivityPostViewModel(onError: handleRefreshError))
                 }
             }
             .background(.gray15)
@@ -63,6 +67,13 @@ struct HomeView: View {
                             .frame(width: 24, height: 24)
                             .foregroundStyle(.gray75)
                     }
+                }
+            }
+            .overlay {
+                if showErrorPopup {
+                    PopupView(title: errorMessage,
+                              isPresented: $showErrorPopup,
+                              action: handleOnErrorPopup)
                 }
             }
             .ytNavigationDestination(for: HomeFlowRouter.HomeFlow.self) { flow in
@@ -88,6 +99,15 @@ struct HomeView: View {
 
 //MARK: - Action
 private extension HomeView {
+    
+    func handleRefreshError(_ message: String) {
+        errorMessage = message
+        showErrorPopup = true
+    }
+    
+    func handleOnErrorPopup() {
+        router.rootFlow = .signIn
+    }
     
     func handleNewActivityViewAll() {
         homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(.none, .none))
