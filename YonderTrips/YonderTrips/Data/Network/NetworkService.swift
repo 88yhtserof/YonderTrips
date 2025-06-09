@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum AuthNetworkError: Error {
-    case accessTokenExpired
-    case refreshTokenExpired
-}
-
 struct NetworkService {
     
     private let session = URLSession.shared

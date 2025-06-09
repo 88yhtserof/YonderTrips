@@ -45,16 +45,16 @@ extension DIContainer {
         return EmailSignInViewModel(signInUseCase: signInUseCase)
     }
     
-    func makeNewActivityViewModel() -> NewActivityViewModel {
+    func makeNewActivityViewModel(onError errorHandler: @escaping (String) -> Void) -> NewActivityViewModel {
         
         let newActivityUseCase = NewActivityUseCase()
-        return NewActivityViewModel(newActivityUseCase: newActivityUseCase)
+        return NewActivityViewModel(newActivityUseCase: newActivityUseCase, onError: errorHandler)
     }
     
-    func makeActivityPostViewModel() -> ActivityPostViewModel {
+    func makeActivityPostViewModel(onError errorHandler: @escaping (String) -> Void) -> ActivityPostViewModel {
         
         let activityPostUseCase = ActivityPostUseCase()
-        return ActivityPostViewModel(activityPostUseCase: activityPostUseCase)
+        return ActivityPostViewModel(activityPostUseCase: activityPostUseCase, onError: errorHandler)
     }
 }
 

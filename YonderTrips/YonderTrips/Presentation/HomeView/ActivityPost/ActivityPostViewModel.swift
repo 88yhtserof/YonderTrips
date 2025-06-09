@@ -12,9 +12,17 @@ final class ActivityPostViewModel: ViewModelType {
     @Published var state = State()
     
     private let activityPostUseCase: ActivityPostUseCase
+    private var onError: ((String) -> Void)?
     
     init(activityPostUseCase: ActivityPostUseCase) {
         self.activityPostUseCase = activityPostUseCase
+    }
+    
+    init(activityPostUseCase: ActivityPostUseCase, onError: ((String) -> Void)? = nil) {
+        self.activityPostUseCase = activityPostUseCase
+        self.onError = onError
+        
+        binding()
     }
     
     struct State {
@@ -47,7 +55,7 @@ extension ActivityPostViewModel {
                     
                     state.postSummaryList = pagination.data
                 } catch {
-                    YonderTripsLogger.shared.debug("Falied to fetch activity post: \(error)")
+                    onError?("사용자 인증이 만료되었습니다.\n다시 로그인 해주세요.")
                 }
             }
         }
