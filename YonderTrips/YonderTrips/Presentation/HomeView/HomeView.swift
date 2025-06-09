@@ -14,7 +14,7 @@ struct HomeView: View {
     
     var body: some View {
         
-        NavigationStack {
+        NavigationStack(path: $homeRouter.path) {
             ScrollView {
                 VStack(spacing: 0) {
                     
@@ -33,11 +33,13 @@ struct HomeView: View {
                     
                     VerticalDivider()
                     
-                    CategoryView()
+                    CategoryListView(){ selectedCategory in
+                        handleCategory(with: selectedCategory)
+                    }
                     
                     VerticalShadowDivider()
                     
-                    HeaderView(title: "HOT 액티비티 포스트", action: handleActivityPostSort) {
+                    HeaderView(title: "HOT 액티비티 포스트", action: handleActivityPostViewAll) {
                         HStack {
                             Text("View All")
                                 .font(Font.yt(.pretendard(.caption1)))
@@ -46,7 +48,7 @@ struct HomeView: View {
                     }
                     .background(.gray0)
                     
-                    
+                    // 액세스 토큰 적용 오류를 해결하기 위해 임시 주석처리
                     ActivityPostView(viewModel: container.makeActivityPostViewModel())
                 }
             }
@@ -64,19 +66,22 @@ struct HomeView: View {
                     }
                 }
             }
-        }
-        .navigationDestination(for: HomeFlowRouter.HomeFlow.self) { flow in
-            switch flow {
-            case .newActivityList:
-                Text("")
-            case .newActivityDetail:
-                Text("")
-            case .activityPostList:
-                Text("")
-            case .activityPostDetail:
-                Text("")
-            case .category:
-                Text("")
+            .ytNavigationDestination(for: HomeFlowRouter.HomeFlow.self) { flow in
+                
+                switch flow {
+                case .newActivityList:
+                    Text("")
+                case .newActivityDetail:
+                    Text("")
+                case .activityPostList:
+                    Text("")
+                case .activityPostDetail:
+                    Text("")
+                case .category:
+                    Text("")
+                case let .activityFilter(category, country):
+                    ActivityFilterView(selectedCategory: category, selectedCountry: country)
+                }
             }
         }
     }
@@ -86,11 +91,15 @@ struct HomeView: View {
 private extension HomeView {
     
     func handleNewActivityViewAll() {
-        print(#function)
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(.none, .none))
     }
     
-    func handleActivityPostSort() {
-        print(#function)
+    func handleActivityPostViewAll() {
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(.none, .none))
+    }
+    
+    func handleCategory(with category: ActivityCategory) {
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(category, .none))
     }
     
     func handleNotiToolbarButton() {

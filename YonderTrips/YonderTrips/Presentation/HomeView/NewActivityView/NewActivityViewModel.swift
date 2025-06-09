@@ -41,6 +41,8 @@ extension NewActivityViewModel {
         switch action {
         case .onAppear:
             
+            guard state.activitySummaryList.isEmpty else { return }
+            
             Task {
                 do {
                     state.activitySummaryList = try await newActivityUseCase.requestNewActivityList()

@@ -17,5 +17,6 @@ final class HomeFlowRouter: ObservableObject {
         case activityPostList
         case activityPostDetail
         case category
+        case activityFilter(ActivityCategory, ActivityCountry)
     }
 }
