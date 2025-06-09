@@ -48,7 +48,6 @@ struct HomeView: View {
                     }
                     .background(.gray0)
                     
-                    // 액세스 토큰 적용 오류를 해결하기 위해 임시 주석처리
                     ActivityPostView(viewModel: container.makeActivityPostViewModel())
                 }
             }
