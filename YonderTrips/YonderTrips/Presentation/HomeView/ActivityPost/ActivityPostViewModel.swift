@@ -37,6 +37,9 @@ extension ActivityPostViewModel {
     func action(_ action: Action) {
         switch action {
         case .onAppear:
+            
+            guard state.postSummaryList.isEmpty else { return }
+            
             Task {
                 do {
                     let pagination: PostSummaryPagination = try await activityPostUseCase
