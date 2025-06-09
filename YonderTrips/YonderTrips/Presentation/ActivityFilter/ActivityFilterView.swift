@@ -17,6 +17,8 @@ struct ActivityFilterView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 16) {
                 
+                VerticalShadowDivider()
+                
                 VStack(spacing: -12) {
                     HeaderView<EmptyView>(title: "카테고리")
                     
@@ -31,9 +33,30 @@ struct ActivityFilterView: View {
                     
                     CountryFilterListView(selectedCountry: $selectedCountry)
                 }
-                
-                Spacer()
             }
         }
+        .navigationBarTitleDisplayMode(.automatic)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: handleDoneButton) {
+                    Text("완료")
+                }
+                .buttonStyle(DisabledButtonStyle())
+            }
+            
+            ToolbarItem(placement: .principal) {
+                Text("액티비티 필터")
+                    .font(.yt(.paperlogy(.caption1)))
+                    .foregroundStyle(.deepSeafoam)
+            }
+        }
+    }
+}
+
+//MARK: - Action
+extension ActivityFilterView {
+    
+    func handleDoneButton() {
+        print(#function)
     }
 }
