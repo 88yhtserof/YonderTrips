@@ -28,7 +28,7 @@ enum ActivityCountry: String, CaseIterable {
         case .japan:
             return "일본"
         case .australia:
-            return "오스트레일리아"
+            return "호주"
         }
     }
     
@@ -45,7 +45,7 @@ enum ActivityCountry: String, CaseIterable {
         case .japan:
             return "일본"
         case .australia:
-            return "오스트레일리아"
+            return "호주"
         }
     }
     

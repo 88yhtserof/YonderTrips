@@ -78,7 +78,7 @@ private extension YonderTripsActivityAPI {
         case .detail(let id):
             return id
         case .activities:
-            return "activities"
+            return ""
         }
     }
 }
