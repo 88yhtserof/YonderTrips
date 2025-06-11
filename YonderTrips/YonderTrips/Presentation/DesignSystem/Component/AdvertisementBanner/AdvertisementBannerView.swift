@@ -35,6 +35,7 @@ struct AdvertisementBannerView: View {
             AdvertisementBannerContentView(bannerList: list, currentIndex: $currentIndex)
                 .frame(height: 120)
                 .frame(maxWidth: .infinity)
+                .background(.gray30)
             
             PageIndicatorView(currentIndex: currentIndex, totalCount: list.count)
                 .padding(.bottom, 12)

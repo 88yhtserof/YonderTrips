@@ -16,13 +16,19 @@ struct ActivityListView: View {
         
         ScrollView {
             
-            AdvertisementBannerView()
-            
-            VStack {
-                ForEach(0..<10) { _ in
-                    ActivityListCellView()
-                    
-                    VerticalDivider()
+            VStack(spacing: 0) {
+                AdvertisementBannerView()
+                
+                VerticalShadowDivider()
+                
+                HeaderView<EmptyView>(title: "액티비티")
+                
+                VStack {
+                    ForEach(0..<10) { _ in
+                        ActivityListCellView()
+                        
+                        VerticalDivider()
+                    }
                 }
             }
         }

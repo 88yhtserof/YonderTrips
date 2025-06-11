@@ -40,6 +40,7 @@ struct HomeView: View {
                     CategoryListView(){ selectedCategory in
                         handleCategory(with: selectedCategory)
                     }
+                    .padding(.bottom, 16)
                     
                     VerticalShadowDivider()
                     
