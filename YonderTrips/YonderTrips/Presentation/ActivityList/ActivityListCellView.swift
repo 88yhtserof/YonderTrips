@@ -22,8 +22,6 @@ struct ActivityListCellView: View {
                         .overlay {
                             Color.gray100.opacity(0.28)
                         }
-                        .clipped()
-                        .allowsHitTesting(false)
                     
                     VStack(alignment: .trailing) {
                         LocationTagView(country: "대한민국")

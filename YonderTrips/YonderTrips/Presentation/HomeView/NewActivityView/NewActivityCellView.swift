@@ -16,7 +16,6 @@ struct NewActivityCellView: View {
             
             DataImageView(urlString: item.imageThumbnail)
                 .frame(width: 300, height: 350)
-                .clipped()
                 .overlay {
                     Color.gray100.opacity(0.28)
                 }

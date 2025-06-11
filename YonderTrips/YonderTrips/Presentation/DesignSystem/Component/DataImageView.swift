@@ -41,40 +41,44 @@ struct DataImageView: View {
     
     var body: some View {
         
-        if type == .none {
-            placeholderView()
-            
-        } else if let image = image {
-            
-            ZStack(alignment: .topLeading) {
-                Image(uiImage: image)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
+        VStack {
+            if type == .none {
+                placeholderView()
                 
-                if type == .video {
-                    
-                    Image(.playButton)
+            } else if let image = image {
+                
+                ZStack(alignment: .topLeading) {
+                    Image(uiImage: image)
                         .resizable()
-                        .frame(width: 40, height: 40)
-                        .foregroundColor(.white.opacity(0.8))
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-            }
-            
-        } else {
-            ProgressView()
-                .foregroundStyle(.gray0)
-                .task {
-                    switch type {
-                    case .image:
-                        await loadImage()
-                    case .video:
-                        await loadImageFromVideo()
-                    case .none:
-                        break
+                        .aspectRatio(contentMode: .fill)
+                    
+                    if type == .video {
+                        
+                        Image(.playButton)
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .foregroundColor(.white.opacity(0.8))
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                 }
+                
+            } else {
+                ProgressView()
+                    .foregroundStyle(.gray0)
+                    .task {
+                        switch type {
+                        case .image:
+                            await loadImage()
+                        case .video:
+                            await loadImageFromVideo()
+                        case .none:
+                            break
+                        }
+                    }
+            }
         }
+        .clipped()
+        .allowsHitTesting(false)
     }
 }
 
