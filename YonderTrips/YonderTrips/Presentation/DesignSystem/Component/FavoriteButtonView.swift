@@ -18,7 +18,6 @@ struct FavoriteButtonView: View {
                 .resizable()
                 .frame(width: 30, height: 30)
                 .foregroundColor(isFavorite ? .rosyPunch : .gray30)
-                .padding(.vertical, 10)
         }
     }
     

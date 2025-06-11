@@ -3,16 +3,49 @@
     {
       "filename" : "Property 1=Discount Arrow.png",
       "idiom" : "universal",
+      "resizing" : {
+        "cap-insets" : {
+          "left" : 6,
+          "right" : 31
+        },
+        "center" : {
+          "mode" : "stretch",
+          "width" : 1
+        },
+        "mode" : "3-part-horizontal"
+      },
       "scale" : "1x"
     },
     {
       "filename" : "Property 1=Discount Arrow@2x.png",
       "idiom" : "universal",
+      "resizing" : {
+        "cap-insets" : {
+          "left" : 22,
+          "right" : 57
+        },
+        "center" : {
+          "mode" : "tile",
+          "width" : 1
+        },
+        "mode" : "3-part-horizontal"
+      },
       "scale" : "2x"
     },
     {
       "filename" : "Property 1=Discount Arrow@3x.png",
       "idiom" : "universal",
+      "resizing" : {
+        "cap-insets" : {
+          "left" : 32,
+          "right" : 55
+        },
+        "center" : {
+          "mode" : "stretch",
+          "width" : 1
+        },
+        "mode" : "3-part-horizontal"
+      },
       "scale" : "3x"
     }
   ],
