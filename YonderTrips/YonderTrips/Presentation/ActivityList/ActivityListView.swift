@@ -15,6 +15,9 @@ struct ActivityListView: View {
     var body: some View {
         
         ScrollView {
+            
+            AdvertisementBannerView()
+            
             VStack {
                 ForEach(0..<10) { _ in
                     ActivityListCellView()
