@@ -11,13 +11,15 @@ import SwiftUI
 final class AdvertisementBannerViewController: UIViewController {
     
     private var list: [String]
+    private var onPageChange: ((Int) async -> Void)?
     
     private var dataSource: DataSource!
     
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout())
     
-    init(list: [String]) {
+    init(list: [String], onPageChange: ((Int) -> Void)? = nil) {
         self.list = list
+        self.onPageChange = onPageChange
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -47,6 +49,7 @@ private extension AdvertisementBannerViewController {
     
     func configureView() {
         collectionView.backgroundColor = .clear
+        collectionView.delegate = self
     }
     
     func configureHierachy() {
@@ -131,6 +134,13 @@ private extension AdvertisementBannerViewController {
     }
 }
 
-
-
-
+//MARK: - CollectionView Delegate
+extension AdvertisementBannerViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        
+        Task {
+            await onPageChange?(indexPath.item)
+        }
+    }
+}

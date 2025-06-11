@@ -10,9 +10,12 @@ import SwiftUI
 struct AdvertisementBannerContentView: UIViewControllerRepresentable {
     
     let bannerList: [String]
+    @Binding var currentIndex: Int
     
     func makeUIViewController(context: Context) -> AdvertisementBannerViewController {
-        return AdvertisementBannerViewController(list: bannerList)
+        return AdvertisementBannerViewController(list: bannerList) { index in
+            currentIndex = index + 1
+        }
     }
     
     func updateUIViewController(_ uiViewController: AdvertisementBannerViewController, context: Context) {
@@ -24,15 +27,16 @@ struct AdvertisementBannerView: View {
     
     let list: [String] = [
       ]
+    @State var currentIndex: Int = 1
     
     var body: some View {
         
         ZStack(alignment: .bottomTrailing) {
-            AdvertisementBannerContentView(bannerList: list)
+            AdvertisementBannerContentView(bannerList: list, currentIndex: $currentIndex)
                 .frame(height: 120)
                 .frame(maxWidth: .infinity)
             
-            PageIndicatorView(currentIndex: Int.random(in: 1...100), totalCount: list.count)
+            PageIndicatorView(currentIndex: currentIndex, totalCount: list.count)
                 .padding(.bottom, 12)
                 .padding(.trailing, 8)
         }
