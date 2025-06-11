@@ -22,3 +22,13 @@ struct ActivitySummaryListResponseDTO: Decodable {
         nextCursor = try container.decodeIfPresent(String.self, forKey: .nextCursor) ?? ""
     }
 }
+
+extension ActivitySummaryListResponseDTO {
+    
+    func toEntity() -> ActivitySummaryList {
+        ActivitySummaryList(
+            data: data.map { $0.toEntity() },
+            nextCursor: nextCursor
+        )
+    }
+}
