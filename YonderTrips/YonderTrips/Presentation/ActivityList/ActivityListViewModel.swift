@@ -1,28 +1,26 @@
 //
-//  NewActivityViewModel.swift
+//  ActivityListViewModel.swift
 //  YonderTrips
 //
-//  Created by 임윤휘 on 5/28/25.
+//  Created by 임윤휘 on 6/11/25.
 //
 
 import Foundation
 
-final class NewActivityViewModel: ViewModelType {
+final class ActivityListViewModel: ViewModelType {
     
     @Published var state = State()
     
-    private let newActivityUseCase: NewActivityUseCase
     private let activityUseCase: ActivityUseCase
-    private var onError: ((String) -> Void)?
+    let category: ActivityCategory
+    let country: ActivityCountry
     
-    init(
-        newActivityUseCase: NewActivityUseCase,
-        activityUseCase: ActivityUseCase,
-        onError: ((String) -> Void)? = nil
-    ) {
-        self.newActivityUseCase = newActivityUseCase
+    private var nextCursorId: String = ""
+    
+    init(activityUseCase: ActivityUseCase, category: ActivityCategory, country: ActivityCountry) {
         self.activityUseCase = activityUseCase
-        self.onError = onError
+        self.category = category
+        self.country = country
         
         binding()
     }
@@ -38,7 +36,7 @@ final class NewActivityViewModel: ViewModelType {
 }
 
 //MARK: - Action
-extension NewActivityViewModel {
+extension ActivityListViewModel {
     
     enum Action {
         case onAppear
@@ -53,7 +51,9 @@ extension NewActivityViewModel {
             
             Task {
                 do {
-                    state.activitySummaryList = try await newActivityUseCase.requestNewActivityList()
+                    let response = try await activityUseCase.requestActivityList(country: country, catergory: category, id: nextCursorId)
+                    state.activitySummaryList = response.data
+                    nextCursorId = response.nextCursor
                     
                     let activityList: [Activity] = await withTaskGroup(of: Activity?.self) { group in
                         for summary in state.activitySummaryList {
@@ -81,9 +81,10 @@ extension NewActivityViewModel {
                     state.activityList = activityList
                     
                 } catch let error as AuthNetworkError where error == .refreshTokenExpired {
-                    onError?("사용자 인증이 만료되었습니다.\n다시 로그인 해주세요.")
+                    YonderTripsLogger.shared.debug("Refresh token expired")
                 }
             }
         }
     }
 }
+

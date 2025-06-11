@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ActivityListCellView: View {
     
+    let activity: Activity
+    
     var body: some View {
         
         VStack(spacing: 0) {
@@ -16,7 +18,7 @@ struct ActivityListCellView: View {
             VStack {
                 ZStack(alignment: .trailing) {
                     
-                    DataImageView(urlString: "")
+                    DataImageView(urlString: activity.imageThumbnail)
                         .frame(height: 200)
                         .frame(maxWidth: .infinity)
                         .overlay {
@@ -24,9 +26,12 @@ struct ActivityListCellView: View {
                         }
                     
                     VStack(alignment: .trailing) {
-                        LocationTagView(country: "대한민국")
+                        LocationTagView(country: activity.country)
                         Spacer()
-                        AdvertisementTagView(isAdvertisement: true)
+                        
+                        if activity.isAdvertisement {
+                            AdvertisementTagView()
+                        }
                     }
                     .padding(16)
                     
@@ -36,14 +41,17 @@ struct ActivityListCellView: View {
                 .background(Color.black)
                 .cornerRadius(25)
                 
-                ActivityTagView(tag: "NEW 오픈 특가")
-                    .padding(.top, -25)
+                if !activity.tags.isEmpty,
+                   let tag = activity.tags.first {
+                    ActivityTagView(tag: tag)
+                        .padding(.top, -25)
+                }
             }
             
             VStack(alignment: .leading, spacing: 8) {
                 
                 HStack {
-                    Text("새싹 패러글라이딩 2기")
+                    Text(activity.title)
                         .font(.yt(.pretendard(.body1)))
                         .foregroundColor(.gray90)
                     
@@ -54,7 +62,7 @@ struct ActivityListCellView: View {
                             .frame(width: 20, height: 20)
                             .foregroundColor(.lightSeafoam)
                         
-                        Text("\(88)")
+                        Text("\(activity.keepCount)")
                             .font(.yt(.paperlogy(.caption2)))
                             .foregroundStyle(.gray60)
                     }
@@ -65,14 +73,14 @@ struct ActivityListCellView: View {
                             .frame(width: 20, height: 20)
                             .foregroundStyle(.blackSeafoam)
                         
-                        Text("\(88)P")
+                        Text("\(activity.pointReward)P")
                             .font(.yt(.paperlogy(.caption2)))
                             .foregroundStyle(.gray60)
                     }
                 }
                 .padding(.top, 16)
                 
-                Text("두려움을 넘고, 하늘을 향한 두 번째 도전이 시작됩니다. 아직은 서툴지만, 하늘을 향한 마음은 누구보다 단단한 새싹들의 비상.")
+                Text(activity.description)
                     .font(.yt(.pretendard(.caption1)))
                     .foregroundColor(.gray75)
                     .lineLimit(3)
@@ -80,7 +88,7 @@ struct ActivityListCellView: View {
                 HStack {
                     HStack(spacing: 24) {
                         // TODO: - 금액 숫자 형식 적용
-                        Text(String("\(12000)원"))
+                        Text(String("\(activity.price.original)원"))
                             .font(.yt(.pretendard(.body1)))
                             .foregroundColor(.gray45)
                             .overlay {
@@ -89,7 +97,7 @@ struct ActivityListCellView: View {
                                     .padding(.trailing, -16)
                                     .foregroundStyle(.blackSeafoam)
                             }
-                        Text(String("\(12000)원"))
+                        Text(String("\(activity.price.final)원"))
                             .font(.yt(.pretendard(.body1)))
                             .foregroundColor(.gray90)
                     }
@@ -111,9 +119,4 @@ struct ActivityListCellView: View {
         .padding(.vertical, 8)
         .padding(.horizontal, 16)
     }
-}
-
-
-#Preview {
-    ActivityListCellView()
 }

@@ -17,10 +17,4 @@ struct NewActivityUseCase {
         return response.data.map { $0.toEntity() }
 
     }
-    
-    func requestNewActivityDetail(with activityId: String) async throws -> Activity
-    {
-        let response: ActivityResponseDTO = try await NetworkService.requestWithAuth(apiProvider: .activity(.detail(activityId)))
-        return response.toEntity()
-    }
 }
