@@ -79,18 +79,17 @@ struct HomeView: View {
             .ytNavigationDestination(for: HomeFlowRouter.HomeFlow.self) { flow in
                 
                 switch flow {
-                case .newActivityList:
+                case let .activityList(category, country):
+                    ActivityListView(selectedCategory: category, selectedCountry: country)
+                case .activityDetail:
                     Text("")
-                case .newActivityDetail:
-                    Text("")
-                case .activityPostList:
+                case let .activityPostList(category, country):
                     Text("")
                 case .activityPostDetail:
                     Text("")
-                case .category:
-                    Text("")
                 case let .activityFilter(category, country):
                     ActivityFilterView(selectedCategory: category, selectedCountry: country)
+                        .environmentObject(homeRouter)
                 }
             }
         }

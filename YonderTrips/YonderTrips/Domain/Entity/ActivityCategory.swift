@@ -54,6 +54,25 @@ enum ActivityCategory: String, CaseIterable {
         }
     }
     
+    var title_en: String {
+        switch self {
+        case .none:
+            "ALL"
+        case .tourism:
+            "TOURISM"
+        case .tour:
+            "TOUR"
+        case .package:
+            "PACKAGE"
+        case .exciting:
+            "EXCITING"
+        case .experience:
+            "EXPERIENCE"
+        case .random:
+            "RANDOM"
+        }
+    }
+    
     var image: String {
         switch self {
         case .none:

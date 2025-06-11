@@ -17,5 +17,6 @@ struct YTDestinationWrapper<Content: View>: View {
     var body: some View {
         content
             .ytNavigationBarBackButton()
+            .navigationBarTitleDisplayMode(.automatic)
     }
 }

@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct ActivityListView: View {
+    
+    let selectedCategory: ActivityCategory
+    let selectedCountry: ActivityCountry
+    
     var body: some View {
         
         ScrollView {
@@ -20,9 +24,14 @@ struct ActivityListView: View {
             }
         }
         .background(.gray15)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                NavigationTitleView(title: selectedCategory.title_en)
+            }
+        }
     }
 }
 
 #Preview {
-    ActivityListView()
+    ActivityListView(selectedCategory: .exciting, selectedCountry: .none)
 }
