@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ActivityFilterView: View {
     
+    @EnvironmentObject private var homeRouter: HomeFlowRouter
     @State var selectedCategory: ActivityCategory
     @State var selectedCountry: ActivityCountry
     
@@ -35,7 +36,6 @@ struct ActivityFilterView: View {
                 }
             }
         }
-        .navigationBarTitleDisplayMode(.automatic)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: handleDoneButton) {
@@ -58,5 +58,6 @@ extension ActivityFilterView {
     
     func handleDoneButton() {
         print(#function)
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityList(selectedCategory, selectedCountry))
     }
 }

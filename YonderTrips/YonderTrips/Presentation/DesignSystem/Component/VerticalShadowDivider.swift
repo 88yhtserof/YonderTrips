@@ -14,7 +14,6 @@ struct VerticalShadowDivider: View {
             Color.lightSeafoam
                 .frame(maxWidth: .infinity)
                 .frame(height: 1)
-                .padding(.top, 8)
         }
     }
 }

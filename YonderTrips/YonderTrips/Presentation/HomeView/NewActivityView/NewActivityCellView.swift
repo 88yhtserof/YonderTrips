@@ -16,26 +16,13 @@ struct NewActivityCellView: View {
             
             DataImageView(urlString: item.imageThumbnail)
                 .frame(width: 300, height: 350)
-                .clipped()
                 .overlay {
                     Color.gray100.opacity(0.28)
                 }
             
             VStack(alignment: .leading, spacing: 8) {
                 
-                HStack {
-                    Image(.location)
-                        .resizable()
-                        .frame(width: 13, height: 13)
-                    
-                    Text(item.country)
-                        .font(.yt(.pretendard(.caption2)))
-                }
-                .foregroundColor(.gray0)
-                .padding(.vertical, 3)
-                .padding(.horizontal, 10)
-                .background(.gray0.opacity(0.3))
-                .cornerRadius(15)
+                LocationTagView(country: item.country)
                 
                 Spacer()
                 
