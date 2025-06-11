@@ -10,6 +10,7 @@ import Foundation
 enum YonderTripsActivityAPI: APIConfiguration, APIErrorConvertible {
     case new(ActivityCountry, ActivityCategory)
     case detail(String)
+    case activities(ActivityCountry, ActivityCategory, String)
     
     var url: URL? {
         return urlComponents.url
@@ -17,7 +18,7 @@ enum YonderTripsActivityAPI: APIConfiguration, APIErrorConvertible {
     
     var method: String {
         switch self {
-        case .new, .detail:
+        case .new, .detail, .activities:
             return HTTPMethod.get
         }
     }
@@ -27,6 +28,10 @@ enum YonderTripsActivityAPI: APIConfiguration, APIErrorConvertible {
         case let .new(country, category):
             return [URLQueryItem(name: "country", value: country.query),
                     URLQueryItem(name: "category", value: category.query)]
+        case let .activities(country, category, id):
+            return [URLQueryItem(name: "country", value: country.query),
+                    URLQueryItem(name: "category", value: category.query),
+                    URLQueryItem(name: "next", value: id)]
         default:
             return nil
         }
@@ -72,6 +77,8 @@ private extension YonderTripsActivityAPI {
             return "new"
         case .detail(let id):
             return id
+        case .activities:
+            return "activities"
         }
     }
 }
