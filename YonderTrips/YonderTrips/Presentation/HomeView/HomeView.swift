@@ -81,7 +81,7 @@ struct HomeView: View {
                 
                 switch flow {
                 case let .activityList(category, country):
-                    ActivityListView(selectedCategory: category, selectedCountry: country)
+                    ActivityListView(viewModel: container.makeActivityListViewModel(category: category, country: country))
                 case .activityDetail:
                     Text("")
                 case let .activityPostList(category, country):

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct ActivityListView: View {
     
-    let selectedCategory: ActivityCategory
-    let selectedCountry: ActivityCountry
+    @StateObject var viewModel: ActivityListViewModel
     
     var body: some View {
         
@@ -24,8 +23,8 @@ struct ActivityListView: View {
                 HeaderView<EmptyView>(title: "액티비티")
                 
                 VStack {
-                    ForEach(0..<10) { _ in
-                        ActivityListCellView()
+                    ForEach(viewModel.state.activityList, id: \.activityId) { activity in
+                        ActivityListCellView(activity: activity)
                         
                         VerticalDivider()
                     }
@@ -35,12 +34,11 @@ struct ActivityListView: View {
         .background(.gray15)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                NavigationTitleView(title: selectedCategory.title_en)
+                NavigationTitleView(title: viewModel.category.title_en)
             }
         }
+        .onAppear {
+            viewModel.action(.onAppear)
+        }
     }
-}
-
-#Preview {
-    ActivityListView(selectedCategory: .exciting, selectedCountry: .none)
 }
