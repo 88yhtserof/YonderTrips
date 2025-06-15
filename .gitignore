@@ -4,6 +4,7 @@
 ### Project
 
 Authorization.xcconfig
+GoogleService-Info.plist
 
 ### Swift ###
 # Xcode
