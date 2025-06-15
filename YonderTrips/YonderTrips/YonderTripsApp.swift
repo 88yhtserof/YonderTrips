@@ -13,6 +13,9 @@ import KakaoSDKUser
 
 @main
 struct YonderTripsApp: App {
+    
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     @StateObject private var rootViewRouter = RootFlowRouter()
     
     init() {
