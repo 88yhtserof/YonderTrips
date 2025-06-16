@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		146F01DB2DFFBBBA00E094D7 /* iamport-ios in Frameworks */ = {isa = PBXBuildFile; productRef = 146F01DA2DFFBBBA00E094D7 /* iamport-ios */; };
 		14CA4FBB2DFD65FC00978C85 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 14CA4FBA2DFD65FC00978C85 /* FirebaseCore */; };
 		14CA4FBD2DFD65FC00978C85 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 14CA4FBC2DFD65FC00978C85 /* FirebaseMessaging */; };
 		14CA4FC02DFD664200978C85 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 14CA4FBF2DFD664200978C85 /* KakaoSDK */; };
@@ -79,6 +80,7 @@
 				14CA4FC02DFD664200978C85 /* KakaoSDK in Frameworks */,
 				14CA4FC42DFD664200978C85 /* KakaoSDKCommon in Frameworks */,
 				14CA4FC22DFD664200978C85 /* KakaoSDKAuth in Frameworks */,
+				146F01DB2DFFBBBA00E094D7 /* iamport-ios in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,6 +139,7 @@
 				14CA4FC32DFD664200978C85 /* KakaoSDKCommon */,
 				14CA4FC52DFD664200978C85 /* KakaoSDKUser */,
 				14CA4FC82DFD665400978C85 /* Nuke */,
+				146F01DA2DFFBBBA00E094D7 /* iamport-ios */,
 			);
 			productName = YonderTrips;
 			productReference = 14B707A32DD1D9B000689F7C /* YonderTrips.app */;
@@ -197,6 +200,7 @@
 				14CA4FB92DFD65FC00978C85 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				14CA4FBE2DFD664200978C85 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
 				14CA4FC72DFD665400978C85 /* XCRemoteSwiftPackageReference "Nuke" */,
+				146F01D92DFFBBBA00E094D7 /* XCRemoteSwiftPackageReference "iamport-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 14B707A42DD1D9B000689F7C /* Products */;
@@ -530,6 +534,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		146F01D92DFFBBBA00E094D7 /* XCRemoteSwiftPackageReference "iamport-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/iamport/iamport-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.7;
+			};
+		};
 		14CA4FB92DFD65FC00978C85 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -557,6 +569,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		146F01DA2DFFBBBA00E094D7 /* iamport-ios */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 146F01D92DFFBBBA00E094D7 /* XCRemoteSwiftPackageReference "iamport-ios" */;
+			productName = "iamport-ios";
+		};
 		14CA4FBA2DFD65FC00978C85 /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 14CA4FB92DFD65FC00978C85 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
