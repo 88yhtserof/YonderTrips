@@ -61,8 +61,8 @@ struct OrderResponseDTO: Decodable {
 
 extension OrderResponseDTO {
     
-    func toEntity() -> Order {
-        return Order(
+    func toEntity() -> OrderResponse {
+        return OrderResponse(
             orderId: orderId,
             orderCode: orderCode,
             totalPrice: totalPrice,

@@ -9,7 +9,7 @@ import Foundation
 
 struct ReceiptOrder {
     let paymentId: String
-    let orderItem: Order
+    let orderItem: OrderResponse
     let createdAt: Date
     let updatedAt: Date
 }

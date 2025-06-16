@@ -25,8 +25,8 @@ struct OrderRequestDTO: Encodable {
 
 extension OrderRequestDTO {
     
-    func toEntity() -> OrderEntity {
-        return OrderEntity(
+    func toEntity() -> OrderRequest {
+        return OrderRequest(
             activityId: self.activityId,
             reservationItemName: self.reservationItemName,
             reservationItemTime: self.reservationItemTime,

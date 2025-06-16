@@ -1,5 +1,5 @@
 //
-//  Order.swift
+//  OrderResponse.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 6/16/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Order {
+struct OrderResponse {
     let orderId: String
     let orderCode: String
     let totalPrice: Int
