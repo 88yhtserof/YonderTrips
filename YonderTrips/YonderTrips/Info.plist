@@ -12,7 +12,17 @@
 				<string>kakao$(KAKAO_API_KEY)</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>$(IAMPORT_SCHEME)</string>
+			</array>
+		</dict>
 	</array>
+	<key>IAMPORT_SCHEME</key>
+	<string>$(IAMPORT_SCHEME)</string>
 	<key>KAKAO_API_KEY</key>
 	<string>$(KAKAO_API_KEY)</string>
 	<key>LSApplicationQueriesSchemes</key>

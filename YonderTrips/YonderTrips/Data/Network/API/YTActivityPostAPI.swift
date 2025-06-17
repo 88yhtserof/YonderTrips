@@ -1,5 +1,5 @@
 //
-//  YonderTripsActivityPostAPI.swift
+//  YTActivityPostAPI.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 6/4/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum YonderTripsActivityPostAPI: APIConfiguration, APIErrorConvertible {
+enum YTActivityPostAPI: APIConfiguration, APIErrorConvertible {
     case geolocation(country: String?,
                      category: String?,
                      longitude: Double?,
@@ -52,10 +52,10 @@ enum YonderTripsActivityPostAPI: APIConfiguration, APIErrorConvertible {
     }
 }
 
-private extension YonderTripsActivityPostAPI {
+private extension YTActivityPostAPI {
     
     var urlComponents: URLComponents {
-        var components = URLComponents(string: YonderTripsAPIProvider.baseURL)
+        var components = URLComponents(string: YTAPIProvider.baseURL)
         components?.path = path + endPoint
         components?.queryItems = parameters
         return components ?? URLComponents()
@@ -74,7 +74,7 @@ private extension YonderTripsActivityPostAPI {
 }
 
 //MARK: - Type
-extension YonderTripsActivityPostAPI {
+extension YTActivityPostAPI {
     
     enum OrderBy: String {
         case createdAt
@@ -87,9 +87,9 @@ extension YonderTripsActivityPostAPI {
 }
 
 //MARK: - Configuring Queries
-private extension YonderTripsActivityPostAPI {
+private extension YTActivityPostAPI {
     
-    func configureGeolocationParameter(_ api: YonderTripsActivityPostAPI) -> [URLQueryItem] {
+    func configureGeolocationParameter(_ api: YTActivityPostAPI) -> [URLQueryItem] {
         switch self {
         case let .geolocation(country, category, longitude, latitude, maxDistance, next, order_by):
             

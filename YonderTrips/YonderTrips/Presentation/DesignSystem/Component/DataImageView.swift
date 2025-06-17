@@ -23,7 +23,7 @@ struct DataImageView: View {
     @State private var image: UIImage?
     
     init(urlString: String?) {
-        self.url = YonderTripsDataAPI.data(urlString ?? "").url
+        self.url = YTDataAPI.data(urlString ?? "").url
         
         guard let last = urlString?.split(separator: ".").last else {  return }
         let fileExtension = String(last).lowercased()

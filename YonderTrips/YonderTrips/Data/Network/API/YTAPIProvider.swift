@@ -1,5 +1,5 @@
 //
-//  YonderTripsAPIProvider.swift
+//  YTAPIProvider.swift
 //  YonderTrips-Practice
 //
 //  Created by 임윤휘 on 5/9/25.
@@ -7,11 +7,13 @@
 
 import Foundation
 
-enum YonderTripsAPIProvider {
-    case auth(YonderTripsAuthAPI)
-    case user(YonderTripsUserAPI)
-    case activity(YonderTripsActivityAPI)
-    case activityPost(YonderTripsActivityPostAPI)
+enum YTAPIProvider {
+    case auth(YTAuthAPI)
+    case user(YTUserAPI)
+    case activity(YTActivityAPI)
+    case activityPost(YTActivityPostAPI)
+    case order(YTOrderAPI)
+    case payment(YTPaymentAPI)
     
     var api: APIConfiguration & APIErrorConvertible {
         switch self {
@@ -22,6 +24,10 @@ enum YonderTripsAPIProvider {
         case .activity(let api):
             return api
         case .activityPost(let api):
+            return api
+        case .order(let api):
+            return api
+        case .payment(let api):
             return api
         }
     }

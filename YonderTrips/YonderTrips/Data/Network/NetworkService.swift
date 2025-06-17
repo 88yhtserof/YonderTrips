@@ -11,7 +11,7 @@ struct NetworkService {
     
     private let session = URLSession.shared
     
-    static func requestWithAuth<T>(apiProvider provider: YonderTripsAPIProvider) async throws -> T where T : Decodable {
+    static func requestWithAuth<T>(apiProvider provider: YTAPIProvider) async throws -> T where T : Decodable {
         
         do {
             return try await request(apiProvider: provider)
@@ -26,7 +26,7 @@ struct NetworkService {
         }
     }
     
-    static func request<T>(apiProvider provider: YonderTripsAPIProvider) async throws -> T where T : Decodable {
+    static func request<T>(apiProvider provider: YTAPIProvider) async throws -> T where T : Decodable {
         
         let api = provider.api
         

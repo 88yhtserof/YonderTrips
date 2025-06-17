@@ -5,6 +5,7 @@
 //  Created by 임윤휘 on 5/10/25.
 //
 
+import Foundation
 
 struct JoinResponseDTO: Codable {
     let userId: String

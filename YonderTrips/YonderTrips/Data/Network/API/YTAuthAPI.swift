@@ -1,5 +1,5 @@
 //
-//  YonderTripsAuthAPI.swift
+//  YTAuthAPI.swift
 //  YonderTrips-Practice
 //
 //  Created by 임윤휘 on 5/10/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum YonderTripsAuthAPI: APIConfiguration, APIErrorConvertible {
+enum YTAuthAPI: APIConfiguration, APIErrorConvertible {
     case refresh
     
     var url: URL? {
@@ -47,10 +47,10 @@ enum YonderTripsAuthAPI: APIConfiguration, APIErrorConvertible {
     }
 }
 
-private extension YonderTripsAuthAPI {
+private extension YTAuthAPI {
     
     var urlComponents: URLComponents {
-        var components = URLComponents(string: YonderTripsAPIProvider.baseURL)
+        var components = URLComponents(string: YTAPIProvider.baseURL)
         components?.path = path + endPoint
         components?.queryItems = parameters
         return components ?? URLComponents()
