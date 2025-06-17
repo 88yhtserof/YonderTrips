@@ -9,56 +9,29 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>yondertrips-payments-scheme</string>
 				<string>kakao$(KAKAO_API_KEY)</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>$(IAMPORT_SCHEME)</string>
+			</array>
+		</dict>
 	</array>
+	<key>IAMPORT_SCHEME</key>
+	<string>$(IAMPORT_SCHEME)</string>
 	<key>KAKAO_API_KEY</key>
 	<string>$(KAKAO_API_KEY)</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>kakaobank</string>
-		<string>newsmartpib</string>
-		<string>supertoss</string>
-		<string>liivbank</string>
-		<string>lguthepay-xpay</string>
-		<string>lmslpay</string>
-		<string>com.wooricard.wcard</string>
-		<string>hyundaicardappcardid</string>
-		<string>kb-auth</string>
-		<string>chaipayment</string>
-		<string>payco</string>
-		<string>kakaotalk</string>
-		<string>citimobileapp</string>
-		<string>citicardappkr</string>
-		<string>citispay</string>
-		<string>nonghyupcardansimclick</string>
-		<string>nhappcardansimclick</string>
-		<string>cloudpay</string>
-		<string>lotteappcard</string>
-		<string>lottesmartpay</string>
-		<string>scardcertiapp</string>
-		<string>samsungpay</string>
-		<string>vguardstart</string>
-		<string>ansimclickipcollect</string>
-		<string>ansimclickscard</string>
-		<string>mpocket.online.ansimclick</string>
-		<string>kb-acp</string>
-		<string>smshinhanansimclick</string>
-		<string>shinhan-sr-ansimclick</string>
-		<string>smhyundaiansimclick</string>
-		<string>hdcardappcardansimclick</string>
-		<string>itms-apps</string>
-		<string>ispmobile</string>
-		<string>kftc-bankpay</string>
 		<string>kakaolink</string>
 		<string>kakaokompassauth</string>
 	</array>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
