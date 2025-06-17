@@ -14,6 +14,7 @@ final class PaymentRequestViewController: UIViewController {
     
     // properties
     let orderCreate: OrderCreate
+    let onDismiss: (IamportResponse) -> Void
     
     // views
     lazy var wkWebView: WKWebView = {
@@ -23,8 +24,9 @@ final class PaymentRequestViewController: UIViewController {
     }()
     
     // life cycle
-    init(orderCreate: OrderCreate) {
+    init(orderCreate: OrderCreate, onDismiss: @escaping (IamportResponse) -> Void) {
         self.orderCreate = orderCreate
+        self.onDismiss = onDismiss
         
         super.init(nibName: nil, bundle: nil)
     }
@@ -57,7 +59,6 @@ final class PaymentRequestViewController: UIViewController {
         super.viewDidDisappear(animated)
         
         Iamport.shared.close()
-//        presentationMode?.wrappedValue.dismiss()
     }
     
     // feature
@@ -72,14 +73,13 @@ final class PaymentRequestViewController: UIViewController {
             payment: payment
         ) { [weak self] response in
             
-            print("결과 : \(response)")
             
             guard let response else {
                 YonderTripsLogger.shared.debug("Could not find response")
                 return
             }
             
-            
+            self?.onDismiss(response)
         }
     }
     

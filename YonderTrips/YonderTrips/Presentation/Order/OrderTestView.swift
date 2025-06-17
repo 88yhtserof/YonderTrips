@@ -16,16 +16,33 @@ struct OrderTestView: View {
         
         VStack {
             Button {
-                print("주문 생성")
                 viewMdoel.action(.requestOrderCreate)
             } label: {
                 Text("예약하기")
             }
         }
+        .overlay {
+            if viewMdoel.state.isPresentedPopup {
+                
+                if let errorMessage = viewMdoel.state.errorMessage {
+                    PopupView(
+                        title: errorMessage,
+                        isPresented: $viewMdoel.state.isPresentedPopup
+                    )
+                } else if let successMessage = viewMdoel.state.successMessage {
+                    PopupView(
+                        title: successMessage,
+                        isPresented: $viewMdoel.state.isPresentedPopup
+                    )
+                }
+            }
+        }
         .fullScreenCover(isPresented: $viewMdoel.state.isPresentedPaymentRequest) {
             
             if let orderCreate = viewMdoel.state.orderCreate {
-                PaymentRequestView(orderCreate: orderCreate)
+                PaymentRequestView(orderCreate: orderCreate) { result in
+                    viewMdoel.action(.didPaymentRequestFinish(result))
+                }
             }
         }
     }

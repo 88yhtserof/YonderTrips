@@ -20,6 +20,10 @@ final class OrderTestViewModel: ViewModelType {
     struct State {
         var isPresentedPaymentRequest: Bool = false
         var orderCreate: OrderCreate? = nil
+        
+        var isPresentedPopup: Bool = false
+        var successMessage: String? = nil
+        var errorMessage: String? = nil
     }
     
     func binding() {
@@ -32,6 +36,7 @@ extension OrderTestViewModel {
     
     enum Action {
         case requestOrderCreate
+        case didPaymentRequestFinish(Result<ReceiptOrder, YonderTripsNetworkError>)
     }
     
     @MainActor
@@ -41,11 +46,28 @@ extension OrderTestViewModel {
             let orderRequest: OrderRequest = .init(activityId: "-", reservationItemName: "2025-06-18", reservationItemTime: "10:00", participantCount: 1, totalPrice: 116)
             
             Task {
-                let order = try await orderUseCase.requestOrderCreate(with: orderRequest)
+                do {
+                    let order = try await orderUseCase.requestOrderCreate(with: orderRequest)
+                    state.orderCreate = OrderCreate(orderId: order.orderId, orderCode: order.orderCode, totalPrice: order.totalPrice, createdAt: "2025-08-01T15:30:00.000Z", updatedAt: "2025-08-01T15:30:00.000Z")
+                    state.isPresentedPaymentRequest = true
+                    
+                } catch {
+                    state.errorMessage = error.localizedDescription
+                    state.isPresentedPopup = true
+                }
+            }
+            
+        case .didPaymentRequestFinish(let result):
+            switch result {
+            case .success:
+                state.errorMessage = nil
+                state.successMessage = "결제가 완료되었습니다."
+                state.isPresentedPopup = true
                 
-                state.orderCreate = OrderCreate(orderId: order.orderId, orderCode: order.orderCode, totalPrice: 111, createdAt: "2025-08-01T15:30:00.000Z", updatedAt: "2025-08-01T15:30:00.000Z")
-                
-                state.isPresentedPaymentRequest = true
+            case .failure(let error):
+                state.successMessage = nil
+                state.errorMessage = error.localizedDescription
+                state.isPresentedPopup = true
             }
         }
     }
