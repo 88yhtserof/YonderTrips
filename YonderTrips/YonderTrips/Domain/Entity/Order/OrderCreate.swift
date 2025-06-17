@@ -11,6 +11,6 @@ struct OrderCreate {
     let orderId: String
     let orderCode: String
     let totalPrice: Int
-    let createdAt: Date
-    let updatedAt: Date
+    let createdAt: String
+    let updatedAt: String
 }
