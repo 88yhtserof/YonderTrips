@@ -1,5 +1,5 @@
 //
-//  YonderTripsActivityAPI.swift
+//  YTActivityAPI.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 5/28/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum YonderTripsActivityAPI: APIConfiguration, APIErrorConvertible {
+enum YTActivityAPI: APIConfiguration, APIErrorConvertible {
     case new(ActivityCountry, ActivityCategory)
     case detail(String)
     case activities(ActivityCountry, ActivityCategory, String)
@@ -58,10 +58,10 @@ enum YonderTripsActivityAPI: APIConfiguration, APIErrorConvertible {
     }
 }
 
-private extension YonderTripsActivityAPI {
+private extension YTActivityAPI {
     
     var urlComponents: URLComponents {
-        var components = URLComponents(string: YonderTripsAPIProvider.baseURL)
+        var components = URLComponents(string: YTAPIProvider.baseURL)
         components?.path = path + endPoint
         components?.queryItems = parameters
         return components ?? URLComponents()

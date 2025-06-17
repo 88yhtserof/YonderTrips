@@ -1,5 +1,5 @@
 //
-//  YonderTripsUserAPI.swift
+//  YTUserAPI.swift
 //  YonderTrips-Practice
 //
 //  Created by 임윤휘 on 5/10/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum YonderTripsUserAPI: APIConfiguration, APIErrorConvertible {
+enum YTUserAPI: APIConfiguration, APIErrorConvertible {
     case emailValidation(EmailValidationRequestDTO)
     case join(JoinRequestDTO)
     case emailLogin(EmailLoginRequestDTO)
@@ -73,10 +73,10 @@ enum YonderTripsUserAPI: APIConfiguration, APIErrorConvertible {
     }
 }
 
-private extension YonderTripsUserAPI {
+private extension YTUserAPI {
     
     var urlComponents: URLComponents {
-        var components = URLComponents(string: YonderTripsAPIProvider.baseURL)
+        var components = URLComponents(string: YTAPIProvider.baseURL)
         components?.path = path + endPoint
         components?.queryItems = parameters
         return components ?? URLComponents()

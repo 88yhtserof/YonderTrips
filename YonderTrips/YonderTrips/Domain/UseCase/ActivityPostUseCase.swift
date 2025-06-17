@@ -15,7 +15,7 @@ struct ActivityPostUseCase {
                              latitude: Double? = nil,
                              maxDistance: Double? = nil,
                              next: String = "",
-                             order_by: YonderTripsActivityPostAPI.OrderBy = .createdAt)
+                             order_by: YTActivityPostAPI.OrderBy = .createdAt)
     async throws -> PostSummaryPagination
     {
         let response: PostSummaryPaginationResponseDTO = try await NetworkService.requestWithAuth(apiProvider: .activityPost(

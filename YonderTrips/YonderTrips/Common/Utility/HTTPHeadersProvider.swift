@@ -11,19 +11,19 @@ struct HTTPHeadersProvider {
     
     static var apiKey: [String: String] {
         ["accept": "application/json",
-         "SeSACKey": YonderTripsAPIProvider.apiKey]
+         "SeSACKey": YTAPIProvider.apiKey]
     }
     
     static var refresh: [String: String] {
         ["accept": "application/json",
          "RefreshToken": AuthTokenProvider.refresh.token ?? "",
          "Authorization": AuthTokenProvider.access.token ?? "",
-         "SeSACKey": YonderTripsAPIProvider.apiKey]
+         "SeSACKey": YTAPIProvider.apiKey]
     }
     
     static var auth: [String: String] {
         ["accept": "application/json",
          "Authorization": AuthTokenProvider.access.token ?? "",
-         "SeSACKey": YonderTripsAPIProvider.apiKey]
+         "SeSACKey": YTAPIProvider.apiKey]
     }
 }

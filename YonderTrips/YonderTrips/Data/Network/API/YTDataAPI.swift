@@ -1,5 +1,5 @@
 //
-//  YonderTripsDataAPI.swift
+//  YTDataAPI.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 6/2/25.
@@ -7,15 +7,15 @@
 
 import Foundation
 
-enum YonderTripsDataAPI {
+enum YTDataAPI {
     case data(String)
     
     var url: URL? {
-        return URL(string: YonderTripsAPIProvider.baseURL + endPoint)
+        return URL(string: YTAPIProvider.baseURL + endPoint)
     }
 }
 
-private extension YonderTripsDataAPI {
+private extension YTDataAPI {
     
     var endPoint: String {
         switch self {
