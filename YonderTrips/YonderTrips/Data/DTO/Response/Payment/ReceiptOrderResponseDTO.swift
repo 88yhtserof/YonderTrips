@@ -10,8 +10,8 @@ import Foundation
 struct ReceiptOrderResponseDTO: Decodable {
     let paymentId: String
     let orderItem: OrderResponseDTO
-    let createdAt: Date
-    let updatedAt: Date
+    let createdAt: String
+    let updatedAt: String
     
     enum CodingKeys: String, CodingKey {
         case paymentId = "payment_id"
@@ -24,18 +24,8 @@ struct ReceiptOrderResponseDTO: Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         paymentId = try container.decode(String.self, forKey: .paymentId)
         orderItem = try container.decode(OrderResponseDTO.self, forKey: .orderItem)
-        
-        let dateFormatter = ISO8601DateFormatter()
-        let createdAtString = try container.decode(String.self, forKey: .createdAt)
-        let updatedAtString = try container.decode(String.self, forKey: .updatedAt)
-        
-        guard let createdAt = dateFormatter.date(from: createdAtString),
-              let updatedAt = dateFormatter.date(from: updatedAtString) else {
-            throw DecodingError.dataCorruptedError(forKey: .createdAt, in: container, debugDescription: "Invalid date format")
-        }
-        
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
+        createdAt = try container.decode(String.self, forKey: .createdAt)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt)
     }
 }
 

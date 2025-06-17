@@ -10,6 +10,6 @@ import Foundation
 struct ReceiptOrder {
     let paymentId: String
     let orderItem: OrderResponse
-    let createdAt: Date
-    let updatedAt: Date
+    let createdAt: String
+    let updatedAt: String
 }

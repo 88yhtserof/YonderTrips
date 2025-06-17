@@ -13,6 +13,7 @@ enum YTAPIProvider {
     case activity(YTActivityAPI)
     case activityPost(YTActivityPostAPI)
     case order(YTOrderAPI)
+    case payment(YTPaymentAPI)
     
     var api: APIConfiguration & APIErrorConvertible {
         switch self {
@@ -25,6 +26,8 @@ enum YTAPIProvider {
         case .activityPost(let api):
             return api
         case .order(let api):
+            return api
+        case .payment(let api):
             return api
         }
     }

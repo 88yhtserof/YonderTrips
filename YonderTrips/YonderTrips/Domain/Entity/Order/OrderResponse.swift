@@ -15,7 +15,7 @@ struct OrderResponse {
     let reservationItemTime: String
     let participantCount: Int
     let activity: ActivitySummary
-    let paidAt: Date
-    let createdAt: Date
-    let updatedAt: Date
+    let paidAt: String
+    let createdAt: String
+    let updatedAt: String
 }

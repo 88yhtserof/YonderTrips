@@ -15,9 +15,9 @@ struct OrderResponseDTO: Decodable {
     let reservationItemTime: String
     let participantCount: Int
     let activity: ActivitySummaryResponseDTO
-    let paidAt: Date
-    let createdAt: Date
-    let updatedAt: Date
+    let paidAt: String
+    let createdAt: String
+    let updatedAt: String
     
     enum CodingKeys: String, CodingKey {
         case orderId = "order_id"
@@ -41,21 +41,9 @@ struct OrderResponseDTO: Decodable {
         reservationItemTime = try container.decode(String.self, forKey: .reservationItemTime)
         participantCount = try container.decode(Int.self, forKey: .participantCount)
         activity = try container.decode(ActivitySummaryResponseDTO.self, forKey: .activity)
-        
-        let dateFormatter = ISO8601DateFormatter()
-        let paidAtString = try container.decode(String.self, forKey: .paidAt)
-        let createdAtString = try container.decode(String.self, forKey: .createdAt)
-        let updatedAtString = try container.decode(String.self, forKey: .updatedAt)
-        
-        guard let paidAt = dateFormatter.date(from: paidAtString),
-              let createdAt = dateFormatter.date(from: createdAtString),
-              let updatedAt = dateFormatter.date(from: updatedAtString) else {
-            throw DecodingError.dataCorruptedError(forKey: .paidAt, in: container, debugDescription: "Invalid date format")
-        }
-        
-        self.paidAt = paidAt
-        self.createdAt = createdAt
-        self.updatedAt = updatedAt
+        paidAt = try container.decode(String.self, forKey: .paidAt)
+        createdAt = try container.decode(String.self, forKey: .createdAt)
+        updatedAt = try container.decode(String.self, forKey: .updatedAt)
     }
 }
 
