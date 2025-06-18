@@ -21,7 +21,7 @@ struct ActivityDetail: View {
                     
                     LinearGradient(
                         gradient: Gradient(stops: [
-                            .init(color: Color.gray0, location: 0.15),
+                            .init(color: Color.gray15, location: 0.15),
                             .init(color: Color.clear, location: 0.65)
                         ]),
                         startPoint: .bottom,
@@ -32,9 +32,13 @@ struct ActivityDetail: View {
                 activityDetailInfoView()
                     .padding(.top, -200)
                     .padding(20)
+                
+                restrictionInfoView()
+                    .frame(maxWidth: .infinity)
+                    .frame(alignment: .center)
             }
         }
-        .background(.gray0)
+        .background(.gray15)
         .ignoresSafeArea()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -95,6 +99,45 @@ extension ActivityDetail {
                 .font(.yt(.pretendard(.body3)))
         }
         .foregroundStyle(.gray45)
+    }
+    
+    func restrictionInfoView() -> some View {
+        
+        HStack(spacing: 20) {
+            restrictionInfoDetailView(.age, "연령 제한", "18세")
+            restrictionInfoDetailView(.height, "신장 제한", "150cm")
+            restrictionInfoDetailView(.people, "최대 참가 인원", "20명")
+        }
+        .padding()
+        .background(.gray0)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
+        .overlay {
+            RoundedRectangle(cornerRadius: 15)
+                .stroke(.gray30, lineWidth: 0.6)
+        }
+    }
+    
+    func restrictionInfoDetailView(_ imageResource: ImageResource, _ title: String, _ value: String) -> some View {
+        
+        HStack {
+            Image(imageResource)
+                .resizable()
+                .frame(width: 24, height: 24)
+                .padding(8)
+                .foregroundStyle(.gray60)
+                .background(.gray15)
+                .cornerRadius(10)
+            
+            VStack(alignment: .leading) {
+                Text(title)
+                    .foregroundStyle(.gray45)
+                    .font(.yt(.pretendard(.caption2)))
+                
+                Text(value)
+                    .foregroundStyle(.gray75)
+                    .font(.yt(.pretendard(.body3)))
+            }
+        }
     }
 }
 
