@@ -12,7 +12,7 @@ struct ActivityDetail: View {
     var body: some View {
         
         ScrollView {
-            VStack(alignment: .leading) {
+            VStack {
                 ZStack {
                     Image(.tripsPoster)
                         .resizable()
@@ -29,13 +29,20 @@ struct ActivityDetail: View {
                     )
                 }
                 
-                activityDetailInfoView()
-                    .padding(.top, -200)
-                    .padding(20)
+                VStack(alignment: .leading, spacing: 24) {
+                    activityDetailInfoView()
+                        .padding(.top, -200)
+                    
+                    restrictionInfoView()
+                        .frame(maxWidth: .infinity)
+                        .frame(alignment: .center)
+                    
+                    priceInfoView()
+                    
+                }
+                .padding(20)
                 
-                restrictionInfoView()
-                    .frame(maxWidth: .infinity)
-                    .frame(alignment: .center)
+                
             }
         }
         .background(.gray15)
@@ -136,6 +143,39 @@ extension ActivityDetail {
                 Text(value)
                     .foregroundStyle(.gray75)
                     .font(.yt(.pretendard(.body3)))
+            }
+        }
+    }
+    
+    func priceInfoView() -> some View {
+        
+        VStack(alignment: .leading, spacing: 10) {
+            
+            Text("341,000원")
+                .foregroundStyle(.gray45)
+                .font(.yt(.paperlogy(.caption1)))
+                .overlay {
+                    HStack {
+                        Image(.line)
+                            .frame(height: 16)
+                            .padding(.trailing, -25)
+                            .foregroundStyle(.blackSeafoam)
+                    }
+                    .padding(.top, 13)
+                }
+            
+            HStack(spacing: 8) {
+                Text("판매가")
+                    .foregroundStyle(.gray45)
+                    .font(.yt(.paperlogy(.body1)))
+                
+                Text("123,000원")
+                    .foregroundStyle(.gray75)
+                    .font(.yt(.paperlogy(.body1)))
+                
+                Text("63%")
+                    .foregroundStyle(.blackSeafoam)
+                    .font(.yt(.paperlogy(.body1)))
             }
         }
     }
