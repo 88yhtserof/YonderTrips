@@ -10,6 +10,7 @@ import SwiftUI
 struct ActivityDetail: View {
     
     var body: some View {
+        
         ScrollView {
             VStack(alignment: .leading) {
                 ZStack {
@@ -35,6 +36,13 @@ struct ActivityDetail: View {
         }
         .background(.gray0)
         .ignoresSafeArea()
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                FavoriteButtonView {
+                    print("Keep")
+                }
+            }
+        }
     }
 }
 
