@@ -42,7 +42,7 @@ struct ActivityDetail: View {
                 }
                 .padding(20)
                 
-                
+                ActivityCurriculumView()
             }
         }
         .background(.gray15)
@@ -69,7 +69,7 @@ extension ActivityDetail {
             
             HStack(spacing: 12) {
                 Text("스위스")
-                    .font(.yt(.pretendard(.body1)) .weight(.bold))
+                    .font(.yt(.pretendard(.body1)).weight(.bold))
                     .foregroundStyle(.gray60)
                 PointRewardTextView(pointReward: 200)
             }
