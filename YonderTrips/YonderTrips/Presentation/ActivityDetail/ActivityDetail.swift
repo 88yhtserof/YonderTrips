@@ -11,24 +11,82 @@ struct ActivityDetail: View {
     
     var body: some View {
         ScrollView {
-            ZStack {
-                Image(.tripsPoster)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: .infinity)
+            VStack(alignment: .leading) {
+                ZStack {
+                    Image(.tripsPoster)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity)
+                    
+                    LinearGradient(
+                        gradient: Gradient(stops: [
+                            .init(color: Color.gray0, location: 0.15),
+                            .init(color: Color.clear, location: 0.65)
+                        ]),
+                        startPoint: .bottom,
+                        endPoint: .top
+                    )
+                }
                 
-                LinearGradient(
-                    gradient: Gradient(stops: [
-                        .init(color: Color.gray0, location: 0.15),
-                        .init(color: Color.clear, location: 0.65)
-                    ]),
-                    startPoint: .bottom,
-                    endPoint: .top
-                )
+                activityDetailInfoView()
+                    .padding(.top, -200)
+                    .padding(20)
+            }
+        }
+        .background(.gray0)
+        .ignoresSafeArea()
+    }
+}
+
+//MARK: - View
+extension ActivityDetail {
+    
+    func activityDetailInfoView() -> some View {
+        
+        VStack(alignment: .leading, spacing: 12) {
+            Text("겨울 스키 원정대")
+                .font(.yt(.paperlogy(.title1)))
+                .foregroundStyle(.gray90)
+            
+            HStack(spacing: 12) {
+                Text("스위스")
+                    .font(.yt(.pretendard(.body1)) .weight(.bold))
+                    .foregroundStyle(.gray60)
+                PointRewardTextView(pointReward: 200)
             }
             
+            Text("""
+                 끝없이 펼쳐진 슬로프 위에서, 자유롭게 바람을 가르는 짜릿한 시간.
+                 눈부신 설경 속에서 넘어지고, 웃고, 다시 일어서며
+                 당신만의 새싹 스키 리듬을 찾아 떠나보세요.
+                 작은 도전들이 쌓여 어느새 자유롭게 슬로프를 누비는
+                 순간을 만날 수 있을 거예요.
+                 """)
+            .font(.yt(.pretendard(.caption1)))
+            .foregroundStyle(.gray60)
+            .lineSpacing(6)
+            
+            HStack {
+                activityTotalCountView(.buy, "누적 구매", 135)
+                activityTotalCountView(.keepFill, "KEEP", 378)
+            }
         }
-        .ignoresSafeArea()
+    }
+    
+    func activityTotalCountView(_ imageResource: ImageResource, _ title: String, _ count: Int) -> some View {
+        
+        HStack(spacing: 2) {
+            Image(imageResource)
+                .resizable()
+                .frame(width: 16, height: 16)
+            
+            Text(title)
+                .font(.yt(.pretendard(.body3)))
+            
+            Text("\(count)회")
+                .font(.yt(.pretendard(.body3)))
+        }
+        .foregroundStyle(.gray45)
     }
 }
 
