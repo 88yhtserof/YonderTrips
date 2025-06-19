@@ -10,7 +10,7 @@ import WebKit
 
 struct OrderTestView: View {
     
-    @StateObject var viewMdoel: OrderTestViewModel
+    @StateObject var viewMdoel: OrderViewModel
     
     var body: some View {
         

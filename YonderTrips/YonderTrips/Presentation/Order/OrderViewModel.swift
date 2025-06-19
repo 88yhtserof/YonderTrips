@@ -1,5 +1,5 @@
 //
-//  OrderTestViewModel.swift
+//  OrderViewModel.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 6/16/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class OrderTestViewModel: ViewModelType {
+final class OrderViewModel: ViewModelType {
     
     @Published var state = State()
     
@@ -32,7 +32,7 @@ final class OrderTestViewModel: ViewModelType {
 }
 
 //MARK: - Action
-extension OrderTestViewModel {
+extension OrderViewModel {
     
     enum Action {
         case requestOrderCreate
@@ -43,7 +43,7 @@ extension OrderTestViewModel {
     func action(_ action: Action) {
         switch action {
         case .requestOrderCreate:
-            let orderRequest: OrderRequest = .init(activityId: "-", reservationItemName: "2025-06-18", reservationItemTime: "10:00", participantCount: 1, totalPrice: 116)
+            let orderRequest = OrderRequest(activityId: "-", reservationItemName: "2025-06-18", reservationItemTime: "10:00", participantCount: 1, totalPrice: 116)
             
             Task {
                 do {

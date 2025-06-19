@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ActivityDetailView: View {
     
+    @StateObject var orderViewMdoel: OrderViewModel
+    
     var body: some View {
         
         ScrollView {
@@ -65,6 +67,30 @@ struct ActivityDetailView: View {
             }
         }
         .toolbarBackground(.hidden, for: .navigationBar)
+        .overlay {
+            if orderViewMdoel.state.isPresentedPopup {
+                
+                if let errorMessage = orderViewMdoel.state.errorMessage {
+                    PopupView(
+                        title: errorMessage,
+                        isPresented: $orderViewMdoel.state.isPresentedPopup
+                    )
+                } else if let successMessage = orderViewMdoel.state.successMessage {
+                    PopupView(
+                        title: successMessage,
+                        isPresented: $orderViewMdoel.state.isPresentedPopup
+                    )
+                }
+            }
+        }
+        .fullScreenCover(isPresented: $orderViewMdoel.state.isPresentedPaymentRequest) {
+            
+            if let orderCreate = orderViewMdoel.state.orderCreate {
+                PaymentRequestView(orderCreate: orderCreate) { result in
+                    orderViewMdoel.action(.didPaymentRequestFinish(result))
+                }
+            }
+        }
     }
 }
 
@@ -225,10 +251,6 @@ extension ActivityDetailView {
 extension ActivityDetailView {
     
     func handlePaymentButton() {
-        print("결제하기")
+        orderViewMdoel.action(.requestOrderCreate)
     }
-}
-
-#Preview {
-    ActivityDetailView()
 }

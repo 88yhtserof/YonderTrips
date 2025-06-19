@@ -34,6 +34,7 @@ struct HomeView: View {
                         .frame(maxWidth: .infinity)
                         .frame(height: 360)
                         .padding(.bottom, 8)
+                        .environmentObject(homeRouter)
                     
                     VerticalDivider()
                     
@@ -82,8 +83,9 @@ struct HomeView: View {
                 switch flow {
                 case let .activityList(category, country):
                     ActivityListView(viewModel: container.makeActivityListViewModel(category: category, country: country))
+                        .environmentObject(homeRouter)
                 case .activityDetail:
-                    Text("")
+                    ActivityDetailView(orderViewMdoel: container.makeOrderViewModel())
                 case let .activityPostList(category, country):
                     Text("")
                 case .activityPostDetail:
