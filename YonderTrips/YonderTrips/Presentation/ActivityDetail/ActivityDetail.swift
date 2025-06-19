@@ -12,7 +12,7 @@ struct ActivityDetail: View {
     var body: some View {
         
         ScrollView {
-            VStack {
+            VStack(spacing: 10) {
                 ZStack {
                     Image(.tripsPoster)
                         .resizable()
@@ -43,7 +43,10 @@ struct ActivityDetail: View {
                 .padding(20)
                 
                 ActivityCurriculumView()
+                
+                ActivityReservationListView(reservations: ActivityReservationItem.dummyData)
             }
+            .padding(.bottom, 150)
         }
         .background(.gray15)
         .ignoresSafeArea()
