@@ -1,5 +1,5 @@
 //
-//  ActivityDetail.swift
+//  ActivityDetailView.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 6/18/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ActivityDetail: View {
+struct ActivityDetailView: View {
     
     var body: some View {
         
@@ -57,11 +57,18 @@ struct ActivityDetail: View {
                 }
             }
         }
+        .overlay {
+            
+            VStack {
+                Spacer()
+                paymentBottomView()
+            }
+        }
     }
 }
 
 //MARK: - View
-extension ActivityDetail {
+extension ActivityDetailView {
     
     func activityDetailInfoView() -> some View {
         
@@ -182,8 +189,45 @@ extension ActivityDetail {
             }
         }
     }
+    
+    func paymentBottomView() -> some View {
+        
+        VStack(spacing: 0) {
+            
+            Divider()
+            
+            HStack {
+                Text("123,000원")
+                    .font(.yt(.pretendard(.title1)))
+                    .foregroundColor(.gray90)
+                
+                Spacer()
+                
+                Button(action: handlePaymentButton) {
+                    Text("결제하기")
+                        .font(.yt(.pretendard(.title1)))
+                        .foregroundColor(.gray0)
+                        .padding(.vertical, 12)
+                        .padding(.horizontal, 30)
+                        .background(.blackSeafoam)
+                        .cornerRadius(6)
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .background(.gray0)
+        }
+    }
+}
+
+//MARK: - Action
+extension ActivityDetailView {
+    
+    func handlePaymentButton() {
+        print("결제하기")
+    }
 }
 
 #Preview {
-    ActivityDetail()
+    ActivityDetailView()
 }
