@@ -111,7 +111,7 @@ struct ActivityListCellView: View {
         .padding(.vertical, 8)
         .padding(.horizontal, 16)
         .onTapGesture {
-            homeRouter.path.append(HomeFlowRouter.HomeFlow.activityDetail)
+            homeRouter.path.append(HomeFlowRouter.HomeFlow.activityDetail(activity))
         }
     }
 }

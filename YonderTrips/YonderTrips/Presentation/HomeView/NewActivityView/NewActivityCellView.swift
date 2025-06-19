@@ -21,7 +21,7 @@ struct NewActivityCellView: View {
                 .overlay {
                     Color.gray100.opacity(0.28)
                         .onTapGesture {
-                            homeRouter.path.append(HomeFlowRouter.HomeFlow.activityDetail)
+                            homeRouter.path.append(HomeFlowRouter.HomeFlow.activityDetail(item))
                         }
                 }
             

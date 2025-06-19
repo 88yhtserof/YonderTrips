@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ActivityDetailView: View {
     
+    @StateObject var activityDetailViewMdoel: ActivityDetailViewModel
     @StateObject var orderViewMdoel: OrderViewModel
     
     var body: some View {
@@ -16,10 +17,7 @@ struct ActivityDetailView: View {
         ScrollView {
             VStack(spacing: 10) {
                 ZStack {
-                    Image(.tripsPoster)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: .infinity)
+                    DataImageView(urlString: activityDetailViewMdoel.state.activity.imageThumbnail)
                     
                     LinearGradient(
                         gradient: Gradient(stops: [
@@ -44,9 +42,9 @@ struct ActivityDetailView: View {
                 }
                 .padding(20)
                 
-                ActivityCurriculumView()
+                ActivityCurriculumView(items: activityDetailViewMdoel.state.activity.schedule)
                 
-                ActivityReservationListView(reservations: ActivityReservationItem.dummyData)
+                ActivityReservationListView(reservations: activityDetailViewMdoel.state.activity.reservationList)
             }
             .padding(.bottom, 150)
         }
@@ -100,31 +98,25 @@ extension ActivityDetailView {
     func activityDetailInfoView() -> some View {
         
         VStack(alignment: .leading, spacing: 12) {
-            Text("겨울 스키 원정대")
+            Text(activityDetailViewMdoel.state.activity.title)
                 .font(.yt(.paperlogy(.title1)))
                 .foregroundStyle(.gray90)
             
             HStack(spacing: 12) {
-                Text("스위스")
+                Text(activityDetailViewMdoel.state.activity.country)
                     .font(.yt(.pretendard(.body1)).weight(.bold))
                     .foregroundStyle(.gray60)
-                PointRewardTextView(pointReward: 200)
+                PointRewardTextView(pointReward: activityDetailViewMdoel.state.activity.pointReward)
             }
             
-            Text("""
-                 끝없이 펼쳐진 슬로프 위에서, 자유롭게 바람을 가르는 짜릿한 시간.
-                 눈부신 설경 속에서 넘어지고, 웃고, 다시 일어서며
-                 당신만의 새싹 스키 리듬을 찾아 떠나보세요.
-                 작은 도전들이 쌓여 어느새 자유롭게 슬로프를 누비는
-                 순간을 만날 수 있을 거예요.
-                 """)
+            Text(activityDetailViewMdoel.state.activity.description)
             .font(.yt(.pretendard(.caption1)))
             .foregroundStyle(.gray60)
             .lineSpacing(6)
             
             HStack {
-                activityTotalCountView(.buy, "누적 구매", 135)
-                activityTotalCountView(.keepFill, "KEEP", 378)
+                activityTotalCountView(.buy, "누적 구매", activityDetailViewMdoel.state.activity.totalOrderCount)
+                activityTotalCountView(.keepFill, "KEEP", activityDetailViewMdoel.state.activity.keepCount)
             }
         }
     }
@@ -148,9 +140,9 @@ extension ActivityDetailView {
     func restrictionInfoView() -> some View {
         
         HStack(spacing: 20) {
-            restrictionInfoDetailView(.age, "연령 제한", "18세")
-            restrictionInfoDetailView(.height, "신장 제한", "150cm")
-            restrictionInfoDetailView(.people, "최대 참가 인원", "20명")
+            restrictionInfoDetailView(.age, "연령 제한", "\(activityDetailViewMdoel.state.activity.restrictions?.minAge ?? 0)세")
+            restrictionInfoDetailView(.height, "신장 제한", "\(activityDetailViewMdoel.state.activity.restrictions?.minHeight ?? 0)cm")
+            restrictionInfoDetailView(.people, "최대 참가 인원", "\(activityDetailViewMdoel.state.activity.restrictions?.maxParticipants ?? 0)명")
         }
         .padding()
         .background(.gray0)
@@ -188,7 +180,7 @@ extension ActivityDetailView {
         
         VStack(alignment: .leading, spacing: 10) {
             
-            Text("341,000원")
+            Text("\(activityDetailViewMdoel.state.activity.price.original)원")
                 .foregroundStyle(.gray45)
                 .font(.yt(.paperlogy(.caption1)))
                 .overlay {
@@ -206,11 +198,11 @@ extension ActivityDetailView {
                     .foregroundStyle(.gray45)
                     .font(.yt(.paperlogy(.body1)))
                 
-                Text("123,000원")
+                Text("\(activityDetailViewMdoel.state.activity.price.final)원")
                     .foregroundStyle(.gray75)
                     .font(.yt(.paperlogy(.body1)))
                 
-                Text("63%")
+                Text("\(63)%")
                     .foregroundStyle(.blackSeafoam)
                     .font(.yt(.paperlogy(.body1)))
             }
@@ -224,7 +216,7 @@ extension ActivityDetailView {
             Divider()
             
             HStack {
-                Text("123,000원")
+                Text("\(activityDetailViewMdoel.state.activity.price.final)원")
                     .font(.yt(.pretendard(.title1)))
                     .foregroundColor(.gray90)
                 

@@ -84,8 +84,8 @@ struct HomeView: View {
                 case let .activityList(category, country):
                     ActivityListView(viewModel: container.makeActivityListViewModel(category: category, country: country))
                         .environmentObject(homeRouter)
-                case .activityDetail:
-                    ActivityDetailView(orderViewMdoel: container.makeOrderViewModel())
+                case .activityDetail(let activity):
+                    ActivityDetailView(activityDetailViewMdoel: ActivityDetailViewModel(activity: activity), orderViewMdoel: container.makeOrderViewModel())
                 case let .activityPostList(category, country):
                     Text("")
                 case .activityPostDetail:
