@@ -67,16 +67,7 @@ struct ActivityListCellView: View {
                             .foregroundStyle(.gray60)
                     }
                     
-                    HStack(spacing: 2) {
-                        Image(.point)
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                            .foregroundStyle(.blackSeafoam)
-                        
-                        Text("\(activity.pointReward)P")
-                            .font(.yt(.paperlogy(.caption2)))
-                            .foregroundStyle(.gray60)
-                    }
+                    PointRewardTextView(pointReward: activity.pointReward)
                 }
                 .padding(.top, 16)
                 

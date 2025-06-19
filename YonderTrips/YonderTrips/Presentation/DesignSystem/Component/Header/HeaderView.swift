@@ -46,10 +46,4 @@ struct HeaderView<Label>: View where Label: View {
         .padding(16)
     }
 }
-//
-//#Preview {
-//    HeaderView(title: "NewActivity", buttonTitle: "View All") {
-//        print("did Button Tapped")
-//    }
-//}
 

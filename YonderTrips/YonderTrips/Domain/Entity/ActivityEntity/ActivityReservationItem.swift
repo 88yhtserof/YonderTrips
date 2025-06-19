@@ -11,3 +11,14 @@ struct ActivityReservationItem: Hashable {
     let itemName: String
     let times: [ActivityReservationTime]
 }
+
+extension ActivityReservationItem {
+    
+    var itemDate: Date? {
+        YTDateFormatter.date(from: itemName, format: .yyyyMMdd)
+    }
+    
+    var isFullyReserved: Bool {
+        times.first{ !$0.isReserved } == nil
+    }
+}
