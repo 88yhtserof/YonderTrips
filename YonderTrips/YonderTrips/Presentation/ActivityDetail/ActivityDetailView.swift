@@ -64,6 +64,7 @@ struct ActivityDetailView: View {
                 paymentBottomView()
             }
         }
+        .toolbarBackground(.hidden, for: .navigationBar)
     }
 }
 
