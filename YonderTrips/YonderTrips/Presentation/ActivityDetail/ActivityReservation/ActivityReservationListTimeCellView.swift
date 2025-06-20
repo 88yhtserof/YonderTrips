@@ -26,7 +26,6 @@ struct ActivityReservationListTimeCellView: View {
 extension ActivityReservationListTimeCellView {
     
     func handleSelection() {
-        print(#function)
         isSelected = true
     }
 }

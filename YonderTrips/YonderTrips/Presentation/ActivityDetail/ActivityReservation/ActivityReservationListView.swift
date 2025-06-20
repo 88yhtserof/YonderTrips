@@ -10,8 +10,8 @@ import SwiftUI
 struct ActivityReservationListView: View {
     
     let reservations: [ActivityReservationItem]
-    @State var selectedItemName: String?
-    @State var selectedItemTime: String?
+    @Binding var selectedItemName: String?
+    @Binding var selectedItemTime: String?
     
     private var selectedReservation: ActivityReservationItem? {
         reservations.first{ $0.itemName == selectedItemName }
@@ -70,9 +70,4 @@ struct ActivityReservationListView: View {
             .animation(.easeInOut(duration: 0.4), value: selectedReservation)
         }
     }
-}
-
-#Preview {
-    
-    ActivityReservationListView(reservations: ActivityReservationItem.dummyData)
 }

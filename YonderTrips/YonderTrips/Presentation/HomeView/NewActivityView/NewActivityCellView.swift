@@ -9,6 +9,8 @@ import SwiftUI
 
 struct NewActivityCellView: View {
     
+    @EnvironmentObject private var homeRouter: HomeFlowRouter
+    
     let item: Activity
     
     var body: some View {
@@ -18,6 +20,9 @@ struct NewActivityCellView: View {
                 .frame(width: 300, height: 350)
                 .overlay {
                     Color.gray100.opacity(0.28)
+                        .onTapGesture {
+                            homeRouter.path.append(HomeFlowRouter.HomeFlow.activityDetail(item))
+                        }
                 }
             
             VStack(alignment: .leading, spacing: 8) {

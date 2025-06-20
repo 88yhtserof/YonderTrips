@@ -63,6 +63,12 @@ extension DIContainer {
         let activityUseCase = ActivityUseCase()
         return ActivityListViewModel(activityUseCase: activityUseCase, category: category, country: country)
     }
+    
+    func makeOrderViewModel() -> OrderViewModel {
+        
+        let orderUseCase = OrderUseCase()
+        return OrderViewModel(orderUseCase: orderUseCase)
+    }
 }
 
 // Environment

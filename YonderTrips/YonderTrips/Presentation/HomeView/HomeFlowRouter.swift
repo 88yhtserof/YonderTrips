@@ -13,7 +13,7 @@ final class HomeFlowRouter: ObservableObject {
     
     enum HomeFlow: Hashable {
         case activityList(ActivityCategory, ActivityCountry)
-        case activityDetail
+        case activityDetail(Activity)
         case activityPostList(ActivityCategory, ActivityCountry)
         case activityPostDetail
         case activityFilter(ActivityCategory, ActivityCountry)
