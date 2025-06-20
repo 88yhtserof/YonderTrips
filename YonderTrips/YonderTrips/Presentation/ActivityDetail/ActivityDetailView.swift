@@ -35,10 +35,9 @@ struct ActivityDetailView: View {
                     )
                 }
                 
-                Group {
+                VStack {
                     VStack(alignment: .leading, spacing: 24) {
                         activityDetailInfoView()
-                            .padding(.top, -200)
                         
                         restrictionInfoView()
                             .frame(maxWidth: .infinity)
@@ -57,6 +56,7 @@ struct ActivityDetailView: View {
                                                 selectedItemTime: $activityDetailViewMdoel.state.selectedItemTime)
                 }
                 .frame(width: 400)
+                .padding(.top, -200)
             }
             .padding(.bottom, 150)
         }
