@@ -16,8 +16,14 @@ struct ActivityDetailView: View {
         
         ScrollView {
             VStack(spacing: 10) {
+                
                 ZStack {
                     DataImageView(urlString: activityDetailViewMdoel.state.activity.imageThumbnail)
+                        .frame(height: 500)
+                        .frame(maxWidth: .infinity)
+                        .background(.gray0)
+                        .clipped()
+                        .aspectRatio(contentMode: .fill)
                     
                     LinearGradient(
                         gradient: Gradient(stops: [
@@ -29,24 +35,28 @@ struct ActivityDetailView: View {
                     )
                 }
                 
-                VStack(alignment: .leading, spacing: 24) {
-                    activityDetailInfoView()
-                        .padding(.top, -200)
+                Group {
+                    VStack(alignment: .leading, spacing: 24) {
+                        activityDetailInfoView()
+                            .padding(.top, -200)
+                        
+                        restrictionInfoView()
+                            .frame(maxWidth: .infinity)
+                            .frame(alignment: .center)
+                        
+                        priceInfoView()
+                        
+                    }
+                    .padding(20)
                     
-                    restrictionInfoView()
-                        .frame(maxWidth: .infinity)
-                        .frame(alignment: .center)
                     
-                    priceInfoView()
+                    ActivityCurriculumView(items: activityDetailViewMdoel.state.activity.schedule)
                     
+                    ActivityReservationListView(reservations: activityDetailViewMdoel.state.activity.reservationList,
+                                                selectedItemName: $activityDetailViewMdoel.state.selectedItemName,
+                                                selectedItemTime: $activityDetailViewMdoel.state.selectedItemTime)
                 }
-                .padding(20)
-                
-                ActivityCurriculumView(items: activityDetailViewMdoel.state.activity.schedule)
-                
-                ActivityReservationListView(reservations: activityDetailViewMdoel.state.activity.reservationList,
-                                            selectedItemName: $activityDetailViewMdoel.state.selectedItemName,
-                                            selectedItemTime: $activityDetailViewMdoel.state.selectedItemTime)
+                .frame(width: 400)
             }
             .padding(.bottom, 150)
         }
@@ -65,6 +75,7 @@ struct ActivityDetailView: View {
                 Spacer()
                 paymentBottomView()
             }
+            .frame(width: 400)
         }
         .toolbarBackground(.hidden, for: .navigationBar)
         .overlay {
