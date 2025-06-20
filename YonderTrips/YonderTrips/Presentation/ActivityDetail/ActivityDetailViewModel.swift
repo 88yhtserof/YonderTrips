@@ -16,12 +16,14 @@ final class ActivityDetailViewModel: ViewModelType {
     init(activity: Activity) {
         self.activity = activity
         self.state = State(activity: activity)
-        
+        print(activity)
         binding()
     }
     
     struct State {
         var activity: Activity
+        var selectedItemName: String?
+        var selectedItemTime: String?
     }
     
     func binding() {

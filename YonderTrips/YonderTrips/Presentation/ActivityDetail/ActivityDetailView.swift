@@ -44,7 +44,9 @@ struct ActivityDetailView: View {
                 
                 ActivityCurriculumView(items: activityDetailViewMdoel.state.activity.schedule)
                 
-                ActivityReservationListView(reservations: activityDetailViewMdoel.state.activity.reservationList)
+                ActivityReservationListView(reservations: activityDetailViewMdoel.state.activity.reservationList,
+                                            selectedItemName: $activityDetailViewMdoel.state.selectedItemName,
+                                            selectedItemTime: $activityDetailViewMdoel.state.selectedItemTime)
             }
             .padding(.bottom, 150)
         }
@@ -235,6 +237,7 @@ extension ActivityDetailView {
             .padding(.horizontal, 20)
             .padding(.top, 12)
             .background(.gray0)
+            .disabled(activityDetailViewMdoel.state.selectedItemName == nil || activityDetailViewMdoel.state.selectedItemTime == nil)
         }
     }
 }
@@ -243,6 +246,14 @@ extension ActivityDetailView {
 extension ActivityDetailView {
     
     func handlePaymentButton() {
-        orderViewMdoel.action(.requestOrderCreate)
+        orderViewMdoel.action(
+            .requestOrderCreate(
+                id: activityDetailViewMdoel.state.activity.activityId,
+                name: activityDetailViewMdoel.state.selectedItemName ?? "",
+                time: activityDetailViewMdoel.state.selectedItemTime ?? "",
+                participantCount: 1, // TODO: - 인원수 설정
+                totalPrice: activityDetailViewMdoel.state.activity.price.final
+            )
+        )
     }
 }

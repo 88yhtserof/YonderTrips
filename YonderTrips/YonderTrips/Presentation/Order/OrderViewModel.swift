@@ -35,20 +35,32 @@ final class OrderViewModel: ViewModelType {
 extension OrderViewModel {
     
     enum Action {
-        case requestOrderCreate
+        case requestOrderCreate(id: String, name: String, time: String, participantCount: Int, totalPrice: Int)
         case didPaymentRequestFinish(Result<ReceiptOrder, YonderTripsNetworkError>)
     }
     
     @MainActor
     func action(_ action: Action) {
         switch action {
-        case .requestOrderCreate:
-            let orderRequest = OrderRequest(activityId: "-", reservationItemName: "2025-06-18", reservationItemTime: "10:00", participantCount: 1, totalPrice: 116)
+        case let .requestOrderCreate(id, name, time, participantCount, totalPrice):
+            let orderRequest = OrderRequest(
+                activityId: id,
+                reservationItemName: name,
+                reservationItemTime: time,
+                participantCount: participantCount,
+                totalPrice: totalPrice
+            )
             
             Task {
                 do {
                     let order = try await orderUseCase.requestOrderCreate(with: orderRequest)
-                    state.orderCreate = OrderCreate(orderId: order.orderId, orderCode: order.orderCode, totalPrice: order.totalPrice, createdAt: "2025-08-01T15:30:00.000Z", updatedAt: "2025-08-01T15:30:00.000Z")
+                    state.orderCreate = OrderCreate(
+                        orderId: order.orderId,
+                        orderCode: order.orderCode,
+                        totalPrice: order.totalPrice,
+                        createdAt: YTDateFormatter.string(from: Date(), format: .iso8601),
+                        updatedAt: YTDateFormatter.string(from: Date(), format: .iso8601)
+                    )
                     state.isPresentedPaymentRequest = true
                     
                 } catch {
