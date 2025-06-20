@@ -22,11 +22,16 @@ struct ActivityListView: View {
                 
                 HeaderView<EmptyView>(title: "액티비티")
                 
-                VStack {
+                LazyVStack {
                     ForEach(viewModel.state.activityList, id: \.activityId) { activity in
                         ActivityListCellView(activity: activity)
                         
-                        VerticalDivider()
+                        if let last = viewModel.state.activityList.last,
+                           last.activityId == activity.activityId {
+                            sendAction(.pagination)
+                        } else {
+                            VerticalDivider()
+                        }
                     }
                 }
             }
@@ -40,5 +45,10 @@ struct ActivityListView: View {
         .onAppear {
             viewModel.action(.onAppear)
         }
+    }
+    
+    func sendAction(_ action: ActivityListViewModel.Action) -> some View {
+        viewModel.action(action)
+        return EmptyView()
     }
 }
