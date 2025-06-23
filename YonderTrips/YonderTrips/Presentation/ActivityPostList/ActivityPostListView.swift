@@ -14,11 +14,17 @@ struct ActivityPostListView: View {
     var body: some View {
         
         ScrollView {
+            
             VStack {
-                ForEach(postSummaryList, id: \.postId) { item in
-                    ActivityPostCellView(postSummary: item)
-                    
-                    VerticalDivider()
+                CustomSlider()
+                    .padding(16)
+                
+                VStack {
+                    ForEach(postSummaryList, id: \.postId) { item in
+                        ActivityPostCellView(postSummary: item)
+                        
+                        VerticalDivider()
+                    }
                 }
             }
         }
