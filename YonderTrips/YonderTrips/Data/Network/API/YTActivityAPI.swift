@@ -31,7 +31,8 @@ enum YTActivityAPI: APIConfiguration, APIErrorConvertible {
         case let .activities(country, category, id):
             return [URLQueryItem(name: "country", value: country.query),
                     URLQueryItem(name: "category", value: category.query),
-                    URLQueryItem(name: "next", value: id)]
+                    URLQueryItem(name: "next", value: id),
+                    URLQueryItem(name: "limit", value: "8")]
         default:
             return nil
         }
