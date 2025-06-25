@@ -41,7 +41,7 @@ final class ActivityPostListViewModel: ViewModelType {
     
     struct State {
         var postSummaryList: [PostSummary] = []
-        var maxDistance: Double = 10.0
+        var maxDistance: Double? = nil
     }
     
     func binding() {
@@ -77,7 +77,8 @@ extension ActivityPostListViewModel {
                     longtitude = currentLocation.coordinate.longitude
                     latitude = currentLocation.coordinate.latitude
                     
-                    guard state.postSummaryList.isEmpty else { return }
+                    guard state.postSummaryList.isEmpty,
+                          !isRequesting else { return }
                     
                     requestPostSummaryList()
                     
@@ -86,8 +87,8 @@ extension ActivityPostListViewModel {
                 }
             }
         case .requestList:
-            
-            guard state.postSummaryList.isEmpty else { return }
+            guard state.postSummaryList.isEmpty,
+                  !isRequesting else { return }
             
             requestPostSummaryList()
         }
@@ -95,13 +96,17 @@ extension ActivityPostListViewModel {
     
     @MainActor
     func requestPostSummaryList() {
+        isRequesting = true
         
         Task {
+            defer { isRequesting = false }
+            
             do {
                 let pagination: PostSummaryPagination = try await activityPostUseCase
                     .requestActivityPost(country: country, category: category, longitude: longtitude, latitude: latitude, maxDistance: state.maxDistance, next: nextCursorId, order_by: .createdAt)
                 
                 state.postSummaryList = pagination.data
+                print(state.postSummaryList.count)
             } catch {
                 YonderTripsLogger.shared.debug("Error")
             }

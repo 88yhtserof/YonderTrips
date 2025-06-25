@@ -12,6 +12,7 @@ struct ActivityFilterView: View {
     @EnvironmentObject private var homeRouter: HomeFlowRouter
     @State var selectedCategory: ActivityCategory
     @State var selectedCountry: ActivityCountry
+    let flow: HomeFlowRouter.HomeFlow
     
     var body: some View {
         
@@ -57,7 +58,14 @@ struct ActivityFilterView: View {
 extension ActivityFilterView {
     
     func handleDoneButton() {
-        print(#function)
-        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityList(selectedCategory, selectedCountry))
+        
+        switch flow {
+        case .activityList:
+            homeRouter.path.append(HomeFlowRouter.HomeFlow.activityList(selectedCategory, selectedCountry))
+        case .activityPostList:
+            homeRouter.path.append(HomeFlowRouter.HomeFlow.activityPostList(selectedCategory, selectedCountry))
+        default:
+            break
+        }
     }
 }

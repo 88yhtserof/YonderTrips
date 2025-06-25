@@ -11,11 +11,11 @@ final class HomeFlowRouter: ObservableObject {
     
     @Published var path = NavigationPath()
     
-    enum HomeFlow: Hashable {
+    indirect enum HomeFlow: Hashable {
         case activityList(ActivityCategory, ActivityCountry)
         case activityDetail(Activity)
         case activityPostList(ActivityCategory, ActivityCountry)
         case activityPostDetail
-        case activityFilter(ActivityCategory, ActivityCountry)
+        case activityFilter(ActivityCategory, ActivityCountry, HomeFlowRouter.HomeFlow)
     }
 }

@@ -43,38 +43,30 @@ final class LocationManager: NSObject, ObservableObject {
     }
     
     func requestAuthorization() {
-        print(self, "requestAuthorization")
-        
         
         manager.requestWhenInUseAuthorization()
     }
     
     func requestLocation() {
-        print(self, "requestLocation")
         manager.requestLocation()
     }
     
     func startUpdatingLocation() {
-        print(self, "startUpdatingLocation")
         manager.startUpdatingLocation()
     }
     
     func stopUpdatingLocation() {
-        print(self, "stopUpdatingLocation")
         manager.stopUpdatingLocation()
     }
     
     func requestCurrentLocation() async throws -> CLLocation {
-        print(self, "requestCurrentLocation")
         
         return try await withCheckedThrowingContinuation { continuation in
-            // 중복 요청 방지
-            print("requestCurrentLocation - 1111")
+            
             guard locationContinuation == nil else {
                 continuation.resume(throwing: ContinuationError.aleadyContinued)
                 return
             }
-            print("requestCurrentLocation - 2222")
             
             locationContinuation = continuation
             
@@ -91,7 +83,6 @@ final class LocationManager: NSObject, ObservableObject {
 extension LocationManager: CLLocationManagerDelegate {
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        print(self, "locationManagerDidChangeAuthorization")
         
         authorizationStatus = manager.authorizationStatus
         
@@ -110,7 +101,7 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print(self, "didUpdateLocations", locationContinuation)
+        
         guard let newLocation = locations.last else { return }
         self.location = newLocation
         locationDidUpdateSubject.send(newLocation)
@@ -129,7 +120,6 @@ extension LocationManager: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: any Error) {
-        print(self, "didFailWithError", locationContinuation)
         
         let clError = CLError(_nsError: error as NSError)
         
