@@ -1,0 +1,110 @@
+//
+//  ActivityPostListViewModel.swift
+//  YonderTrips
+//
+//  Created by 임윤휘 on 6/25/25.
+//
+
+import Foundation
+import Combine
+import CoreLocation
+
+final class ActivityPostListViewModel: ViewModelType {
+    
+    @Published var state = State()
+    
+    private let activityPostUseCase: ActivityPostUseCase
+    
+    private let locationManager = LocationManager(type: .once)
+    private var cancellables = Set<AnyCancellable>()
+    
+    let category: ActivityCategory
+    let country: ActivityCountry
+    
+    private var longtitude: Double?
+    private var latitude: Double?
+    
+    private var nextCursorId: String = ""
+    private var isRequesting: Bool = false
+    
+    init(
+        activityPostUseCase: ActivityPostUseCase,
+        category: ActivityCategory,
+        country: ActivityCountry
+    ) {
+        self.activityPostUseCase = activityPostUseCase
+        self.category = category
+        self.country = country
+        
+        binding()
+    }
+    
+    struct State {
+        var postSummaryList: [PostSummary] = []
+        var maxDistance: Double = 10.0
+    }
+    
+    func binding() {
+        
+        locationManager.locationDidUpdateSubject
+            .sink { location in
+                Task {
+                    await self.action(.requestList)
+                }
+            }
+            .store(in: &cancellables)
+    }
+}
+
+//MARK: - Action
+extension ActivityPostListViewModel {
+    
+    enum Action {
+        case requestCurrentLocation
+        case requestList
+    }
+    
+    @MainActor
+    func action(_ action: Action) {
+        switch action {
+        case .requestCurrentLocation:
+            Task {
+                do {
+                    locationManager.requestAuthorization()
+                    
+                    let currentLocation = try await locationManager.requestCurrentLocation()
+                    
+                    longtitude = currentLocation.coordinate.longitude
+                    latitude = currentLocation.coordinate.latitude
+                    
+                    guard state.postSummaryList.isEmpty else { return }
+                    
+                    requestPostSummaryList()
+                    
+                } catch {
+                    print("Error \(error.localizedDescription)")
+                }
+            }
+        case .requestList:
+            
+            guard state.postSummaryList.isEmpty else { return }
+            
+            requestPostSummaryList()
+        }
+    }
+    
+    @MainActor
+    func requestPostSummaryList() {
+        
+        Task {
+            do {
+                let pagination: PostSummaryPagination = try await activityPostUseCase
+                    .requestActivityPost(country: country, category: category, longitude: longtitude, latitude: latitude, maxDistance: state.maxDistance, next: nextCursorId, order_by: .createdAt)
+                
+                state.postSummaryList = pagination.data
+            } catch {
+                YonderTripsLogger.shared.debug("Error")
+            }
+        }
+    }
+}

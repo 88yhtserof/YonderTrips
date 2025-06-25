@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ActivityPostListView: View {
     
-    private let postSummaryList = PostSummary.dummyData
+    @StateObject var viewModel: ActivityPostListViewModel
     
     var body: some View {
         
@@ -20,7 +20,7 @@ struct ActivityPostListView: View {
                     .padding(16)
                 
                 VStack {
-                    ForEach(postSummaryList, id: \.postId) { item in
+                    ForEach(viewModel.state.postSummaryList, id: \.postId) { item in
                         ActivityPostCellView(postSummary: item)
                         
                         VerticalDivider()
@@ -29,9 +29,9 @@ struct ActivityPostListView: View {
             }
         }
         .background(.gray0)
+        .onAppear {
+            
+            viewModel.action(.requestCurrentLocation)
+        }
     }
-}
-
-#Preview {
-    ActivityPostListView()
 }
