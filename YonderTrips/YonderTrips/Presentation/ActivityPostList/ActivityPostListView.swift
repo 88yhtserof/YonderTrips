@@ -16,7 +16,7 @@ struct ActivityPostListView: View {
         ScrollView {
             
             VStack {
-                CustomSlider()
+                CustomSlider(sliderValue: $viewModel.state.maxDistance)
                     .padding(16)
                 
                 if viewModel.state.postSummaryList.isEmpty {
@@ -36,8 +36,10 @@ struct ActivityPostListView: View {
         }
         .background(.gray0)
         .onAppear {
-            
             viewModel.action(.requestCurrentLocation)
+        }
+        .onChange(of: viewModel.state.maxDistance) { value in
+            viewModel.action(.requestList(shouldReplaceList: true))
         }
     }
 }

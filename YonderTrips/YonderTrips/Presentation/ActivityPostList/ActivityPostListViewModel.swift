@@ -41,7 +41,7 @@ final class ActivityPostListViewModel: ViewModelType {
     
     struct State {
         var postSummaryList: [PostSummary] = []
-        var maxDistance: Double? = nil
+        var maxDistance: Double = 100.0
     }
     
     func binding() {
@@ -49,7 +49,7 @@ final class ActivityPostListViewModel: ViewModelType {
         locationManager.locationDidUpdateSubject
             .sink { location in
                 Task {
-                    await self.action(.requestList)
+                    await self.action(.requestList(shouldReplaceList: false))
                 }
             }
             .store(in: &cancellables)
@@ -61,7 +61,7 @@ extension ActivityPostListViewModel {
     
     enum Action {
         case requestCurrentLocation
-        case requestList
+        case requestList(shouldReplaceList: Bool)
     }
     
     @MainActor
@@ -86,7 +86,12 @@ extension ActivityPostListViewModel {
                     print("Error \(error.localizedDescription)")
                 }
             }
-        case .requestList:
+        case .requestList(let shouldReplaceList):
+            
+            if shouldReplaceList {
+                state.postSummaryList = []
+            }
+            
             guard state.postSummaryList.isEmpty,
                   !isRequesting else { return }
             
@@ -101,15 +106,26 @@ extension ActivityPostListViewModel {
         Task {
             defer { isRequesting = false }
             
+            let distance: Double?
+            let maxMeters: Double = 100_000 // 최대 100km
+            
+            if state.maxDistance >= 100 {
+                distance = nil
+            } else if state.maxDistance <= 0 {
+                distance = 1_000
+            } else {
+                distance = Double(state.maxDistance) / 100.0 * maxMeters
+            }
+            
             do {
                 let pagination: PostSummaryPagination = try await activityPostUseCase
-                    .requestActivityPost(country: country, category: category, longitude: longtitude, latitude: latitude, maxDistance: state.maxDistance, next: nextCursorId, order_by: .createdAt)
+                    .requestActivityPost(country: country, category: category, longitude: longtitude, latitude: latitude, maxDistance: distance, next: nextCursorId, order_by: .createdAt)
                 
                 state.postSummaryList = pagination.data
-                print(state.postSummaryList.count)
             } catch {
                 YonderTripsLogger.shared.debug("Error")
             }
         }
     }
 }
+//37.305107, 127.611543

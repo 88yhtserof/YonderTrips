@@ -8,8 +8,13 @@
 import SwiftUI
 
 struct CustomSlider: View {
-    @State private var sliderValue: Double = 30.0
+    
+    @Binding private var sliderValue: Double
     @State private var dragOffset: Double = 0.0
+    
+    init(sliderValue: Binding<Double>) {
+        self._sliderValue = sliderValue
+    }
     
     var body: some View {
         
@@ -106,5 +111,5 @@ extension CustomSlider {
 }
 
 #Preview {
-    CustomSlider()
+    CustomSlider(sliderValue: Binding(get: { 100.0 }, set: { _ in }))
 }
