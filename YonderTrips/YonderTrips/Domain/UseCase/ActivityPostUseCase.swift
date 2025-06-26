@@ -9,8 +9,8 @@ import Foundation
 
 struct ActivityPostUseCase {
     
-    func requestActivityPost(country: String? = nil,
-                             category: String? = nil,
+    func requestActivityPost(country: ActivityCountry? = nil,
+                             category: ActivityCategory? = nil,
                              longitude: Double? = nil,
                              latitude: Double? = nil,
                              maxDistance: Double? = nil,
@@ -19,8 +19,8 @@ struct ActivityPostUseCase {
     async throws -> PostSummaryPagination
     {
         let response: PostSummaryPaginationResponseDTO = try await NetworkService.requestWithAuth(apiProvider: .activityPost(
-            .geolocation(country: country,
-                         category: category,
+            .geolocation(country: country?.query,
+                         category: category?.query,
                          longitude: longitude,
                          latitude: latitude,
                          maxDistance: maxDistance,

@@ -87,11 +87,11 @@ struct HomeView: View {
                 case .activityDetail(let activity):
                     ActivityDetailView(activityDetailViewMdoel: ActivityDetailViewModel(activity: activity), orderViewMdoel: container.makeOrderViewModel())
                 case let .activityPostList(category, country):
-                    Text("")
+                    ActivityPostListView(viewModel: container.makeActivityPostListViewModel(category: category, country: country))
                 case .activityPostDetail:
                     Text("")
-                case let .activityFilter(category, country):
-                    ActivityFilterView(selectedCategory: category, selectedCountry: country)
+                case let .activityFilter(category, country, flow):
+                    ActivityFilterView(selectedCategory: category, selectedCountry: country, flow: flow)
                         .environmentObject(homeRouter)
                 }
             }
@@ -112,15 +112,15 @@ private extension HomeView {
     }
     
     func handleNewActivityViewAll() {
-        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(.none, .none))
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(.none, .none, .activityList(.none, .none)))
     }
     
     func handleActivityPostViewAll() {
-        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(.none, .none))
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(.none, .none, .activityPostList(.none, .none)))
     }
     
     func handleCategory(with category: ActivityCategory) {
-        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(category, .none))
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.activityFilter(category, .none, .activityList(category, .none)))
     }
     
     func handleNotiToolbarButton() {
