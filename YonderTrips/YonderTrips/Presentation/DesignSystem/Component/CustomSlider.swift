@@ -24,7 +24,7 @@ struct CustomSlider: View {
                     // Custom track
                     Rectangle()
                         .foregroundColor(.gray15)
-                        .frame(height: 16)
+                        .frame(height: 12)
                     
                     // Filled portion
                     Rectangle()
@@ -33,25 +33,26 @@ struct CustomSlider: View {
                         )
                         .frame(
                             width: widthOfSlider(width: geometry.size.width),
-                            height: 16
+                            height: 12
                         )
                         .offset(x: -geometry.size.width / 2 + ((geometry.size.width * CGFloat((sliderValue + (dragOffset / geometry.size.width * 100)) / 100)) / 2))
                 }
-                .frame(height: 16)
+                .frame(height: 12)
                 .cornerRadius(10)
-                .padding(16)
+                .padding(12)
                 .overlay {
                     indicatorView(width: geometry.size.width)
                 }
             }
         }
         .background(.gray0)
-        .frame(height: 16 * 3)
+        .frame(height: 12 * 3)
         .cornerRadius(6)
         .overlay {
             RoundedRectangle(cornerRadius: 10)
                 .stroke(LinearGradient(colors: [.lightSeafoam, .deepSeafoam, .lightSeafoam, .deepSeafoam], startPoint: .leading, endPoint: .trailing), lineWidth: 1)
         }
+        .padding(.horizontal, 16)
     }
 }
 
@@ -85,7 +86,7 @@ extension CustomSlider {
     
     func widthOfSlider(width: Double) -> Double {
         let result = width * CGFloat((sliderValue + (dragOffset / width * 100)) / 100)
-        let maxWidth = width - 16 * 2
+        let maxWidth = width - 12 * 2
         
         if result >= maxWidth {
             return maxWidth

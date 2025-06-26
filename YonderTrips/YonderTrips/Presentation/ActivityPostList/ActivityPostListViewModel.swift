@@ -42,6 +42,9 @@ final class ActivityPostListViewModel: ViewModelType {
     struct State {
         var postSummaryList: [PostSummary] = []
         var maxDistance: Double = 100.0
+        var maxDistanceRounded: Int {
+            Int(maxDistance.rounded())
+        }
     }
     
     func binding() {
