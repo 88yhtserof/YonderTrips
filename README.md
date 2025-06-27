@@ -74,10 +74,10 @@
 
 ## 📸 스크린샷
 
-<!-- 아래 표를 실제 이미지 경로로 맞춰 수정하세요 -->
 | 홈 화면 | 액티비티 화면 | 액티비티 포스트 화면 | 상세 화면 |
 |:--:|:--:|:--:|:--:|
-| ![홈](https://github.com/user-attachments/assets/e0d586f4-d246-4e80-84af-5178f9b1dde1) | ![액티비티](https://github.com/user-attachments/assets/fa316cac-9895-4079-89c0-f87b9c93ad4e) | ![포스트](https://github.com/user-attachments/assets/e5e7b212-ee1f-4d0a-bba9-10027ad21d52) | ![상세2](https://github.com/user-attachments/assets/de7b9e0c-0a3f-44f4-9c4b-5c3ccbce6338) |
+| ![홈](https://github.com/user-attachments/assets/c80688c9-3352-4a40-b105-6314186dbace) | ![액티비티](https://github.com/user-attachments/assets/fa316cac-9895-4079-89c0-f87b9c93ad4e) | ![포스트](https://github.com/user-attachments/assets/e5e7b212-ee1f-4d0a-bba9-10027ad21d52) | ![상세2](https://github.com/user-attachments/assets/de7b9e0c-0a3f-44f4-9c4b-5c3ccbce6338) |
+
 
 
 
