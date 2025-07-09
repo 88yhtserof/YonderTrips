@@ -1,5 +1,5 @@
 //
-//  CreateChatRequestDTO.swift
+//  CreatingChatRequestDTO.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 7/9/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CreateChatRequestDTO: Codable {
+struct CreatingChatRequestDTO: Encodable {
     let opponentId: String
 
     enum CodingKeys: String, CodingKey {

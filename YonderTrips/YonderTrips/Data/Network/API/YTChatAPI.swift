@@ -8,7 +8,7 @@
 import Foundation
 
 enum YTChatAPI: APIConfiguration, APIErrorConvertible {
-    case createChat(CreateChatRequestDTO)
+    case createChat(CreatingChatRequestDTO)
     case getChatList
     case sendChatMessage(String, ChatMessageRequestDTO)
     case getChatMessageList(String, String)
