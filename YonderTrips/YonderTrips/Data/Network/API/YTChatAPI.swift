@@ -8,8 +8,8 @@
 import Foundation
 
 enum YTChatAPI: APIConfiguration, APIErrorConvertible {
-    case createChat(CreatingChatRequestDTO)
-    case getChatList
+    case createChatRoom(CreatingChatRequestDTO)
+    case getChatRoomList
     case sendChatMessage(String, ChatMessageRequestDTO)
     case getChatMessageList(String, String)
     
@@ -19,9 +19,9 @@ enum YTChatAPI: APIConfiguration, APIErrorConvertible {
     
     var method: String {
         switch self {
-        case .getChatList, .getChatMessageList:
+        case .getChatRoomList, .getChatMessageList:
             return HTTPMethod.get
-        case .createChat, .sendChatMessage:
+        case .createChatRoom, .sendChatMessage:
             return HTTPMethod.post
         }
     }
@@ -42,7 +42,7 @@ enum YTChatAPI: APIConfiguration, APIErrorConvertible {
     var body: Data? {
         do {
             switch self {
-            case .createChat(let request):
+            case .createChatRoom(let request):
                 return try JSONEncoder().encode(request)
             case let .sendChatMessage(_, request):
                 return try JSONEncoder().encode(request)
