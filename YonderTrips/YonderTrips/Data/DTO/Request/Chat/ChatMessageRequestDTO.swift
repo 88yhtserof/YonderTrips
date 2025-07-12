@@ -9,5 +9,5 @@ import Foundation
 
 struct ChatMessageRequestDTO: Encodable {
     let content: String
-    let files: [String]
+    let files: [String]?
 }
