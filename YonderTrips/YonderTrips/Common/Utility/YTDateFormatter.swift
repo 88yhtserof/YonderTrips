@@ -11,6 +11,7 @@ struct YTDateFormatter {
     
     enum Format {
         case iso8601
+        case iso8601UTC
         case yyyyMMdd
     }
     
@@ -18,6 +19,13 @@ struct YTDateFormatter {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         return formatter
+    }()
+    
+    static private let iso8601UTCFormatter: ISO8601DateFormatter = {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return isoFormatter
     }()
     
     static private let yyyyMMddFormatter: DateFormatter = {
@@ -31,6 +39,8 @@ struct YTDateFormatter {
         switch format {
         case .iso8601:
             return iso8601Formatter.string(from: date)
+        case .iso8601UTC:
+            return iso8601UTCFormatter.string(from: date)
         case .yyyyMMdd:
             return yyyyMMddFormatter.string(from: date)
         }
@@ -41,6 +51,8 @@ struct YTDateFormatter {
         switch format {
         case .iso8601:
             return iso8601Formatter.date(from: string)
+        case .iso8601UTC:
+            return iso8601UTCFormatter.date(from: string)
         case .yyyyMMdd:
             return yyyyMMddFormatter.date(from: string)
         }
