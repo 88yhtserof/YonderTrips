@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ChatResponse {
+struct ChatResponse: Hashable {
     let chatId: String
     let roomId: String
     let content: String

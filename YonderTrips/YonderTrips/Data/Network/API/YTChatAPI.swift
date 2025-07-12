@@ -36,7 +36,15 @@ enum YTChatAPI: APIConfiguration, APIErrorConvertible {
     }
     
     var headers: [String : String]? {
-        return HTTPHeadersProvider.auth
+        var headers = HTTPHeadersProvider.auth
+        
+        switch self {
+        case .createChatRoom, .sendChatMessage:
+            headers["Content-Type"] = "application/json"
+        default:
+            break
+        }
+        return headers
     }
     
     var body: Data? {
@@ -45,6 +53,7 @@ enum YTChatAPI: APIConfiguration, APIErrorConvertible {
             case .createChatRoom(let request):
                 return try JSONEncoder().encode(request)
             case let .sendChatMessage(_, request):
+                print(request)
                 return try JSONEncoder().encode(request)
             default:
                 return nil
