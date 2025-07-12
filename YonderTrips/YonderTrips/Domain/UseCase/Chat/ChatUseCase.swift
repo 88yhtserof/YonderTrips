@@ -38,25 +38,21 @@ struct ChatUseCase {
             next = YTDateFormatter.string(from: lastDate, format: .iso8601UTC)
             
         } else {
-            let existingChatList = try localRepository.fetchChatList(roomId: roomId, lastDate: nil)
-            print("existingChatList", existingChatList.count)
+            let existingChatList = localRepository.fetchChatList(roomId: roomId, lastDate: nil)
             
             if let last = existingChatList.last {
                 next = last.createdAt
-                print("next", next)
             }
         }
         
         let remoteChatList = try await remoteRepository.requestChatList(roomId: roomId, next: next)
-        print("remoteChatList", remoteChatList.data.count)
         
         remoteChatList.data
             .forEach{
-                print($0.content)
                 localRepository.addChat($0)
             }
         
-        return try localRepository.fetchChatList(roomId: roomId, lastDate: lastDate)
+        return localRepository.fetchChatList(roomId: roomId, lastDate: lastDate)
     }
     
     @MainActor
@@ -67,7 +63,9 @@ struct ChatUseCase {
         return response
     }
     
-    func observe(completion: @escaping ([ChatResponse]) -> Void) -> NotificationToken {
-        localRepository.observeMessages(completion: completion)
+    func observe(roomId: String, lastDate: Date?, completion: @escaping ([ChatResponse]) -> Void) -> NotificationToken? {
+        
+        localRepository
+            .observeMessages(roomId: roomId, lastDate: lastDate, completion: completion)
     }
 }

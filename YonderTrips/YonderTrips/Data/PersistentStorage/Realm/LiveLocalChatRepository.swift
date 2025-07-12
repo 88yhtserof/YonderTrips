@@ -27,49 +27,61 @@ final class LiveLocalChatRepository: LocalChatRepository {
             .map { $0.nick }
             .joined(separator: ", ")
         
-        let userInfoObjects = room.participants.map {
-            UserInfoObject(
-                userId: $0.userId,
-                nick: $0.nick,
-                profileImage: $0.profileImage,
-                introduction: $0.introduction
-            )
+        var userInfoObjectList: [UserInfoObject] = []
+        
+        for participant in room.participants {
+            
+            if let userInfoObject = realm.object(ofType: UserInfoObject.self, forPrimaryKey: participant.userId) {
+                userInfoObjectList.append(userInfoObject)
+                
+            } else {
+                let userInfoObject = UserInfoObject(
+                    userId: participant.userId,
+                    nick: participant.nick,
+                    profileImage: participant.profileImage,
+                    introduction: participant.introduction
+                )
+                userInfoObjectList.append(userInfoObject)
+            }
         }
+        
         let realmParticipants = List<UserInfoObject>()
-        realmParticipants.append(objectsIn: userInfoObjects)
+        realmParticipants.append(objectsIn: userInfoObjectList)
         
-        let roomObject = ChatRoomObject(
-            roomId: room.roomId,
-            title: title,
-            participants: realmParticipants
-        )
         
-        try! realm.write {
-            realm.add(roomObject, update: .modified)
+        let existingRoom = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: room.roomId)
+        
+        if existingRoom == nil {
+            let roomObject = ChatRoomObject(
+                roomId: room.roomId,
+                title: title,
+                participants: realmParticipants
+            )
+            
+            try! realm.write {
+                realm.add(roomObject)
+            }
         }
     }
     
-    func fetchChatList(roomId: String, lastDate: Date?) throws -> [ChatResponse] {
+    func fetchChatList(roomId: String, lastDate: Date?) -> [ChatResponse] {
         
-        if let room = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: roomId) {
+        if let list = fetchChatObject(roomId: roomId, lastDate: lastDate) {
             
-            var query = room.chatList
-                .sorted(byKeyPath: "createdAt", ascending: true)
-            
-            if let lastDate {
-                query = query.filter("createdAt < %@", lastDate)
-            }
-            
-            return Array(query.suffix(10))
+            return Array(list.suffix(10))
                 .map{ $0.toEntity() }
+            
+        } else {
+            return []
         }
-        return []
     }
     
     func addChat(_ chat: ChatResponse) {
         
-        let sender = chat.sender
-        let userInfoObject = UserInfoObject(userId: sender.userId, nick: sender.nick, profileImage: sender.profileImage, introduction: sender.introduction)
+        guard let room = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: chat.roomId),
+              let userInfoObject = realm.object(ofType: UserInfoObject.self, forPrimaryKey: chat.sender.userId) else {
+            return
+        }
         
         let chatObject = ChatObject(
             chatId: chat.chatId,
@@ -81,10 +93,6 @@ final class LiveLocalChatRepository: LocalChatRepository {
             files: chat.files
         )
         
-        guard let room = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: chat.roomId) else {
-            return
-        }
-        
         chatObject.room = room
         
         try! realm.write {
@@ -95,8 +103,15 @@ final class LiveLocalChatRepository: LocalChatRepository {
         }
     }
     
-    func observeMessages(completion: @escaping ([ChatResponse]) -> Void) -> NotificationToken {
-        let results = realm.objects(ChatObject.self).sorted(byKeyPath: "createdAt", ascending: true)
+    func observeMessages(
+        roomId: String,
+        lastDate: Date?,
+        completion: @escaping ([ChatResponse]) -> Void
+    ) -> NotificationToken? {
+        
+        guard let results = fetchChatObject(roomId: roomId, lastDate: lastDate) else {
+            return nil
+        }
         
         return results.observe { changes in
             switch changes {
@@ -112,3 +127,21 @@ final class LiveLocalChatRepository: LocalChatRepository {
     }
 }
 
+private extension LiveLocalChatRepository {
+    
+    func fetchChatObject(roomId: String, lastDate: Date?) ->  Results<ChatObject>? {
+        
+        if let room = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: roomId) {
+            
+            var query = room.chatList
+                .sorted(byKeyPath: "createdAt", ascending: true)
+            
+            if let lastDate {
+                query = query.filter("createdAt < %@", lastDate)
+            }
+            
+            return query
+        }
+        return nil
+    }
+}

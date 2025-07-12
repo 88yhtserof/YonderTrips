@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class UserInfoObject: Object {
-    @Persisted var userId: String
+    @Persisted(primaryKey: true) var userId: String
     @Persisted var nick: String
     @Persisted var profileImage: String
     @Persisted var introduction: String
