@@ -16,6 +16,7 @@
 		14CA4FC62DFD664200978C85 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 14CA4FC52DFD664200978C85 /* KakaoSDKUser */; };
 		14CA4FC92DFD665400978C85 /* Nuke in Frameworks */ = {isa = PBXBuildFile; productRef = 14CA4FC82DFD665400978C85 /* Nuke */; };
 		14D0F4F12E1F85DD00567E55 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 14D0F4F02E1F85DD00567E55 /* RealmSwift */; };
+		14D0F7132E228BAE00567E55 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 14D0F7122E228BAE00567E55 /* SocketIO */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,6 +78,7 @@
 				14CA4FBD2DFD65FC00978C85 /* FirebaseMessaging in Frameworks */,
 				14CA4FBB2DFD65FC00978C85 /* FirebaseCore in Frameworks */,
 				14CA4FC92DFD665400978C85 /* Nuke in Frameworks */,
+				14D0F7132E228BAE00567E55 /* SocketIO in Frameworks */,
 				14D0F4F12E1F85DD00567E55 /* RealmSwift in Frameworks */,
 				14CA4FC62DFD664200978C85 /* KakaoSDKUser in Frameworks */,
 				14CA4FC02DFD664200978C85 /* KakaoSDK in Frameworks */,
@@ -143,6 +145,7 @@
 				14CA4FC82DFD665400978C85 /* Nuke */,
 				146F01DA2DFFBBBA00E094D7 /* iamport-ios */,
 				14D0F4F02E1F85DD00567E55 /* RealmSwift */,
+				14D0F7122E228BAE00567E55 /* SocketIO */,
 			);
 			productName = YonderTrips;
 			productReference = 14B707A32DD1D9B000689F7C /* YonderTrips.app */;
@@ -205,6 +208,7 @@
 				14CA4FC72DFD665400978C85 /* XCRemoteSwiftPackageReference "Nuke" */,
 				146F01D92DFFBBBA00E094D7 /* XCRemoteSwiftPackageReference "iamport-ios" */,
 				14D0F4EF2E1F85DD00567E55 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				14D0F7112E228BAE00567E55 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 14B707A42DD1D9B000689F7C /* Products */;
@@ -578,6 +582,14 @@
 				version = 20.0.3;
 			};
 		};
+		14D0F7112E228BAE00567E55 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/socketio/socket.io-client-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -625,6 +637,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 14D0F4EF2E1F85DD00567E55 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		14D0F7122E228BAE00567E55 /* SocketIO */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 14D0F7112E228BAE00567E55 /* XCRemoteSwiftPackageReference "socket.io-client-swift" */;
+			productName = SocketIO;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
