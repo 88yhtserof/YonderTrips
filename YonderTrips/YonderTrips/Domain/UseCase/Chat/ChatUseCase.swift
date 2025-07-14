@@ -6,18 +6,27 @@
 //
 
 import Foundation
+import Combine
 
 import RealmSwift
 
-struct ChatUseCase {
+final class ChatUseCase {
     
     private let localRepository: LocalChatRepository
     private let remoteRepository: RemoteChatRepository
+    private var socketManager: ChatSocketManagerProtocol = ChatSocketManager.shared
     
+    private var cancellables = Set<AnyCancellable>()
     
     init(localRepository: LocalChatRepository, remoteRepository: RemoteChatRepository) {
         self.localRepository = localRepository
         self.remoteRepository = remoteRepository
+        
+        socketManager.incomingMessages
+            .sink { chatResponse in
+                self.localRepository.addChat(chatResponse)
+            }
+            .store(in: &cancellables)
     }
     
     @MainActor
@@ -26,6 +35,7 @@ struct ChatUseCase {
         let chatRoomResponse: ChatRoomResponse = try await remoteRepository.requestCreatingChatRoom(with: opponentId)
         
         localRepository.addChatRoom(chatRoomResponse)
+        
         return chatRoomResponse
     }
     
@@ -59,6 +69,7 @@ struct ChatUseCase {
     func sendChat(roomId: String, content: String, files: [String] = []) async throws -> ChatResponse {
         
         let response = try await remoteRepository.requestChat(roomId: roomId, content: content, files: files)
+        
         localRepository.addChat(response)
         return response
     }
@@ -67,5 +78,15 @@ struct ChatUseCase {
         
         localRepository
             .observeMessages(roomId: roomId, lastDate: lastDate, completion: completion)
+    }
+    
+    func connectSocket(with roomId: String) {
+        
+        socketManager.connect(roomId: roomId)
+    }
+    
+    func disconnectSocket() {
+        
+        socketManager.disconnect()
     }
 }

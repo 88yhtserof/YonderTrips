@@ -14,18 +14,19 @@ final class ChatViewModel: ViewModelType {
     @Published var state = State()
     
     private let chatUseCase: ChatUseCase
+    
+    private let opponentId: String
+    private var roomId: String? = nil
     private var token: NotificationToken?
     
-    private let opponentId = "6872371d84627263fbdf819c"
-    
-    init(chatUseCase: ChatUseCase) {
+    init(opponentId: String, chatUseCase: ChatUseCase) {
+        self.opponentId = opponentId
         self.chatUseCase = chatUseCase
         
         binding()
     }
     
     struct State {
-        var roomId = ""
         var chatList: [ChatResponse] = []
         var lastDate: Date?
         
@@ -37,7 +38,9 @@ final class ChatViewModel: ViewModelType {
     }
     
     deinit {
+        print("ChatViewModel deinit")
         token?.invalidate()
+        chatUseCase.disconnectSocket()
     }
 }
 
@@ -45,8 +48,8 @@ final class ChatViewModel: ViewModelType {
 extension ChatViewModel {
     
     enum Action {
-        case observeChatList
         case createChatRoom
+        case observeChatList
         case fetchChatList
         case sendChat
     }
@@ -54,11 +57,11 @@ extension ChatViewModel {
     @MainActor
     func action(_ action: Action) {
         switch action {
-        case .observeChatList:
-            startObserving()
-            
         case .createChatRoom:
             createChatRoom()
+            
+        case .observeChatList:
+            startObserving()
             
         case .fetchChatList:
             fetchChatList()
@@ -71,9 +74,31 @@ extension ChatViewModel {
 
 private extension ChatViewModel {
     
+    @MainActor
+    func createChatRoom() {
+        print(#function)
+        
+        Task {
+            
+            do {
+                let chatRoomResponse = try await chatUseCase.createChatRoom(opponentId: opponentId)
+                self.roomId = chatRoomResponse.roomId
+                
+                startObserving()
+                fetchChatList()
+            } catch {
+                print("Error: \(error)")
+            }}
+    }
+    
     func startObserving() {
         
-        token = chatUseCase.observe(roomId: state.roomId, lastDate: state.lastDate) { [weak self] chatList in
+        guard let roomId else {
+            YonderTripsLogger.shared.debug("Could not fetch chat list. Room ID is nil.")
+            return
+        }
+        
+        token = chatUseCase.observe(roomId: roomId, lastDate: state.lastDate) { [weak self] chatList in
             Task { @MainActor in
                 self?.state.chatList = chatList
             }
@@ -81,26 +106,18 @@ private extension ChatViewModel {
     }
     
     @MainActor
-    func createChatRoom() {
-        print(#function)
-        
-        Task {
-        
-            do {
-                let chatRoomResponse = try await chatUseCase.createChatRoom(opponentId: opponentId)
-                state.roomId = chatRoomResponse.roomId
-            } catch {
-                print("Error: \(error)")
-            }}
-    }
-    
-    @MainActor
     func fetchChatList() {
-        print(#function, state.roomId)
         
         Task {
+            guard let roomId else {
+                YonderTripsLogger.shared.debug("Could not fetch chat list. Room ID is nil.")
+                return
+            }
+            
             do {
-                state.chatList = try await chatUseCase.fetchChatList(roomId: state.roomId, lastDate: state.lastDate)
+                state.chatList = try await chatUseCase.fetchChatList(roomId: roomId, lastDate: state.lastDate)
+                
+                chatUseCase.connectSocket(with: roomId)
             } catch {
                 print("Error: \(error)")
             }
@@ -109,12 +126,15 @@ private extension ChatViewModel {
     
     @MainActor
     func sendChat() {
-        print(#function)
         
         Task {
-        
+            guard let roomId else {
+                YonderTripsLogger.shared.debug("Could not send chat. Room ID is nil.")
+                return
+            }
+            
             do {
-                let response = try await chatUseCase.sendChat(roomId: state.roomId, content: state.inputText)
+                let response = try await chatUseCase.sendChat(roomId: roomId, content: state.inputText)
                 state.lastDate = YTDateFormatter.date(from: response.createdAt, format: .iso8601UTC)
                 state.inputText = ""
                 
