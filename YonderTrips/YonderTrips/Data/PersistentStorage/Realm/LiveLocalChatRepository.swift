@@ -115,12 +115,20 @@ final class LiveLocalChatRepository: LocalChatRepository {
         
         return results.observe { changes in
             switch changes {
-            case .initial(let list):
-                completion(Array(list).map{ $0.toEntity() })
-            case .update(let list, _, _, _):
-                completion(Array(list).map{ $0.toEntity() })
+            case .initial(let response):
+                YonderTripsLogger.shared.debug("Ininitial Realm notification")
+                let list = Array(response.suffix(10))
+                    .map{ $0.toEntity() }
+                completion(list)
+                
+            case .update(let response, _, _, _):
+                YonderTripsLogger.shared.debug("Update Realm notification")
+                let list = Array(response.suffix(10))
+                    .map{ $0.toEntity() }
+                completion(list)
+                
             case .error(let error):
-                print("Realm notification error: \(error)")
+                YonderTripsLogger.shared.debug("Realm notification error: \(error)")
                 completion([])
             }
         }
