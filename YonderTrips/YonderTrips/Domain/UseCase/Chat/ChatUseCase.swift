@@ -70,7 +70,6 @@ final class ChatUseCase {
         
         let response = try await remoteRepository.requestChat(roomId: roomId, content: content, files: files)
         
-        localRepository.addChat(response)
         return response
     }
     
