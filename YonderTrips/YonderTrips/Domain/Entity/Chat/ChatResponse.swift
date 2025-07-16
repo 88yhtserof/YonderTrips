@@ -25,4 +25,8 @@ struct ChatResponse: Hashable {
         case sender
         case files
     }
+    
+    var isMyMessage: Bool {
+        return UserDefaults.standard.string(forKey: "userId") == sender.userId
+    }
 }

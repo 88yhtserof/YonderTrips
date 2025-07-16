@@ -76,7 +76,6 @@ private extension ChatViewModel {
     
     @MainActor
     func createChatRoom() {
-        print(#function)
         
         Task {
             

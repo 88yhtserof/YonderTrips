@@ -13,6 +13,7 @@ struct YTDateFormatter {
         case iso8601
         case iso8601UTC
         case yyyyMMdd
+        case ahmm
     }
     
     static private let iso8601Formatter: DateFormatter = {
@@ -34,6 +35,12 @@ struct YTDateFormatter {
         return formatter
     }()
     
+    static private let ahmm: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "a h:mm"
+        return formatter
+    }()
+    
     static func string(from date: Date, format: Format) -> String {
         
         switch format {
@@ -43,6 +50,8 @@ struct YTDateFormatter {
             return iso8601UTCFormatter.string(from: date)
         case .yyyyMMdd:
             return yyyyMMddFormatter.string(from: date)
+        case .ahmm:
+            return ahmm.string(from: date)
         }
     }
     
@@ -55,6 +64,8 @@ struct YTDateFormatter {
             return iso8601UTCFormatter.date(from: string)
         case .yyyyMMdd:
             return yyyyMMddFormatter.date(from: string)
+        case .ahmm:
+            return ahmm.date(from: string)
         }
     }
 }

@@ -19,7 +19,7 @@ final class FlowRouter: ObservableObject {
 
 struct ChatRoomView: View {
     
-    private let opponentId = "-"
+    private let opponentId = "682ee61c0b936fc97467e197"
     
     @StateObject private var router = FlowRouter()
     
@@ -38,14 +38,14 @@ struct ChatRoomView: View {
             .navigationDestination(for: FlowRouter.Path.self) { flow in
                 switch flow {
                 case .chatList:
-                    chatRoomListView()
+                    chatView()
                 }
             }
         }
         
     }
     
-    func chatRoomListView() -> some View {
+    func chatView() -> some View {
         let localRepository = LiveLocalChatRepository()
         let remoteRepository = LiveRemoteChatRepository()
         let chatUseCase = ChatUseCase(
@@ -55,6 +55,6 @@ struct ChatRoomView: View {
         
         let chatViewModel = ChatViewModel(opponentId: opponentId, chatUseCase: chatUseCase)
         
-        return ChatListView(viewModel: chatViewModel)
+        return ChatView(viewModel: chatViewModel)
     }
 }
