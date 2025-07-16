@@ -51,8 +51,8 @@ extension EmailSignInViewModel {
             
             Task {
                 do {
-                    try await signInUseCase.requestSignInWithEmail(email: state.email, password: state.password)
-                    
+                    let response = try await signInUseCase.requestSignInWithEmail(email: state.email, password: state.password)
+                    UserDefaults.standard.setValue(response.userId, forKey: "userId")
                     router.rootFlow = .home
                 } catch {
                     state.alertMessage = error.localizedDescription
