@@ -27,7 +27,7 @@ struct Activity: Hashable {
     let totalOrderCount: Int
     let schedule: [ActivityScheduleItem]
     let reservationList: [ActivityReservationItem]
-    let creator: UserInfo?
+    let creator: UserInfo
     let createdAt: String
     let updatedAt: String
 }

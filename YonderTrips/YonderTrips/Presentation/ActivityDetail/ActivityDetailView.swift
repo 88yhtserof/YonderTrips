@@ -54,6 +54,8 @@ struct ActivityDetailView: View {
                     ActivityReservationListView(reservations: activityDetailViewMdoel.state.activity.reservationList,
                                                 selectedItemName: $activityDetailViewMdoel.state.selectedItemName,
                                                 selectedItemTime: $activityDetailViewMdoel.state.selectedItemTime)
+                    
+                    ActivityCreatorInfoView(userInfo: activityDetailViewMdoel.state.activity.creator)
                 }
                 .frame(width: 400)
                 .padding(.top, -200)

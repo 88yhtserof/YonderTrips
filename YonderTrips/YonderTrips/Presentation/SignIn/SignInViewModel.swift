@@ -67,9 +67,12 @@ extension SignInViewModel {
         if (UserApi.isKakaoTalkLoginAvailable()) {
             
             UserApi.shared.loginWithKakaoTalk { [weak self] (oauthToken, error) in
+                
+                guard let self else { return }
+                
                 if let error = error {
-                    self?.state.alertMessage = errorMessage
-                    self?.state.isShownErrorAlert = true
+                    self.state.alertMessage = errorMessage
+                    self.state.isShownErrorAlert = true
                 }
                 else {
                     YonderTripsLogger.shared.debug("Success: SignIn with Kakao by KakaoTalk")
@@ -78,12 +81,13 @@ extension SignInViewModel {
                     
                     Task {
                         do {
-                            try await self?.signInUseCase.requestSignInWithKakao(oauthToken: token)
+                            let response = try await self.signInUseCase.requestSignInWithKakao(oauthToken: token)
+                            UserDefaults.standard.setValue(response.userId, forKey: "userId")
                             router.rootFlow = .home
                             
                         } catch {
-                            self?.state.alertMessage = errorMessage
-                            self?.state.isShownErrorAlert = true
+                            self.state.alertMessage = errorMessage
+                            self.state.isShownErrorAlert = true
                         }
                     }
                 }
@@ -92,9 +96,11 @@ extension SignInViewModel {
             
             UserApi.shared.loginWithKakaoAccount { [weak self] (oauthToken, error) in
                 
+                guard let self else { return }
+                
                 if let _ = error {
-                    self?.state.alertMessage = errorMessage
-                    self?.state.isShownErrorAlert = true
+                    self.state.alertMessage = errorMessage
+                    self.state.isShownErrorAlert = true
                 }
                 else {
                     YonderTripsLogger.shared.debug("Success: SignIn with Kakao by Account")
@@ -102,11 +108,12 @@ extension SignInViewModel {
                     
                     Task {
                         do {
-                            try await self?.signInUseCase.requestSignInWithKakao(oauthToken: token)
+                            let response = try await self.signInUseCase.requestSignInWithKakao(oauthToken: token)
+                            UserDefaults.standard.setValue(response.userId, forKey: "userId")
                             router.rootFlow = .home
                         } catch {
-                            self?.state.alertMessage = errorMessage
-                            self?.state.isShownErrorAlert = true
+                            self.state.alertMessage = errorMessage
+                            self.state.isShownErrorAlert = true
                         }
                     }
                 }
@@ -130,7 +137,8 @@ extension SignInViewModel {
                 
                 let nick = appleIDCredential.fullName?.familyName ?? "\(Int.random(in: 1...1000))"
                 
-                try await signInUseCase.requestSignInWithApple(idToken: token, nick: nick)
+                let response = try await signInUseCase.requestSignInWithApple(idToken: token, nick: nick)
+                UserDefaults.standard.setValue(response.userId, forKey: "userId")
             }
             
         case .failure(let error):
