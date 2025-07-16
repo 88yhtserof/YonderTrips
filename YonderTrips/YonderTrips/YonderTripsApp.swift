@@ -25,14 +25,13 @@ struct YonderTripsApp: App {
     var body: some Scene {
         WindowGroup {
             
-            HomeView()
-//            ContentView()
-//                .environmentObject(rootViewRouter)
-//                .onOpenURL { url in
-//                    if (AuthApi.isKakaoTalkLoginUrl(url)) {
-//                        let _ = AuthController.handleOpenUrl(url: url)
-//                    }
-//                }
+            ContentView()
+                .environmentObject(rootViewRouter)
+                .onOpenURL { url in
+                    if (AuthApi.isKakaoTalkLoginUrl(url)) {
+                        let _ = AuthController.handleOpenUrl(url: url)
+                    }
+                }
         }
     }
 }
