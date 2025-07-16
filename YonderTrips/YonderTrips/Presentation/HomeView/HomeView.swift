@@ -84,15 +84,22 @@ struct HomeView: View {
                 case let .activityList(category, country):
                     ActivityListView(viewModel: container.makeActivityListViewModel(category: category, country: country))
                         .environmentObject(homeRouter)
+                    
                 case .activityDetail(let activity):
                     ActivityDetailView(activityDetailViewMdoel: ActivityDetailViewModel(activity: activity), orderViewMdoel: container.makeOrderViewModel())
+                        .environmentObject(homeRouter)
+                    
                 case let .activityPostList(category, country):
                     ActivityPostListView(viewModel: container.makeActivityPostListViewModel(category: category, country: country))
+                    
                 case .activityPostDetail:
                     Text("")
                 case let .activityFilter(category, country, flow):
                     ActivityFilterView(selectedCategory: category, selectedCountry: country, flow: flow)
                         .environmentObject(homeRouter)
+                    
+                case .chat(let userId):
+                    ChatView(viewModel: container.makeChatViewModel(opponentId: userId))
                 }
             }
         }

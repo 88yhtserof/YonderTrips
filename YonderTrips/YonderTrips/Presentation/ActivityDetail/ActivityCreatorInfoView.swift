@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ActivityCreatorInfoView: View {
     
+    @EnvironmentObject private var homeRouter: HomeFlowRouter
     let userInfo: UserInfo
     
     var body: some View {
@@ -35,22 +36,32 @@ struct ActivityCreatorInfoView: View {
                     Spacer()
                 }
                 
-                HStack {
-                    Image(systemName: "ellipsis.message")
+                Button(action: handleMessageButton) {
                     
-                    Text("문의하기")
-                        .font(.yt(.pretendard(.caption1)))
-                }
-                .foregroundStyle(.gray90)
-                .frame(maxWidth: .infinity)
-                .frame(height: 44)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(.gray45, lineWidth: 1)
+                    HStack {
+                        Image(systemName: "ellipsis.message")
+                        
+                        Text("문의하기")
+                            .font(.yt(.pretendard(.caption1)))
+                    }
+                    .foregroundStyle(.gray90)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(.gray45, lineWidth: 1)
+                    }
                 }
             }
             .padding(.horizontal)
         }
+    }
+}
+
+private extension ActivityCreatorInfoView {
+    
+    func handleMessageButton() {
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.chat(userInfo.userId))
     }
 }
 

@@ -17,5 +17,6 @@ final class HomeFlowRouter: ObservableObject {
         case activityPostList(ActivityCategory, ActivityCountry)
         case activityPostDetail
         case activityFilter(ActivityCategory, ActivityCountry, HomeFlowRouter.HomeFlow)
+        case chat(String)
     }
 }

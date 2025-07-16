@@ -79,6 +79,18 @@ extension DIContainer {
             country: country
         )
     }
+    
+    func makeChatViewModel(opponentId: String) -> ChatViewModel {
+        
+        let localRepository = LiveLocalChatRepository()
+        let remoteRepository = LiveRemoteChatRepository()
+        let chatUseCase = ChatUseCase(
+            localRepository: localRepository,
+            remoteRepository: remoteRepository
+        )
+        
+        return ChatViewModel(opponentId: opponentId, chatUseCase: chatUseCase)
+    }
 }
 
 // Environment
