@@ -58,9 +58,7 @@ final class ChatUseCase {
         let remoteChatList = try await remoteRepository.requestChatList(roomId: roomId, next: next)
         
         remoteChatList.data
-            .forEach{
-                localRepository.addChat($0)
-            }
+            .forEach{ localRepository.addChat($0) }
         
         return localRepository.fetchChatList(roomId: roomId, lastDate: lastDate)
     }

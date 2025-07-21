@@ -99,7 +99,7 @@ private extension ChatViewModel {
         
         token = chatUseCase.observe(roomId: roomId, lastDate: state.lastDate) { [weak self] chatList in
             Task { @MainActor in
-                self?.state.chatList = chatList
+                self?.state.chatList.append(contentsOf: chatList)
             }
         }
     }

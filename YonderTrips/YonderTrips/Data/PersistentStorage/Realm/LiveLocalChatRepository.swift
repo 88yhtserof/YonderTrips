@@ -68,7 +68,7 @@ final class LiveLocalChatRepository: LocalChatRepository {
         
         if let list = fetchChatObject(roomId: roomId, lastDate: lastDate) {
             
-            return Array(list.suffix(10))
+            return Array(list)
                 .map{ $0.toEntity() }
             
         } else {
@@ -117,14 +117,15 @@ final class LiveLocalChatRepository: LocalChatRepository {
             switch changes {
             case .initial(let response):
                 YonderTripsLogger.shared.debug("Ininitial Realm notification")
-                let list = Array(response.suffix(10))
+                let list = Array(response)
                     .map{ $0.toEntity() }
                 completion(list)
                 
-            case .update(let response, _, _, _):
+            case .update(let response, _, let insertions, _):
                 YonderTripsLogger.shared.debug("Update Realm notification")
-                let list = Array(response.suffix(10))
-                    .map{ $0.toEntity() }
+                
+                if insertions.isEmpty { return }
+                let list = insertions.map{ response[$0].toEntity() }
                 completion(list)
                 
             case .error(let error):
