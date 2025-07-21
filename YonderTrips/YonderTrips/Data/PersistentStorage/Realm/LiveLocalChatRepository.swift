@@ -64,6 +64,10 @@ final class LiveLocalChatRepository: LocalChatRepository {
         }
     }
     
+    func containsChat(chatId: String) -> Bool {
+        return realm.object(ofType: ChatObject.self, forPrimaryKey: chatId) != nil
+    }
+    
     func fetchChatList(roomId: String, lastDate: Date?) -> [ChatResponse] {
         
         if let list = fetchChatObject(roomId: roomId, lastDate: lastDate) {
@@ -77,6 +81,8 @@ final class LiveLocalChatRepository: LocalChatRepository {
     }
     
     func addChat(_ chat: ChatResponse) {
+        
+        if containsChat(chatId: chat.chatId) { return }
         
         guard let room = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: chat.roomId),
               let userInfoObject = realm.object(ofType: UserInfoObject.self, forPrimaryKey: chat.sender.userId) else {
