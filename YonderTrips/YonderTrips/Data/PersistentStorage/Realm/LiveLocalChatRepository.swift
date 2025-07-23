@@ -8,6 +8,11 @@
 import Foundation
 import RealmSwift
 
+enum PaginationDirection {
+    case before
+    case after
+}
+
 final class LiveLocalChatRepository: LocalChatRepository {
     
     private let realm = try! Realm()
@@ -68,15 +73,18 @@ final class LiveLocalChatRepository: LocalChatRepository {
         return realm.object(ofType: ChatObject.self, forPrimaryKey: chatId) != nil
     }
     
-    func fetchChatList(roomId: String, lastDate: Date?) -> [ChatResponse] {
+    func fetchChatListWithCursor(
+        roomId: String,
+        cursor: Date? = nil,
+        direction: PaginationDirection = .before,
+        limit: Int? = nil
+    ) -> ChatPaginationResult {
         
-        if let list = fetchChatObject(roomId: roomId, lastDate: lastDate) {
-            
-            return Array(list)
-                .map{ $0.toEntity() }
-            
-        } else {
-            return []
+        switch direction {
+        case .before:
+            return fetchChatsBefore(roomId: roomId, cursor: cursor, limit: limit)
+        case .after:
+            return fetchChatsAfter(roomId: roomId, cursor: cursor, limit: limit)
         }
     }
     
@@ -158,5 +166,161 @@ private extension LiveLocalChatRepository {
             return query
         }
         return nil
+    }
+}
+
+// MARK: - Pagination Result Model
+struct ChatPaginationResult {
+    let chats: [ChatResponse]
+    let hasMore: Bool
+    let nextCursor: Date?
+}
+
+extension LiveLocalChatRepository {
+    
+    func fetchChatsAfter(
+        roomId: String,
+        cursor: Date? = nil,
+        limit: Int? = nil
+    ) -> ChatPaginationResult {
+        
+        guard let room = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: roomId) else {
+            return ChatPaginationResult(chats: [], hasMore: false, nextCursor: nil)
+        }
+        
+        let pageLimit = limit ?? pageSize
+        
+        var query = room.chatList.sorted(byKeyPath: "createdAt", ascending: true)
+        
+        if let cursor {
+            query = query.filter("createdAt > %@", cursor)
+        }
+        
+        let results = Array(query.prefix(pageLimit + 1))
+        
+        let hasMore = results.count > pageLimit
+        let chats = hasMore ? Array(results.prefix(pageLimit)) : results
+        
+        let nextCursor = chats.last?.createdAt
+        
+        return ChatPaginationResult(
+            chats: chats.map { $0.toEntity() },
+            hasMore: hasMore,
+            nextCursor: nextCursor
+        )
+    }
+    
+    func fetchChatsBefore(
+        roomId: String,
+        cursor: Date? = nil,
+        limit: Int? = nil
+    ) -> ChatPaginationResult {
+        
+        guard let room = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: roomId) else {
+            return ChatPaginationResult(chats: [], hasMore: false, nextCursor: nil)
+        }
+        
+        let pageLimit = limit ?? pageSize
+        
+        var query = room.chatList.sorted(byKeyPath: "createdAt", ascending: false)
+        
+        if let cursor = cursor {
+            query = query.filter("createdAt < %@", cursor)
+        }
+        
+        let results = Array(query.prefix(pageLimit + 1))
+        
+        let hasMore = results.count > pageLimit
+        let chats = hasMore ? Array(results.prefix(pageLimit)) : results
+        
+        let sortedChats = chats.sorted { $0.createdAt < $1.createdAt }
+        let nextCursor = sortedChats.first?.createdAt
+        
+        return ChatPaginationResult(
+            chats: sortedChats.map { $0.toEntity() },
+            hasMore: hasMore,
+            nextCursor: nextCursor
+        )
+    }
+    
+    func fetchChatsAround(
+        roomId: String,
+        cursor: Date,
+        beforeLimit: Int? = nil,
+        afterLimit: Int? = nil
+    ) -> (before: ChatPaginationResult, after: ChatPaginationResult) {
+        
+        let beforeResult = fetchChatsBefore(
+            roomId: roomId,
+            cursor: cursor,
+            limit: beforeLimit
+        )
+        
+        let afterResult = fetchChatsAfter(
+            roomId: roomId,
+            cursor: cursor,
+            limit: afterLimit
+        )
+        
+        return (before: beforeResult, after: afterResult)
+    }
+    
+    func fetchLatestChats(
+        roomId: String,
+        limit: Int? = nil
+    ) -> ChatPaginationResult {
+        
+        return fetchChatsBefore(roomId: roomId, cursor: nil, limit: limit)
+    }
+    
+    func observeMessagesAfter(
+        roomId: String,
+        cursor: Date,
+        completion: @escaping (ChatPaginationResult) -> Void
+    ) -> NotificationToken? {
+        
+        guard let room = realm.object(ofType: ChatRoomObject.self, forPrimaryKey: roomId) else {
+            return nil
+        }
+        
+        let query = room.chatList
+            .filter("createdAt > %@", cursor)
+            .sorted(byKeyPath: "createdAt", ascending: true)
+        
+        return query.observe { changes in
+            switch changes {
+            case .initial(let results):
+                let chats = Array(results).map { $0.toEntity() }
+                guard let last = chats.last else {
+                    YonderTripsLogger.shared.debug("Could not find last chat")
+                    return
+                }
+                let result = ChatPaginationResult(
+                    chats: chats,
+                    hasMore: false,
+                    nextCursor: YTDateFormatter.date(from: last.createdAt, format: .iso8601UTC)
+                )
+                completion(result)
+                
+            case .update(let results, _, let insertions, _):
+                if !insertions.isEmpty {
+                    let newChats = insertions.map { results[$0].toEntity() }
+                    guard let last = newChats.last else {
+                        YonderTripsLogger.shared.debug("Could not find last chat")
+                        return
+                    }
+                    let result = ChatPaginationResult(
+                        chats: newChats,
+                        hasMore: false,
+                        nextCursor: YTDateFormatter.date(from: last.createdAt, format: .iso8601UTC)
+                    )
+                    completion(result)
+                }
+                
+            case .error(let error):
+                YonderTripsLogger.shared.debug("Realm observation error: \(error)")
+                completion(ChatPaginationResult(chats: [], hasMore: false, nextCursor: nil))
+            }
+        }
     }
 }

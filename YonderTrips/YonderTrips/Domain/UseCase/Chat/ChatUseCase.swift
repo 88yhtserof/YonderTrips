@@ -40,27 +40,27 @@ final class ChatUseCase {
     }
     
     @MainActor
-    func fetchChatList(roomId: String, lastDate: Date?) async throws -> [ChatResponse] {
+    func fetchLatestChats(roomId: String, limit: Int? = nil) async throws -> ChatPaginationResult {
         
-        var next: String = ""
+        let localResult = localRepository.fetchLatestChats(roomId: roomId, limit: limit)
         
-        if let lastDate {
-            next = YTDateFormatter.string(from: lastDate, format: .iso8601UTC)
-            
-        } else {
-            let existingChatList = localRepository.fetchChatList(roomId: roomId, lastDate: nil)
-            
-            if let last = existingChatList.last {
-                next = last.createdAt
-            }
-        }
+        let remoteChatList = try await remoteRepository.requestChatList(roomId: roomId, next: "")
         
-        let remoteChatList = try await remoteRepository.requestChatList(roomId: roomId, next: next)
+        remoteChatList.data.forEach { localRepository.addChat($0) }
         
-        remoteChatList.data
-            .forEach{ localRepository.addChat($0) }
+        return localRepository.fetchLatestChats(roomId: roomId, limit: limit)
+    }
+    
+    @MainActor
+    func fetchChatsBefore(roomId: String, cursor: Date, limit: Int? = nil) async throws -> ChatPaginationResult {
         
-        return localRepository.fetchChatList(roomId: roomId, lastDate: lastDate)
+        return localRepository.fetchChatsBefore(roomId: roomId, cursor: cursor, limit: limit)
+    }
+    
+    @MainActor
+    func fetchChatsAfter(roomId: String, cursor: Date, limit: Int? = nil) async throws -> ChatPaginationResult {
+        
+        return localRepository.fetchChatsAfter(roomId: roomId, cursor: cursor, limit: limit)
     }
     
     @MainActor
@@ -71,10 +71,9 @@ final class ChatUseCase {
         return response
     }
     
-    func observe(roomId: String, lastDate: Date?, completion: @escaping ([ChatResponse]) -> Void) -> NotificationToken? {
+    func observeMessagesAfter(roomId: String, cursor: Date, completion: @escaping (ChatPaginationResult) -> Void) -> NotificationToken? {
         
-        localRepository
-            .observeMessages(roomId: roomId, lastDate: lastDate, completion: completion)
+        return localRepository.observeMessagesAfter(roomId: roomId, cursor: cursor, completion: completion)
     }
     
     func connectSocket(with roomId: String) {

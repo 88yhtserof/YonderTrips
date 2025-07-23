@@ -12,8 +12,51 @@ import RealmSwift
 protocol LocalChatRepository {
     
     func addChatRoom(_ room: ChatRoomResponse)
+    
     func containsChat(chatId: String) -> Bool
-    func fetchChatList(roomId: String, lastDate: Date?) -> [ChatResponse]
+    
+    func fetchChatListWithCursor(
+        roomId: String,
+        cursor: Date?,
+        direction: PaginationDirection,
+        limit: Int?
+    ) -> ChatPaginationResult
+    
+    func fetchChatsAfter(
+        roomId: String,
+        cursor: Date?,
+        limit: Int?
+    ) -> ChatPaginationResult
+    
+    func fetchChatsBefore(
+        roomId: String,
+        cursor: Date?,
+        limit: Int?
+    ) -> ChatPaginationResult
+    
+    func fetchLatestChats(
+        roomId: String,
+        limit: Int?
+    ) -> ChatPaginationResult
+    
+    func fetchChatsAround(
+        roomId: String,
+        cursor: Date,
+        beforeLimit: Int?,
+        afterLimit: Int?
+    ) -> (before: ChatPaginationResult, after: ChatPaginationResult)
+    
     func addChat(_ chat: ChatResponse)
-    func observeMessages(roomId: String, lastDate: Date?, completion: @escaping ([ChatResponse]) -> Void) -> NotificationToken?
+    
+    func observeMessages(
+        roomId: String,
+        lastDate: Date?,
+        completion: @escaping ([ChatResponse]) -> Void
+    ) -> NotificationToken?
+    
+    func observeMessagesAfter(
+        roomId: String,
+        cursor: Date,
+        completion: @escaping (ChatPaginationResult) -> Void
+    ) -> NotificationToken?
 }
