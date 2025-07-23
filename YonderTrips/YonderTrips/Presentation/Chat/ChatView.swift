@@ -34,6 +34,24 @@ struct ChatView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 8) {
+                    if viewModel.state.isLoadingMore {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                                .scaleEffect(0.8)
+                            Spacer()
+                        }
+                        .padding(.vertical, 8)
+                    }
+                    
+                    if viewModel.state.hasMoreMessages && !viewModel.state.chatList.isEmpty {
+                        Color.clear
+                            .frame(height: 1)
+                            .onAppear {
+                                viewModel.action(.loadMoreMessages)
+                            }
+                    }
+                    
                     ForEach(viewModel.state.chatList, id: \.chatId) { chat in
                         ChatMessageRow(chat: chat)
                             .id(chat.chatId)
@@ -44,6 +62,11 @@ struct ChatView: View {
             }
             .onChange(of: viewModel.state.chatList.count) { _ in
                 scrollToBottom(proxy: proxy)
+            }
+            .onChange(of: viewModel.state.isLoadingMore) { isLoading in
+                if !isLoading && viewModel.state.chatList.count > 0 {
+                    maintainScrollPosition(proxy: proxy)
+                }
             }
         }
         .background(.gray15)
@@ -98,6 +121,20 @@ struct ChatView: View {
             try await Task.sleep(nanoseconds: 100_000_000) // 0.1초
             withAnimation(.easeInOut(duration: 0.3)) {
                 proxy.scrollTo(lastMessage.chatId, anchor: UnitPoint.bottom)
+            }
+        }
+    }
+    
+    private func maintainScrollPosition(proxy: ScrollViewProxy) {
+        
+        if viewModel.state.chatList.count > 20 {
+            let targetIndex = min(20, viewModel.state.chatList.count - 1)
+            
+            if targetIndex < viewModel.state.chatList.count {
+                Task { @MainActor in
+                    try await Task.sleep(nanoseconds: 50_000_000) // 0.05초
+                    proxy.scrollTo(viewModel.state.chatList[targetIndex].chatId, anchor: .top)
+                }
             }
         }
     }

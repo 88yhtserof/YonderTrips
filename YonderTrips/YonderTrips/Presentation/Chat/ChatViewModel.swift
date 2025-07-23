@@ -28,7 +28,10 @@ final class ChatViewModel: ViewModelType {
     
     struct State {
         var chatList: [ChatResponse] = []
-        var lastDate: Date?
+        
+        var currentCursor: Date?
+        var hasMoreMessages: Bool = true
+        var isLoadingMore: Bool = false
         
         var inputText: String = ""
     }
@@ -50,7 +53,8 @@ extension ChatViewModel {
     enum Action {
         case createChatRoom
         case observeChatList
-        case fetchChatList
+        case fetchInitialChatList
+        case loadMoreMessages
         case sendChat
     }
     
@@ -63,8 +67,11 @@ extension ChatViewModel {
         case .observeChatList:
             startObserving()
             
-        case .fetchChatList:
-            fetchChatList()
+        case .fetchInitialChatList:
+            fetchInitialChatList()
+            
+        case .loadMoreMessages:
+            loadMoreMessages()
             
         case .sendChat:
             sendChat()
@@ -84,7 +91,7 @@ private extension ChatViewModel {
                 self.roomId = chatRoomResponse.roomId
                 
                 startObserving()
-                fetchChatList()
+                fetchInitialChatList()
             } catch {
                 print("Error: \(error)")
             }}
@@ -97,15 +104,23 @@ private extension ChatViewModel {
             return
         }
         
-        token = chatUseCase.observe(roomId: roomId, lastDate: state.lastDate) { [weak self] chatList in
+        let observationCursor = state.currentCursor ?? Date()
+        
+        token = chatUseCase.observeMessagesAfter(roomId: roomId, cursor: observationCursor) { [weak self] result in
             Task { @MainActor in
-                self?.state.chatList = chatList
+                guard let self = self else { return }
+                
+                self.state.chatList.append(contentsOf: result.chats)
+                
+                if let newCursor = result.nextCursor {
+                    self.state.currentCursor = newCursor
+                }
             }
         }
     }
     
     @MainActor
-    func fetchChatList() {
+    func fetchInitialChatList() {
         
         Task {
             guard let roomId else {
@@ -114,15 +129,48 @@ private extension ChatViewModel {
             }
             
             do {
-                state.chatList = try await chatUseCase.fetchChatList(roomId: roomId, lastDate: state.lastDate)
+                let result = try await chatUseCase.fetchLatestChats(roomId: roomId, limit: 20)
+                
+                state.chatList = result.chats
+                state.currentCursor = result.nextCursor
+                state.hasMoreMessages = result.hasMore
                 
                 chatUseCase.connectSocket(with: roomId)
+                
             } catch {
                 print("Error: \(error)")
             }
         }
     }
-    
+
+    @MainActor
+    func loadMoreMessages() {
+        
+        guard !state.isLoadingMore,
+              state.hasMoreMessages,
+              let roomId = roomId,
+              let cursor = state.currentCursor else {
+            return
+        }
+        
+        state.isLoadingMore = true
+        defer {
+            state.isLoadingMore = false
+        }
+        
+        Task {
+            do {
+                let result = try await chatUseCase.fetchChatsBefore(roomId: roomId, cursor: cursor, limit: 20)
+                
+                state.chatList.insert(contentsOf: result.chats, at: 0)
+                state.currentCursor = result.nextCursor
+                state.hasMoreMessages = result.hasMore
+                
+            } catch {
+                print("Error loading more messages: \(error)")
+            }
+        }
+    }
     @MainActor
     func sendChat() {
         
@@ -134,11 +182,16 @@ private extension ChatViewModel {
             
             do {
                 let response = try await chatUseCase.sendChat(roomId: roomId, content: state.inputText)
-                state.lastDate = YTDateFormatter.date(from: response.createdAt, format: .iso8601UTC)
+                
+                if let sentDate = YTDateFormatter.date(from: response.createdAt, format: .iso8601UTC) {
+                    state.currentCursor = sentDate
+                }
+                
                 state.inputText = ""
                 
             } catch {
                 print("Error: \(error)")
-            }}
+            }
+        }
     }
 }
