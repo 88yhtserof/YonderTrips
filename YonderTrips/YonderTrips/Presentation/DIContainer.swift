@@ -11,14 +11,14 @@ struct DIContainer {
     
     private let networkService: NetworkService
     
-    private let tokenSecureStorage: TokenSecureStorage
+    private let tokenSecureStorage: TokenSecureRepository
     
     private let userInfoValidationUseCase: UserValidationUseCase
     
     init() {
         self.networkService = NetworkService()
         
-        self.tokenSecureStorage = TokenSecureStorage()
+        self.tokenSecureStorage = TokenSecureRepository()
         
         self.userInfoValidationUseCase = UserValidationUseCase()
     }

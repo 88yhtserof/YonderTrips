@@ -1,5 +1,5 @@
 //
-//  TokenSecureStorage.swift
+//  TokenSecureRepository.swift
 //  YonderTrips
 //
 //  Created by 임윤휘 on 5/13/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TokenSecureStorage {
+struct TokenSecureRepository {
     
     private let storage = KeychainSecureStorage.shared
     
@@ -30,7 +30,7 @@ struct TokenSecureStorage {
             
         } catch {
             rollback()
-            throw KeyChainError.failedToCreate(TokenSecureStorage.service)
+            throw KeyChainError.failedToCreate(TokenSecureRepository.service)
         }
     }
     
@@ -38,12 +38,12 @@ struct TokenSecureStorage {
         
         let tokenData = token.data(using: .utf8)!
         
-        try storage.create(tokenData, forKey: type.key, service: TokenSecureStorage.service, itemClass: .genericPassword)
+        try storage.create(tokenData, forKey: type.key, service: TokenSecureRepository.service, itemClass: .genericPassword)
     }
     
     func fetch(_ type: TokenType) throws -> String {
         
-        let tokenData = try storage.read(forKey: type.key, service: TokenSecureStorage.service, itemClass: .genericPassword)
+        let tokenData = try storage.read(forKey: type.key, service: TokenSecureRepository.service, itemClass: .genericPassword)
         
         guard let token = String(data: tokenData, encoding: .utf8) else {
             throw KeyChainError.invalidData
@@ -61,7 +61,7 @@ struct TokenSecureStorage {
     
     func delete(_ type: TokenType) throws {
         
-        try storage.delete(forKey: type.key, service: TokenSecureStorage.service, itemClass: .genericPassword)
+        try storage.delete(forKey: type.key, service: TokenSecureRepository.service, itemClass: .genericPassword)
     }
     
     /// Delete the saved access token and refresh token if an error occurs.

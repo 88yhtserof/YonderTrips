@@ -13,7 +13,7 @@ actor TokenRefresher {
     
     private init(){ }
     
-    private let tokenSecureStorage = TokenSecureStorage()
+    private let tokenSecureStorage = TokenSecureRepository()
     
     private var isRefreshing = false
     private var waitingContinuations: [CheckedContinuation<Void, Error>] = []
