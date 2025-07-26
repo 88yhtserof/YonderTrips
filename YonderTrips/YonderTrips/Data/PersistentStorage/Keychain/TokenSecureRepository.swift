@@ -7,20 +7,13 @@
 
 import Foundation
 
-struct TokenSecureRepository {
-    
-    private let storage = KeychainSecureStorage.shared
-    
-    static let service = "YonderTrips.auth"
+struct TokenSecureRepository: TokenRepository {
     
     enum TokenType: String {
-        case accessToken
-        case refreshToken
-        
-        var key: String {
-            return self.rawValue
-        }
+        case accessToken, refreshToken
     }
+    
+    static let service = "YonderTrips.auth"
     
     func saveAuthToken(with tokens: RefreshTokenResponseDTO) throws {
         
@@ -32,36 +25,6 @@ struct TokenSecureRepository {
             rollback()
             throw KeyChainError.failedToCreate(TokenSecureRepository.service)
         }
-    }
-    
-    func save(_ type: TokenType, token: String) throws {
-        
-        let tokenData = token.data(using: .utf8)!
-        
-        try storage.create(tokenData, forKey: type.key, service: TokenSecureRepository.service, itemClass: .genericPassword)
-    }
-    
-    func fetch(_ type: TokenType) throws -> String {
-        
-        let tokenData = try storage.read(forKey: type.key, service: TokenSecureRepository.service, itemClass: .genericPassword)
-        
-        guard let token = String(data: tokenData, encoding: .utf8) else {
-            throw KeyChainError.invalidData
-        }
-        
-        return token
-    }
-    
-    func update(_ type: TokenType, token: String) throws {
-        
-        let tokenData = token.data(using: .utf8)!
-        
-        try storage.update(forKey: type.key, value: tokenData, itemClass: .genericPassword)
-    }
-    
-    func delete(_ type: TokenType) throws {
-        
-        try storage.delete(forKey: type.key, service: TokenSecureRepository.service, itemClass: .genericPassword)
     }
     
     /// Delete the saved access token and refresh token if an error occurs.
