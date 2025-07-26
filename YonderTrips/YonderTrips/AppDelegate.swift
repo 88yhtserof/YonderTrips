@@ -14,8 +14,13 @@ import iamport_ios
 
 class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate, MessagingDelegate {
     
+    private var fcmTokenUseCase: FCMTokenUseCase?
+    
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let messageTokenRepository = MessageTokenRepository()
+        self.fcmTokenUseCase = FCMTokenUseCase(repository: messageTokenRepository)
+        
         FirebaseApp.configure()
         
         UNUserNotificationCenter.current().delegate = self
@@ -45,12 +50,31 @@ class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDele
 //MARK: - User Notification
 extension AppDelegate {
     
-    // Foreground 알림 처리
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler:
                                 @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        let userInfo = response.notification.request.content.userInfo
+        
+        if let roomId = userInfo["room_id"] as? String {
+            removeNotification(for: roomId)
+        }
+    }
+    
+    func removeNotification(for roomId: String) {
+        let center = UNUserNotificationCenter.current()
+        
+        center.getDeliveredNotifications { notifications in
+            let identifiersToRemove = notifications
+                .filter{ $0.request.content.userInfo["room_id"] as? String == roomId }
+                .map{ $0.request.identifier }
+            
+            center.removeDeliveredNotifications(withIdentifiers: identifiersToRemove)
+        }
     }
 }
 
@@ -59,7 +83,11 @@ extension AppDelegate {
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         
-        YonderTripsLogger.shared.debug("FCM Token: \(fcmToken ?? "")")
-        // 서버에 FCM Token 업로드
+        if let fcmToken {
+            YonderTripsLogger.shared.debug("FCM Token: \(fcmToken)")
+            fcmTokenUseCase?.save(token: fcmToken)
+        } else {
+            YonderTripsLogger.shared.debug("Failed to get FCM Token.")
+        }
     }
 }

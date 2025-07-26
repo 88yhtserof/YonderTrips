@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		141FDFC42E34C13B00832026 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 14D0F4F02E1F85DD00567E55 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		146F01DB2DFFBBBA00E094D7 /* iamport-ios in Frameworks */ = {isa = PBXBuildFile; productRef = 146F01DA2DFFBBBA00E094D7 /* iamport-ios */; };
 		14CA4FBB2DFD65FC00978C85 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 14CA4FBA2DFD65FC00978C85 /* FirebaseCore */; };
 		14CA4FBD2DFD65FC00978C85 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 14CA4FBC2DFD65FC00978C85 /* FirebaseMessaging */; };
@@ -28,6 +29,20 @@
 			remoteInfo = YonderTrips;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		141FDFC52E34C13B00832026 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				141FDFC42E34C13B00832026 /* RealmSwift in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		14B707A32DD1D9B000689F7C /* YonderTrips.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YonderTrips.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -126,6 +141,7 @@
 				14B7079F2DD1D9B000689F7C /* Sources */,
 				14B707A02DD1D9B000689F7C /* Frameworks */,
 				14B707A12DD1D9B000689F7C /* Resources */,
+				141FDFC52E34C13B00832026 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
