@@ -13,12 +13,16 @@ struct DIContainer {
     
     private let tokenSecureStorage: TokenSecureRepository
     
+    private let messageTokenRepository: MessageTokenRepository
+    
     private let userInfoValidationUseCase: UserValidationUseCase
     
     init() {
         self.networkService = NetworkService()
         
         self.tokenSecureStorage = TokenSecureRepository()
+        
+        self.messageTokenRepository = MessageTokenRepository()
         
         self.userInfoValidationUseCase = UserValidationUseCase()
     }
@@ -35,13 +39,13 @@ extension DIContainer {
     
     func makeSignInViewModel() -> SignInViewModel {
         
-        let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage)
+        let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage, messageTokenRepository: messageTokenRepository)
         return SignInViewModel(signInUseCase: signInUseCase)
     }
     
     func makeEmailSignInViewModel() -> EmailSignInViewModel {
         
-        let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage)
+        let signInUseCase = SignInUseCase(networkService: networkService, tokenSecureStorage: tokenSecureStorage, messageTokenRepository: messageTokenRepository)
         return EmailSignInViewModel(signInUseCase: signInUseCase)
     }
     

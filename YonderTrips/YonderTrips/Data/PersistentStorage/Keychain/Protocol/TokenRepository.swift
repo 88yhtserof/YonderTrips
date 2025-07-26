@@ -18,7 +18,7 @@ protocol TokenRepository {
     func delete(_ type: TokenType) throws
 }
 
-// CRUD method
+/// CRUD method
 extension TokenRepository {
     
     var storage: KeychainSecureStorage { .shared }
