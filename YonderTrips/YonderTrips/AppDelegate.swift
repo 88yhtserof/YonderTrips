@@ -56,6 +56,26 @@ extension AppDelegate {
                                 @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler([.banner, .sound, .badge])
     }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse) async {
+        let userInfo = response.notification.request.content.userInfo
+        
+        if let roomId = userInfo["room_id"] as? String {
+            removeNotification(for: roomId)
+        }
+    }
+    
+    func removeNotification(for roomId: String) {
+        let center = UNUserNotificationCenter.current()
+        
+        center.getDeliveredNotifications { notifications in
+            let identifiersToRemove = notifications
+                .filter{ $0.request.content.userInfo["room_id"] as? String == roomId }
+                .map{ $0.request.identifier }
+            
+            center.removeDeliveredNotifications(withIdentifiers: identifiersToRemove)
+        }
+    }
 }
 
 //MARK: - Firebase Messaging
