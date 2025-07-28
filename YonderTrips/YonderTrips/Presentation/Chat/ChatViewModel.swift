@@ -14,14 +14,16 @@ final class ChatViewModel: ViewModelType {
     @Published var state = State()
     
     private let chatUseCase: ChatUseCase
+    private let chatRoomUseCase: ChatRoomUseCase
     
     private let opponentId: String
     private var roomId: String? = nil
     private var token: NotificationToken?
     
-    init(opponentId: String, chatUseCase: ChatUseCase) {
+    init(opponentId: String, chatUseCase: ChatUseCase, chatRoomUseCase: ChatRoomUseCase) {
         self.opponentId = opponentId
         self.chatUseCase = chatUseCase
+        self.chatRoomUseCase = chatRoomUseCase
         
         binding()
     }
@@ -87,7 +89,7 @@ private extension ChatViewModel {
         Task {
             
             do {
-                let chatRoomResponse = try await chatUseCase.createChatRoom(opponentId: opponentId)
+                let chatRoomResponse = try await chatRoomUseCase.createChatRoom(opponentId: opponentId)
                 self.roomId = chatRoomResponse.roomId
                 
                 startObserving()

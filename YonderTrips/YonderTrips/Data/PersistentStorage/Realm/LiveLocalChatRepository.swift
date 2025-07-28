@@ -26,7 +26,13 @@ final class LiveLocalChatRepository: LocalChatRepository {
         }
     }
     
+    func containsChatRoom(roomId: String) -> Bool {
+        return realm.object(ofType: ChatRoomObject.self, forPrimaryKey: roomId) != nil
+    }
+    
     func addChatRoom(_ room: ChatRoomResponse) {
+        
+        guard !containsChatRoom(roomId: room.roomId) else { return }
         
         let title = room.participants
             .map { $0.nick }
@@ -67,6 +73,10 @@ final class LiveLocalChatRepository: LocalChatRepository {
                 realm.add(roomObject)
             }
         }
+    }
+    
+    func fetchChatRoomList() -> [ChatRoomResponse] {
+        return fetchChatRoomObject().map{ $0.toEntity() }
     }
     
     func containsChat(chatId: String) -> Bool {
@@ -112,8 +122,7 @@ final class LiveLocalChatRepository: LocalChatRepository {
         try! realm.write {
             realm.add(chatObject)
             
-            room.lastMessage = chat.content
-            room.lastUpdatedAt = YTDateFormatter.date(from: chat.createdAt, format: .iso8601UTC) ?? Date()
+            room.lastChat = chatObject
         }
     }
     
@@ -150,6 +159,7 @@ final class LiveLocalChatRepository: LocalChatRepository {
     }
 }
 
+//MARK: - Object
 private extension LiveLocalChatRepository {
     
     func fetchChatObject(roomId: String, lastDate: Date?) ->  Results<ChatObject>? {
@@ -166,6 +176,22 @@ private extension LiveLocalChatRepository {
             return query
         }
         return nil
+    }
+    
+    func fetchChatRoomObject() -> [ChatRoomObject] {
+        let roomList = realm.objects(ChatRoomObject.self)
+        
+        let sorted = roomList
+            .sorted { before, after in
+                guard let beforeLastUpdatedAt = before.lastChat?.createdAt as Date?,
+                      let afterLastUpdatedAt = after.lastChat?.createdAt as Date? else {
+                    return true
+                }
+                
+                return beforeLastUpdatedAt > afterLastUpdatedAt
+            }
+        
+        return sorted
     }
 }
 

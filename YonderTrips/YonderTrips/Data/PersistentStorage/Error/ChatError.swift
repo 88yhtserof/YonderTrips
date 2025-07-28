@@ -8,12 +8,15 @@
 import Foundation
 
 enum ChatError: LocalizedError {
+    case failedToFetchChatRoomList
     case failedToFetchChatList
     case failedToSendMessage
     case unknownError
 
     var errorDescription: String? {
         switch self {
+        case .failedToFetchChatRoomList:
+            return "채팅방 목록을 불러오지 못했습니다."
         case .failedToFetchChatList:
             return "채팅 내역을 불러오지 못했습니다."
         case .failedToSendMessage:
