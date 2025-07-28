@@ -13,24 +13,32 @@ class ChatRoomObject: Object {
     @Persisted(primaryKey: true) var roomId: String
     @Persisted var title: String
     @Persisted var participants: List<UserInfoObject>
-    @Persisted var lastMessage: String?
-    @Persisted var lastUpdatedAt: Date?
-
+    @Persisted var lastChat: ChatObject?
+    
     @Persisted(originProperty: "room") var chatList: LinkingObjects<ChatObject>
 
     convenience init(
         roomId: String,
         title: String,
         participants: List<UserInfoObject>,
-        lastMessage: String? = nil,
-        lastUpdatedAt: Date? = nil
+        lastChat: ChatObject? = nil
     ) {
         self.init()
         self.roomId = roomId
         self.title = title
         self.participants = participants
-        self.lastMessage = lastMessage
-        self.lastUpdatedAt = lastUpdatedAt
+        self.lastChat = lastChat
     }
 }
 
+extension ChatRoomObject {
+    
+    func toEntity() -> ChatRoomResponse {
+        return ChatRoomResponse(
+            roomId: self.roomId,
+            title: self.title,
+            participants: self.participants.map { $0.toEntity() },
+            lastChat: self.lastChat?.toEntity()
+        )
+    }
+}
