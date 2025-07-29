@@ -17,6 +17,9 @@ struct DIContainer {
     
     private let userInfoValidationUseCase: UserValidationUseCase
     
+    private let localRepository = LiveLocalChatRepository()
+    private let remoteRepository = LiveRemoteChatRepository()
+    
     init() {
         self.networkService = NetworkService()
         
@@ -84,16 +87,29 @@ extension DIContainer {
         )
     }
     
+    func makeChatRoomListViewModel() -> ChatRoomListViewModel {
+        
+        let chatRoomUseCase = ChatRoomUseCase(
+            localRepository: localRepository,
+            remoteRepository: remoteRepository
+        )
+        
+        return ChatRoomListViewModel(chatRoomUseCase: chatRoomUseCase)
+    }
+    
     func makeChatViewModel(opponentId: String) -> ChatViewModel {
         
-        let localRepository = LiveLocalChatRepository()
-        let remoteRepository = LiveRemoteChatRepository()
         let chatUseCase = ChatUseCase(
             localRepository: localRepository,
             remoteRepository: remoteRepository
         )
         
-        return ChatViewModel(opponentId: opponentId, chatUseCase: chatUseCase)
+        let chatRoomUseCase = ChatRoomUseCase(
+            localRepository: localRepository,
+            remoteRepository: remoteRepository
+        )
+        
+        return ChatViewModel(opponentId: opponentId, chatUseCase: chatUseCase, chatRoomUseCase: chatRoomUseCase)
     }
 }
 

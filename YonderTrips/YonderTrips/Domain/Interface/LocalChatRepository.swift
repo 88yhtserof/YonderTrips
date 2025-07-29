@@ -11,7 +11,11 @@ import RealmSwift
 
 protocol LocalChatRepository {
     
+    func containsChatRoom(roomId: String) -> Bool
+    
     func addChatRoom(_ room: ChatRoomResponse)
+    
+    func fetchChatRoomList() -> [ChatRoomResponse]
     
     func containsChat(chatId: String) -> Bool
     

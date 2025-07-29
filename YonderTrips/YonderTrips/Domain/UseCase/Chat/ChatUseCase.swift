@@ -30,16 +30,6 @@ final class ChatUseCase {
     }
     
     @MainActor
-    func createChatRoom(opponentId: String) async throws -> ChatRoomResponse {
-        
-        let chatRoomResponse: ChatRoomResponse = try await remoteRepository.requestCreatingChatRoom(with: opponentId)
-        
-        localRepository.addChatRoom(chatRoomResponse)
-        
-        return chatRoomResponse
-    }
-    
-    @MainActor
     func fetchLatestChats(roomId: String, limit: Int? = nil) async throws -> ChatPaginationResult {
         
         let localResult = localRepository.fetchLatestChats(roomId: roomId, limit: limit)

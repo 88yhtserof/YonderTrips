@@ -9,16 +9,7 @@ import Foundation
 
 struct ChatRoomResponse {
     let roomId: String
-    let createdAt: String
-    let updatedAt: String
+    let title: String
     let participants: [UserInfo]
     let lastChat: ChatResponse?
-
-    enum CodingKeys: String, CodingKey {
-        case roomId = "room_id"
-        case createdAt
-        case updatedAt
-        case participants
-        case lastChat
-    }
 }

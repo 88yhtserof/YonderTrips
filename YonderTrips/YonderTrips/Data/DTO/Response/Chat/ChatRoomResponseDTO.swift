@@ -28,10 +28,9 @@ extension ChatRoomResponseDTO {
     func toEntity() -> ChatRoomResponse {
         return ChatRoomResponse(
             roomId: self.roomId,
-            createdAt: self.createdAt,
-            updatedAt: self.updatedAt,
-            participants: self.participants.map { $0.toEntity() }, // UserInfoResponseDTO의 toEntity 호출
-            lastChat: self.lastChat?.toEntity() // Optional ChatResponseDTO의 toEntity 호출
+            title: self.lastChat?.sender.nick ?? "",
+            participants: self.participants.map { $0.toEntity() },
+            lastChat: self.lastChat?.toEntity()
         )
     }
 }

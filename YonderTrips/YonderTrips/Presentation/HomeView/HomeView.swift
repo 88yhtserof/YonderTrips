@@ -11,7 +11,7 @@ struct HomeView: View {
     
     @Environment(\.container) var container
     @EnvironmentObject private var router: RootFlowRouter
-    @StateObject private var homeRouter = HomeFlowRouter()
+    @EnvironmentObject private var homeRouter: HomeFlowRouter
     
     @State private var showErrorPopup = false
     @State private var errorMessage: String = ""
@@ -64,7 +64,7 @@ struct HomeView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: handleNotiToolbarButton){
-                        Image(.noti)
+                        Image(.keepEmpty)
                             .resizable()
                             .frame(width: 24, height: 24)
                             .foregroundStyle(.gray75)
@@ -97,7 +97,10 @@ struct HomeView: View {
                 case let .activityFilter(category, country, flow):
                     ActivityFilterView(selectedCategory: category, selectedCountry: country, flow: flow)
                         .environmentObject(homeRouter)
-                    
+                
+                case .chatRoomList:
+                    ChatRoomListView(viewModel: container.makeChatRoomListViewModel())
+                        .environmentObject(homeRouter)
                 case .chat(let userId):
                     ChatView(viewModel: container.makeChatViewModel(opponentId: userId))
                 }
@@ -131,7 +134,7 @@ private extension HomeView {
     }
     
     func handleNotiToolbarButton() {
-        print(#function)
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.chatRoomList)
     }
 }
 

@@ -16,8 +16,6 @@ struct YonderTripsApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
-    @StateObject private var rootViewRouter = RootFlowRouter()
-    
     init() {
         KakaoSDK.initSDK(appKey: AuthorizationProvider.kakao.apiKey ?? "")
     }
@@ -26,7 +24,6 @@ struct YonderTripsApp: App {
         WindowGroup {
             
             ContentView()
-                .environmentObject(rootViewRouter)
                 .onOpenURL { url in
                     if (AuthApi.isKakaoTalkLoginUrl(url)) {
                         let _ = AuthController.handleOpenUrl(url: url)
