@@ -13,19 +13,19 @@ struct ChatRoomListView: View {
     @EnvironmentObject private var homeRouter: HomeFlowRouter
     
     var body: some View {
-            VStack(spacing: 0) {
-                if viewModel.state.chatRoomList.isEmpty {
-                    emptyStateView
-                } else {
-                    chatRoomListView
-                }
+        VStack(spacing: 0) {
+            if viewModel.state.chatRoomList.isEmpty {
+                emptyStateView
+            } else {
+                chatRoomListView
             }
-            .background(.gray15)
-            .navigationTitle("채팅")
-            .navigationBarTitleDisplayMode(.large)
-            .onAppear {
-                viewModel.action(.onAppear)
-            }
+        }
+        .background(.gray15)
+        .navigationTitle("채팅")
+        .navigationBarTitleDisplayMode(.large)
+        .onAppear {
+            viewModel.action(.onAppear)
+        }
     }
     
     // MARK: - Chat Room List
@@ -33,13 +33,8 @@ struct ChatRoomListView: View {
         ScrollView {
             LazyVStack(spacing: 0) {
                 ForEach(viewModel.state.chatRoomList, id: \.roomId) { chatRoom in
-                    Button {
-                        let opponentId = getOpponentId(from: chatRoom.participants)
-                        homeRouter.path.append(HomeFlowRouter.HomeFlow.chat(opponentId))
-                    } label: {
-                        ChatRoomRow(chatRoom: chatRoom)
-                    }
-                    .buttonStyle(PlainButtonStyle())
+                    
+                    chatRoomListRowButton(with: chatRoom)
                     
                     if chatRoom.roomId != viewModel.state.chatRoomList.last?.roomId {
                         Divider()
@@ -73,12 +68,31 @@ struct ChatRoomListView: View {
         .background(.gray15)
     }
     
-    // MARK: - Helper Functions
-    private func getOpponentId(from participants: [UserInfo]) -> String {
-        // 현재 사용자가 아닌 참가자의 ID를 반환
-        // UserManager.shared.currentUserId와 같은 방식으로 현재 사용자 ID를 가져온다고 가정
-        let userId = "current_user_id"
-        return participants.first { $0.userId != userId }?.userId ?? ""
+    func chatRoomListRowButton(with chatRoom: ChatRoomResponse) -> some View {
+        
+        VStack {
+            if let opponent = getOpponent(from: chatRoom.participants) {
+                Button {
+                    homeRouter.path.append(HomeFlowRouter.HomeFlow.chat(opponent.userId))
+                } label: {
+                    ChatRoomRow(chatRoom: chatRoom, opponent: opponent)
+                }
+                .buttonStyle(PlainButtonStyle())
+            } else {
+                Text("알 수 없는 사용자 입니다.")
+                    .foregroundStyle(.gray75)
+                    .font(.yt(.pretendard(.body1)))
+            }
+        }
+    }
+}
+
+//MARK: - Functions
+private extension ChatRoomListView {
+    
+    private func getOpponent(from participants: [UserInfo]) -> UserInfo? {
+        let userId = UserDefaults.standard.string(forKey: "userId") ?? ""
+        return participants.first{ $0.userId != userId }
     }
 }
 

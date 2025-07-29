@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ChatRoomRow: View {
     let chatRoom: ChatRoomResponse
+    let opponent: UserInfo
     
     var body: some View {
         HStack(spacing: 12) {
@@ -54,22 +55,20 @@ struct ChatRoomRow: View {
     }
     
     private var profileImage: some View {
-        let opponent = chatRoom.participants.first // 실제로는 현재 사용자가 아닌 참가자를 찾아야 함
         
         return Group {
-            if let profileImageUrl = opponent?.profileImage,
-               !profileImageUrl.isEmpty {
-                DataImageView(urlString: profileImageUrl)
-                    .foregroundColor(.gray)
+            if !opponent.profileImage.isEmpty {
+                DataImageView(urlString: opponent.profileImage)
+                    .foregroundStyle(.gray)
                 
             } else {
                 Circle()
                     .fill(.gray30)
                     .overlay {
-                        Text(opponent?.nick.prefix(1).uppercased() ?? "?")
+                        Text(opponent.nick.prefix(1).uppercased())
                             .font(.title2)
                             .fontWeight(.medium)
-                            .foregroundColor(.gray75)
+                            .foregroundStyle(.gray75)
                     }
             }
         }
