@@ -10,7 +10,10 @@ import SwiftUI
 struct ContentView: View {
     
     private let container = DIContainer()
-    @EnvironmentObject private var rootRouter: RootFlowRouter
+    
+    @StateObject private var rootRouter = RootFlowRouter()
+    @StateObject private var signInRouter = SignInFlowRouter()
+    @StateObject private var homeRouter = HomeFlowRouter()
     
     var body: some View {
         
@@ -27,10 +30,16 @@ extension ContentView {
         switch rootRouter.rootFlow {
         case .signIn:
             SignInView(viewModel: container.makeSignInViewModel())
+                .environmentObject(rootRouter)
+                .environmentObject(signInRouter)
         case .signUp:
             SignUpView(viewModel: container.makeSignUpViewModel())
+                .environmentObject(rootRouter)
         case .home:
             HomeView()
+                .handleNotificationNavigation()
+                .environmentObject(rootRouter)
+                .environmentObject(homeRouter)
         }
     }
 }

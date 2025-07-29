@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SignUpView: View {
     
-    @EnvironmentObject private var router: RootFlowRouter
+    @EnvironmentObject private var rootRouter: RootFlowRouter
     @StateObject var viewModel: SignUpViewModel
     
     var body: some View {
@@ -62,7 +62,7 @@ struct SignUpView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    viewModel.action(.didDoneButtonTapped(router))
+                    viewModel.action(.didDoneButtonTapped(rootRouter))
                 }) {
                     Text("완료")
                 }

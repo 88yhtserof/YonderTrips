@@ -11,8 +11,8 @@ import AuthenticationServices
 struct SignInView: View {
     
     @Environment(\.container) private var container
-    @StateObject private var signInRouter = SignInFlowRouter()
     @EnvironmentObject private var rootRouter: RootFlowRouter
+    @EnvironmentObject private var signInRouter: SignInFlowRouter
     @StateObject var viewModel: SignInViewModel
     
     var body: some View {

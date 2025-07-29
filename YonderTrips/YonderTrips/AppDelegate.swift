@@ -62,6 +62,7 @@ extension AppDelegate {
         
         if let roomId = userInfo["room_id"] as? String {
             removeNotification(for: roomId)
+            NotificationNavigationManager.shared.navigateToChatRoomList()
         }
     }
     

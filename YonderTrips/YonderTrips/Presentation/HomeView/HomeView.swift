@@ -11,7 +11,7 @@ struct HomeView: View {
     
     @Environment(\.container) var container
     @EnvironmentObject private var router: RootFlowRouter
-    @StateObject private var homeRouter = HomeFlowRouter()
+    @EnvironmentObject private var homeRouter: HomeFlowRouter
     
     @State private var showErrorPopup = false
     @State private var errorMessage: String = ""
@@ -101,7 +101,6 @@ struct HomeView: View {
                 case .chatRoomList:
                     ChatRoomListView(viewModel: container.makeChatRoomListViewModel())
                         .environmentObject(homeRouter)
-                    
                 case .chat(let userId):
                     ChatView(viewModel: container.makeChatViewModel(opponentId: userId))
                 }
