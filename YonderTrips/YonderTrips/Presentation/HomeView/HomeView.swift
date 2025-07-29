@@ -97,6 +97,10 @@ struct HomeView: View {
                 case let .activityFilter(category, country, flow):
                     ActivityFilterView(selectedCategory: category, selectedCountry: country, flow: flow)
                         .environmentObject(homeRouter)
+                
+                case .chatRoomList:
+                    ChatRoomListView(viewModel: container.makeChatRoomListViewModel())
+                        .environmentObject(homeRouter)
                     
                 case .chat(let userId):
                     ChatView(viewModel: container.makeChatViewModel(opponentId: userId))
@@ -131,7 +135,7 @@ private extension HomeView {
     }
     
     func handleNotiToolbarButton() {
-        print(#function)
+        homeRouter.path.append(HomeFlowRouter.HomeFlow.chatRoomList)
     }
 }
 
