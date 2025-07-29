@@ -10,9 +10,9 @@ import Foundation
 struct SignUpUseCase: SignUpUseCaseType {
     
     private let networkService: NetworkService
-    private let tokenSecureStorage: TokenSecureStorage
+    private let tokenSecureStorage: TokenSecureRepository
     
-    init(networkService: NetworkService, tokenSecureStorage: TokenSecureStorage) {
+    init(networkService: NetworkService, tokenSecureStorage: TokenSecureRepository) {
         self.networkService = networkService
         self.tokenSecureStorage = tokenSecureStorage
     }
@@ -39,7 +39,7 @@ struct SignUpUseCase: SignUpUseCaseType {
             
         } catch {
             tokenSecureStorage.rollback()
-            throw KeyChainError.failedToCreate(TokenSecureStorage.service)
+            throw KeyChainError.failedToCreate(TokenSecureRepository.service)
         }
         
         return response

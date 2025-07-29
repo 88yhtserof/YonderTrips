@@ -64,7 +64,7 @@ struct HomeView: View {
                 }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: handleNotiToolbarButton){
-                        Image(.noti)
+                        Image(.keepEmpty)
                             .resizable()
                             .frame(width: 24, height: 24)
                             .foregroundStyle(.gray75)
