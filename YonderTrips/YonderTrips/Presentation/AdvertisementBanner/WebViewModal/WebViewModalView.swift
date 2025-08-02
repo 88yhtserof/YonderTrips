@@ -11,17 +11,12 @@ import WebKit
 struct WebViewModalView: View {
     let url: String
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var coordinator: WebViewBridgeCoordinator
-    
-    init(url: String) {
-        self.url = url
-        self._coordinator = StateObject(wrappedValue: WebViewBridgeCoordinator())
-    }
+    @StateObject private var coordinator = WebViewBridgeCoordinator()
     
     var body: some View {
         NavigationView {
             ZStack {
-                WebViewBridgeView(url: url)
+                WebViewBridgeView(url: url, coordinator: coordinator)
                 
                 if coordinator.isLoading {
                     ProgressView()

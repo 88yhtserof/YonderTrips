@@ -10,12 +10,7 @@ import WebKit
 
 struct WebViewBridgeView: UIViewRepresentable {
     let url: String
-    @StateObject private var coordinator: WebViewBridgeCoordinator
-    
-    init(url: String) {
-        self.url = url
-        self._coordinator = StateObject(wrappedValue: WebViewBridgeCoordinator())
-    }
+    @ObservedObject var coordinator: WebViewBridgeCoordinator
     
     func makeUIView(context: Context) -> WKWebView {
         let webView = coordinator.setupWebView()
