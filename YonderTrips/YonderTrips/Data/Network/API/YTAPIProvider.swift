@@ -15,6 +15,7 @@ enum YTAPIProvider {
     case order(YTOrderAPI)
     case payment(YTPaymentAPI)
     case chat(YTChatAPI)
+    case banner(YTBannerAPI)
     
     var api: APIConfiguration & APIErrorConvertible {
         switch self {
@@ -32,7 +33,10 @@ enum YTAPIProvider {
             return api
         case .chat(let api):
             return api
+        case .banner(let api):
+            return api
         }
+        
     }
     
     static var baseURL: String {
