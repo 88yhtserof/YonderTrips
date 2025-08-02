@@ -11,7 +11,8 @@ import SwiftUI
 final class AdvertisementBannerViewController: UIViewController {
     
     private var list: [String]
-    private var onPageChange: ((Int) async -> Void)?
+    private var onPageChange: ((Int) -> Void)?
+    private var bannerTapHandler: ((Int) -> Void)?
     
     private var dataSource: DataSource!
     
@@ -41,6 +42,10 @@ final class AdvertisementBannerViewController: UIViewController {
         
         self.list = list
         updateSnapshot()
+    }
+    
+    func setBannerTapHandler(_ handler: @escaping (Int) -> Void) {
+        self.bannerTapHandler = handler
     }
 }
 
@@ -138,9 +143,11 @@ private extension AdvertisementBannerViewController {
 extension AdvertisementBannerViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
-        Task {
-            await onPageChange?(indexPath.item)
-        }
+        onPageChange?(indexPath.item)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        bannerTapHandler?(indexPath.item)
     }
 }
+
