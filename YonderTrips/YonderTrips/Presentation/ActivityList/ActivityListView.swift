@@ -14,9 +14,13 @@ struct ActivityListView: View {
     var body: some View {
         
         ScrollView {
-            
             VStack(spacing: 0) {
-                AdvertisementBannerView()
+                
+                AdvertisementBannerView(
+                    viewModel: AdvertisementBannerViewModel(
+                        bannerService: LiveBannerRepository()
+                    )
+                )
                 
                 VerticalShadowDivider()
                 

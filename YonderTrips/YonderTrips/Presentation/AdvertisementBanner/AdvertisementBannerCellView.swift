@@ -12,14 +12,10 @@ struct AdvertisementBannerCellView: View {
     let item: String
     
     var body: some View {
-        
         VStack {
             DataImageView(urlString: item)
         }
+        .contentShape(Rectangle())
     }
-}
-
-#Preview {
-    AdvertisementBannerCellView(item: "")
 }
 
